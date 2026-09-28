@@ -1,0 +1,211 @@
+// ============================================================
+// 165 — TQN Qodiriah Naqsabandiyah Global Knowledge, Heritage &
+// Digital Preservation Platform
+// DATA LAYER — Master Entity & Relationship Model
+//
+// Design rules (per 165 Master Build Directive):
+//  - DATA-FIRST: entities + typed relationships, not pages.
+//  - ONE SOURCE, MANY EXPERIENCES.
+//  - Every datum carries evidence level + verification status.
+//  - Sanad is display-only; never generated or inferred.
+//  - Never delete knowledge silently → VersionSnapshot + AuditLog.
+//  - Multilingual by design → NameVariant + per-language summaries.
+//  - SQLite/MVP: no enums (app-level vocabularies), no list
+//    primitives (JSON payloads in `details` fields).
+// ============================================================
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+// ------------------------------------------------------------
+// CORE ENTITY
+// One row per real-world thing. Type discriminator + shared
+// trust metadata + precision-aware dating + optional geo.
+// ------------------------------------------------------------
+model Entity {
+  id                 String   @id @default(cuid())
+  globalId           String   @unique // 165-PERSON-000001, 165-SRC-000001, ...
+  slug               String   @unique // canonical URL fragment
+  type               String // PERSON | INSTITUTION | ORGANIZATION | PLACE | BOOK | MANUSCRIPT | DOCUMENT | MEDIA | EVENT | SANAD | RESEARCH | SOURCE | CLAIM | TRADITION | COLLECTION | TERM
+  primaryName        String
+  subtitle           String? // epithet / honorific / role line
+  summary            String? // primary-language (EN) summary
+  summaryId          String? // Indonesian summary (multilingual by design)
+  summaryAr          String? // Arabic summary (multilingual by design)
+  evidenceLevel      String   @default("F") // A|B|C|D|E|F
+  verificationStatus String   @default("UNVERIFIED") // VERIFIED | DOCUMENTED | COMMUNITY_SUBMITTED | DISPUTED | TRADITIONAL_ACCOUNT | UNVERIFIED | WITHDRAWN
+  isExampleRecord    Boolean  @default(false) // structural demo — pending Founder's archive
+  // precision-aware dating (strings, not Date, so decade/circa are honest)
+  startDate          String?
+  startDatePrecision String? // DAY | MONTH | YEAR | DECADE | CENTURY | UNKNOWN
+  endDate            String?
+  endDatePrecision   String?
+  // geo (for future world map)
+  latitude           Float?
+  longitude          Float?
+  region             String? // atlas grouping e.g. "Southeast Asia"
+  // extensible type-specific payload (JSON string)
+  details            String?
+  // privacy by design
+  visibility         String   @default("PUBLIC") // PUBLIC | RESTRICTED | PRIVATE
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  nameVariants        NameVariant[]
+  outgoingRelations   Relationship[]   @relation("RelFrom")
+  incomingRelations   Relationship[]   @relation("RelTo")
+  claimsAsSubject     ClaimSource[]    @relation("Claim")
+  stancesAsSource     ClaimSource[]    @relation("ClaimSource")
+  sanadLinks          SanadLink[]      @relation("SanadPerson")
+  collectionsOwned    CollectionItem[] @relation("Collection")
+  collectionsIn       CollectionItem[] @relation("CollectionItem")
+  versions            VersionSnapshot[]
+}
+
+// Multilingual names, aliases, transliterations
+model NameVariant {
+  id       String @id @default(cuid())
+  entityId String
+  name     String
+  language String @default("en") // id | en | ar | ln (latin)
+  kind     String @default("VARIANT") // PRIMARY | ALIAS | VARIANT | TRANSLITERATION | TITLE
+  note     String?
+
+  entity Entity @relation(fields: [entityId], references: [id], onDelete: Cascade)
+
+  @@index([entityId])
+  @@index([name])
+}
+
+// ------------------------------------------------------------
+// KNOWLEDGE LAYER — typed, sourced, status-carrying relations
+// Never auto-generated. Every edge is an institutional decision.
+// ------------------------------------------------------------
+model Relationship {
+  id                 String   @id @default(cuid())
+  fromEntityId       String
+  toEntityId         String
+  predicate          String // TEACHER_OF | STUDENT_OF | AUTHORED | ASSOCIATED_WITH | LOCATED_IN | HELD_BY | REFERENCES | APPEARS_IN | OCCURRED_IN | STUDIES | DOCUMENTS | LINEAGE_FOUNDER_OF | LINEAGE_OF | PART_OF | FOUNDED
+  evidenceLevel      String   @default("F")
+  verificationStatus String   @default("UNVERIFIED")
+  context            String?
+  sourceRef          String? // globalId of the supporting Source entity
+
+  fromEntity Entity @relation("RelFrom", fields: [fromEntityId], references: [id], onDelete: Cascade)
+  toEntity   Entity @relation("RelTo", fields: [toEntityId], references: [id], onDelete: Cascade)
+
+  @@index([fromEntityId])
+  @@index([toEntityId])
+  @@index([predicate])
+}
+
+// Claim ↔ Source stance (support / dispute)
+model ClaimSource {
+  id           String @id @default(cuid())
+  claimEntityId String
+  sourceEntityId String
+  stance       String // SUPPORTED_BY | DISPUTED_BY
+  note         String?
+
+  claim  Entity @relation("Claim", fields: [claimEntityId], references: [id], onDelete: Cascade)
+  source Entity @relation("ClaimSource", fields: [sourceEntityId], references: [id], onDelete: Cascade)
+
+  @@index([claimEntityId])
+  @@index([sourceEntityId])
+}
+
+// ------------------------------------------------------------
+// SANAD — DISPLAY ONLY. SAFETY-GATED.
+// A sanad row must never be created by automation; every link
+// requires an explicit source + status. The registry ships empty.
+// ------------------------------------------------------------
+model SanadLink {
+  id                 String  @id @default(cuid())
+  sanadEntityId      String // Entity of type SANAD
+  order              Int
+  fromName           String // transmitter (from)
+  toName             String // transmitter (to)
+  personEntityId     String? // optional link to a Person entity
+  eraNote            String?
+  evidenceLevel      String  @default("F")
+  verificationStatus String  @default("UNVERIFIED")
+  sourceRef          String? // required in practice; enforced by editorial policy
+  context            String?
+
+  person Entity? @relation("SanadPerson", fields: [personEntityId], references: [id])
+
+  @@index([sanadEntityId])
+}
+
+// Collection containment
+model CollectionItem {
+  id         String @id @default(cuid())
+  collectionId String
+  itemEntityId String
+  order      Int    @default(0)
+  note       String?
+
+  collection Entity @relation("Collection", fields: [collectionId], references: [id], onDelete: Cascade)
+  item       Entity @relation("CollectionItem", fields: [itemEntityId], references: [id], onDelete: Cascade)
+
+  @@index([collectionId])
+  @@index([itemEntityId])
+}
+
+// ------------------------------------------------------------
+// PRESERVATION LAYER — versions & audit
+// ------------------------------------------------------------
+model VersionSnapshot {
+  id         String   @id @default(cuid())
+  entityId   String
+  version    Int
+  snapshot   String // JSON of entity state before/after change
+  changedBy  String   @default("system")
+  reason     String?
+  createdAt  DateTime @default(now())
+
+  entity Entity @relation(fields: [entityId], references: [id], onDelete: Cascade)
+
+  @@index([entityId])
+}
+
+model AuditLog {
+  id        String   @id @default(cuid())
+  actor     String   @default("public")
+  action    String // CREATE | UPDATE | SUBMIT | STATUS_CHANGE | ...
+  target    String // globalId or system target
+  detail    String?
+  createdAt DateTime @default(now())
+
+  @@index([target])
+}
+
+// ------------------------------------------------------------
+// CONTRIBUTION — Contribution ≠ Publication
+// Workflow: SUBMITTED → SCREENING → EDITORIAL_REVIEW →
+// SOURCE_REVIEW → VERIFICATION → APPROVED → PUBLISHED
+//                         ↘ REJECTED | DISPUTED
+// ------------------------------------------------------------
+model Contribution {
+  id              String   @id @default(cuid())
+  reference       String   @unique // 165-SUB-2025-000001
+  kind            String // KNOWLEDGE | SOURCE | BIOGRAPHY | INSTITUTION | MANUSCRIPT | ORAL_HISTORY | CORRECTION | OTHER
+  title           String
+  payload         String // JSON details
+  submitterName   String
+  submitterContact String?
+  status          String   @default("SUBMITTED")
+  statusNote      String?
+  reviewedBy      String?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  @@index([status])
+}
