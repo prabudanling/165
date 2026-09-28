@@ -91,3 +91,40 @@ Work Log:
 Stage Summary:
 - Browser-verified interactivity is the standard of done — met. Zero console errors on final pass.
 - Documentation delivered: docs/DISCOVERY-REPORT.md, docs/ARCHITECTURE-DECISIONS.md (ADR-001..010 + data dictionary + API surface), worklog.md.
+
+---
+Task ID: 8-b
+Agent: frontend-styling-expert
+Task: UrlDirectory component (SEO section)
+
+Work Log:
+- Read worklog.md (context/conventions), src/lib/seo-blueprint.ts (verified API: generateUrlIndex() → 1200 UrlRow[], TEMPLATE_CATALOG, PAGE_MAP_TOTAL), sibling seo-templates.tsx (tone, KIND_HUE palette, badge style), ui.tsx (shared primitives), sections/seo.tsx (integration point — already imports { UrlDirectory } from '../seo/url-directory').
+- Created src/components/165/seo/url-directory.tsx ('use client'): minimal header row ("Peta Sitemap — Fase 1" + muted count line + brass Network badge chip); responsive toolbar (Search icon inside shadcn Input "Cari URL atau slug…", shadcn Select "Semua tipe" + one option per catalog entry with count, aria-live result count "Menampilkan X–Y dari N URL" in id-ID); shadcn Table in rounded-md border bg-card wrapper with exact "nice-scroll max-h-[460px] overflow-y-auto" scroll div and sticky header.
+- Columns: URL (mono 12.5px, truncate + title), Tipe (KindBadge reusing seo-templates.tsx KIND_HUE values verbatim, inline-flex span with ${hue}14/${hue}55/${hue} inline style), Skema (mono 12px), Prioritas (mono right-aligned toFixed(1)), Diperbarui (mono 12px, hidden md:table-cell).
+- Pagination: 25 rows/page; Prev/Next outline sm buttons with aria-labels, "Halaman i dari j" text, ≤7-number centered window with ellipses (pageWindow helper, e.g. 1 … 4 5 6 … 48); page resets to 1 inside search/filter handlers (no setState-in-effect, honoring project lint fix history); current page clamped defensively.
+- Empty state reuses shared EmptyState primitive (SearchX icon, dashed border) with exact copy "Tidak ada URL yang cocok dengan filter." + a small "Bersihkan filter" reset button.
+- Performance: generateUrlIndex() memoized once (useMemo []), filtered list memoized, only the 25-row slice rendered. No blue/indigo anywhere; institutional tokens only (border-border, bg-card, bg-secondary, text-muted-foreground, var(--brass)).
+- Verification: bunx tsc --noEmit → zero errors in url-directory.tsx; bun run lint → clean.
+
+Stage Summary:
+- UrlDirectory shipped and wired to the already-imported usage in sections/seo.tsx; planned sitemap browsable (search + type filter + pagination over all 1.200 rows) without rendering the full list at once.
+- Note for orchestrator: pre-existing unrelated type errors exist elsewhere (examples/, skills/, sections/home.tsx, and sections/seo.tsx line 7 imports lucide `Sitemap` which does not exist in lucide-react 0.525.0 — my file uses `Network` instead). url-directory.tsx itself is fully clean.
+
+---
+Task ID: 8
+Agent: Chief Digital Architect (main) + frontend-styling-expert (8-b)
+Task: PHASE 8 — SEO & Page Architecture: "pages search engines love" at 1.000+ page scale (founder request: eternal pages).
+
+Work Log:
+- Wrote src/lib/seo-blueprint.ts: 10-template catalog (person/term/book/event/place/institution/sanad/collection/article/faq), phase-1 page map totaling 1.200 URLs, release phases (150→350→215→485), URL index generator (real seed slugs first, clearly-synthetic slugs for the rest — no fabricated names), 10 honest preview entities reusing EVIDENCE_LEVELS/VERIFICATION_STATUSES vocab, per-template publication GATES, JSON-LD builders (Person/Book/DefinedTerm/Event/Place/Organization/ItemList/CollectionPage/Article/FAQPage + BreadcrumbList), base 12-point SEO checklist, meta title/description helpers.
+- Built src/components/165/seo/seo-templates.tsx: TemplateGallery — template selector + 4 tabs per template: live page preview (breadcrumb, status/evidence badges, Arabic display, infobox, sanad chain viz with honest "menunggu kolasi" node, FAQ accordion, citation box with Global ID), SERP simulation with title/description length meters, JSON-LD viewer with copy button, SEO checklist + amber publication-gate panel.
+- [8-b via frontend-styling-expert] Built src/components/165/seo/url-directory.tsx: 1.200-URL directory — search, type filter (Radix Select), 25/page pagination with 7-number window, kind-hued badges, aria-live count, EmptyState reset, memoized rows.
+- Built src/components/165/sections/seo.tsx: hero stats (1.200+ · 10 · 3 · 12+), 6 pillars (JSON-LD, internal-link mesh, E-E-A-T, stable URL+Global ID, trilingual hreflang, SSR), page-map table + phases + doctrine note ("jumlah halaman tidak pernah mengalahkan kebenaran halaman"), gallery, directory, 6 technical-foundation cards (URL/ID, sitemap shards, robots, CWV targets, hreflang map, dateModified/versioning), E-E-A-T quartet, "Dibangun untuk Keabadian" strip (versioning, no silent deletion, permanent citation, 3-2-1), live-now note, contribute CTA.
+- Wired NAV (added "SEO", footer link "SEO & Pages"); REAL SEO infra: layout.tsx + Organization/WebSite JSON-LD scripts, hreflang id/en/ar/x-default, googleBot robots, viewport themeColor; new app/sitemap.ts (honest: only real URLs listed; full 1.200 map documented in section) and app/robots.ts (allow knowledge, disallow /api/ + /search; removed conflicting public/robots.txt).
+- Fixed pre-existing home.tsx error (EVENT icon undefined → CalendarDays + import).
+- Fixed lucide 0.525 issue: Sitemap icon not exported → ListTree alias.
+
+Stage Summary:
+- Browser-verified (Agent Browser): SEO nav → all sections render; template switching + all 4 tabs work (sanad JSON-LD shows ItemList with honest pending node); directory search "khatm"→2, filter Profil Tokoh→250, pagination 26–50 ✓; console clean; mobile iPhone 14: hamburger→SEO ok, template selector scroll-x, footer naturally pushed (5642px doc). Desktop full-page screenshot reviewed — palette/typography on-institution.
+- SEO infra live: /robots.txt 200, /sitemap.xml 200, canonical + 4 hreflang links + 3 JSON-LD blocks in homepage HTML.
+- Doctrine preserved: every preview entity labeled demo, evidence levels shown, publication gates visible, no fabricated sanad/names (synthetic slugs only).

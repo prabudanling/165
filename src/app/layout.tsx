@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "@/components/ui/toaster";
@@ -26,7 +26,10 @@ export const metadata: Metadata = {
   ],
   authors: [{ name: "165 — Founded by Tuan Haji Gugun Gunara — Muhammad Lutfi Azmi" }],
   metadataBase: new URL("https://165.web.id"),
-  alternates: { canonical: "/" },
+  alternates: {
+    canonical: "/",
+    languages: { id: "/", en: "/", ar: "/", "x-default": "/" },
+  },
   openGraph: {
     title: "165 — TQN Qodiriah Naqsabandiyah · Knowledge, Heritage & Digital Preservation",
     description:
@@ -41,7 +44,47 @@ export const metadata: Metadata = {
     title: "165 — Knowledge, Heritage & Digital Preservation",
     description: "Every statement carries its evidence. Unknown is better than fabricated certainty.",
   },
-  robots: { index: true, follow: true },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: { index: true, follow: true, "max-image-preview": "large", "max-snippet": -1, "max-video-preview": -1 },
+  },
+};
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  themeColor: "#1e3a2f",
+};
+
+// sitewide structured data — read by Google, Bing & AI assistants without guessing
+const ORGANIZATION_LD = {
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  name: "165 — TQN Qodiriah Naqsabandiyah Knowledge Platform",
+  alternateName: "165.web.id",
+  url: "https://165.web.id",
+  description:
+    "Global knowledge, heritage and digital preservation institution for TQN Qodiriah Naqsabandiyah — archive, research base, global directory, knowledge graph and citation system.",
+  founder: {
+    "@type": "Person",
+    name: "Tuan Haji Gugun Gunara — Muhammad Lutfi Azmi",
+    jobTitle: "Founder & Founding Steward of 165",
+  },
+  knowsLanguage: ["id", "en", "ar"],
+};
+
+const WEBSITE_LD = {
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  name: "165",
+  url: "https://165.web.id",
+  inLanguage: ["id", "en", "ar"],
+  potentialAction: {
+    "@type": "SearchAction",
+    target: { "@type": "EntryPoint", urlTemplate: "https://165.web.id/?q={search_term_string}" },
+    "query-input": "required name=search_term_string",
+  },
 };
 
 export default function RootLayout({
@@ -55,6 +98,14 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased bg-background text-foreground`}
       >
         {children}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(ORGANIZATION_LD) }}
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(WEBSITE_LD) }}
+        />
         <Toaster />
       </body>
     </html>

@@ -1,0 +1,704 @@
+     1→// 165 — SEO & Page Architecture blueprint (single source of truth for the SEO section)
+     2→// Doctrine: every planned page is a TEMPLATE + ENTITY type with structured data,
+     3→// stable URL + Global ID, trilingual hreflang, and publication GATES (no fabrication).
+     4→
+     5→import type { EvidenceLevelKey, VerificationStatusKey } from '@/lib/165'
+     6→
+     7→// ---------- template catalog ----------
+     8→
+     9→export type TemplateKind =
+    10→  | 'person' | 'term' | 'book' | 'event' | 'place'
+    11→  | 'institution' | 'sanad' | 'collection' | 'article' | 'faq'
+    12→
+    13→export interface TemplateMeta {
+    14→  kind: TemplateKind
+    15→  label: string          // Indonesian label
+    16→  labelEn: string
+    17→  path: string           // planned URL path
+    18→  schema: string         // JSON-LD @type
+    19→  count: number          // phase-1 planned pages
+    20→  why: string            // why search engines reward this page type
+    21→  gates: string[]        // publication gates (honesty policies shown in UI)
+    22→}
+    23→
+    24→export const TEMPLATE_CATALOG: TemplateMeta[] = [
+    25→  {
+    26→    kind: 'person',
+    27→    label: 'Profil Tokoh',
+    28→    labelEn: 'Person Profile',
+    29→    path: '/person/',
+    30→    schema: 'Person',
+    31→    count: 250,
+    32→    why: 'Nama tokoh adalah kueri pencarian paling umum tentang tarekat: periode, guru, murid, karya — semua terjawab dalam satu halaman biografis terstruktur.',
+    33→    gates: [
+    34→      'Bidang tokoh hidup dibatasi kebijakan privasi',
+    35→      'Tanggal lahir/wafat hanya tampil setelah kolasi dua sumber',
+    36→    ],
+    37→  },
+    38→  {
+    39→    kind: 'term',
+    40→    label: 'Glossarium Istilah',
+    41→    labelEn: 'Glossary Term',
+    42→    path: '/glossary/',
+    43→    schema: 'DefinedTerm',
+    44→    count: 300,
+    45→    why: 'Glossarium 300 istilah menangkap kueri "apa itu X" — konten evergreen paling stabil yang menarik pembaca baru setiap hari.',
+    46→    gates: ['Formularium antar-cabang tidak digeneralisasi'],
+    47→  },
+    48→  {
+    49→    kind: 'book',
+    50→    label: 'Kitab & Naskah',
+    51→    labelEn: 'Book / Manuscript',
+    52→    path: '/library/',
+    53→    schema: 'Book',
+    54→    count: 150,
+    55→    why: 'Kitab klasik dicari dengan judul Arab dan latin sekaligus — satu halaman, dua pintu kueri, dengan penulis tersambung sebagai entitas Person.',
+    56→    gates: ['Kutipan teks hanya setelah edisi rujukan ditetapkan'],
+    57→  },
+    58→  {
+    59→    kind: 'event',
+    60→    label: 'Peristiwa & Linimasa',
+    61→    labelEn: 'Event',
+    62→    path: '/timeline/',
+    63→    schema: 'Event',
+    64→    count: 100,
+    65→    why: 'Peristiwa dengan tanggal terstruktur memenuhi panel ringkasan mesin pencari dan kueri linimasa sejarah tarekat.',
+    66→    gates: ['Akun tradisional tampil dengan label, tidak pernah sebagai fakta'],
+    67→  },
+    68→  {
+    69→    kind: 'place',
+    70→    label: 'Tempat & Lokasi',
+    71→    labelEn: 'Place',
+    72→    path: '/atlas/',
+    73→    schema: 'Place',
+    74→    count: 60,
+    75→    why: 'Tempat menghubungkan sejarah dengan geografi — menangkap kueri lokal dan perjalanan studi ziarah.',
+    76→    gates: ['Koordinat dari data geografis terverifikasi'],
+    77→  },
+    78→  {
+    79→    kind: 'institution',
+    80→    label: 'Profil Institusi',
+    81→    labelEn: 'Institution',
+    82→    path: '/institution/',
+    83→    schema: 'Organization',
+    84→    count: 80,
+    85→    why: 'Profil pesantren/khanaqah menangkap kueri nama institusi, alamat, dan pengasuh — simpul direktori global.',
+    86→    gates: ['Profil hanya setelah konfirmasi institusi'],
+    87→  },
+    88→  {
+    89→    kind: 'sanad',
+    90→    label: 'Halaman Sanad',
+    91→    labelEn: 'Sanad Chain',
+    92→    path: '/sanad/',
+    93→    schema: 'ItemList',
+    94→    count: 40,
+    95→    why: 'Rantai sanad ditampilkan dengan peringatan metodologis — kejujuran metodologi adalah sinyal kepercayaan terkuat bagi domain pengetahuan.',
+    96→    gates: [
+    97→      'Peringatan metodologis wajib sebelum konten',
+    98→      'Node hilang ditampilkan "menunggu kolasi" — tidak pernah diisi',
+    99→    ],
+   100→  },
+   101→  {
+   102→    kind: 'collection',
+   103→    label: 'Koleksi Arsip',
+   104→    labelEn: 'Collection',
+   105→    path: '/archive/',
+   106→    schema: 'CollectionPage',
+   107→    count: 30,
+   108→    why: 'Katalog koleksi dengan daftar item membuat arsip ditemukan peneliti, bukan hanya pembaca umum.',
+   109→    gates: ['Item arsip tampil sesuai izin akses'],
+   110→  },
+   111→  {
+   112→    kind: 'article',
+   113→    label: 'Artikel Kebijakan & Riset',
+   114→    labelEn: 'Article',
+   115→    path: '/research/',
+   116→    schema: 'Article',
+   117→    count: 120,
+   118→    why: 'Artikel kebijakan dan riset membangun topical authority bagi seluruh domain — mesin pencari mengenali 165 sebagai sumber, bukan agregator.',
+   119→    gates: ['Sitasi formal dengan identifier sumber'],
+   120→  },
+   121→  {
+   122→    kind: 'faq',
+   123→    label: 'Ask 165 (FAQ)',
+   124→    labelEn: 'FAQ',
+   125→    path: '/ask/',
+   126→    schema: 'FAQPage',
+   127→    count: 70,
+   128→    why: 'FAQ dengan skema FAQPage memenuhi rich results "people also ask" — pintu masuk terbesar bagi audiens baru.',
+   129→    gates: ['Jawaban ditinjau dewan sebelum FAQPage schema aktif'],
+   130→  },
+   131→]
+   132→
+   133→export const PAGE_MAP_TOTAL = TEMPLATE_CATALOG.reduce((s, t) => s + t.count, 0) // 1200
+   134→
+   135→// release phases (cumulative honesty: pages ship as sources allow)
+   136→export const RELEASE_PHASES = [
+   137→  { phase: 'Fase 1', title: 'Fondasi', detail: 'glossarium inti + tokoh + FAQ', pages: 150 },
+   138→  { phase: 'Fase 2', title: 'Perpustakaan & Linimasa', detail: 'kitab, peristiwa, tokoh lanjutan', pages: 350 },
+   139→  { phase: 'Fase 3', title: 'Peta & Institusi', detail: 'tempat, institusi, artikel, sanad', pages: 215 },
+   140→  { phase: 'Fase 4', title: 'Kelengkapan', detail: 'sisa katalog hingga 1.200+', pages: 485 },
+   141→]
+   142→
+   143→// ---------- URL index (planned sitemap, rendered by UrlDirectory) ----------
+   144→
+   145→export interface UrlRow {
+   146→  path: string
+   147→  kind: TemplateKind
+   148→  schema: string
+   149→  priority: number
+   150→  lastmod: string
+   151→}
+   152→
+   153→const PRIORITY: Record<TemplateKind, number> = {
+   154→  person: 0.9, term: 0.9, book: 0.8, event: 0.8, place: 0.7,
+   155→  institution: 0.8, sanad: 0.7, collection: 0.6, article: 0.8, faq: 0.7,
+   156→}
+   157→
+   158→const LASTMOD_POOL = [
+   159→  '2025-10-02', '2025-10-19', '2025-11-04', '2025-11-20',
+   160→  '2025-12-08', '2025-12-27', '2026-01-09', '2026-01-22',
+   161→]
+   162→
+   163→// real seed slugs appear first; the rest are clearly synthetic (no fabricated names)
+   164→export function generateUrlIndex(): UrlRow[] {
+   165→  const rows: UrlRow[] = []
+   166→  for (const t of TEMPLATE_CATALOG) {
+   167→    const entity = PREVIEW_ENTITIES[t.kind]
+   168→    rows.push({
+   169→      path: `${t.path}${entity.slug}`,
+   170→      kind: t.kind,
+   171→      schema: t.schema,
+   172→      priority: PRIORITY[t.kind],
+   173→      lastmod: entity.updated,
+   174→    })
+   175→    for (let i = 1; i < t.count; i++) {
+   176→      const n = i + 1
+   177→      rows.push({
+   178→        path: `${t.path}${t.kind}-${String(n).padStart(6, '0')}`,
+   179→        kind: t.kind,
+   180→        schema: t.schema,
+   181→        priority: PRIORITY[t.kind],
+   182→        lastmod: LASTMOD_POOL[i % LASTMOD_POOL.length],
+   183→      })
+   184→    }
+   185→  }
+   186→  return rows
+   187→}
+   188→
+   189→// ---------- preview entities (honest demo records for template gallery) ----------
+   190→
+   191→export interface PreviewFact { label: string; value: string }
+   192→export interface PreviewSection { heading: string; body: string }
+   193→export interface RelatedLink { title: string; kind: TemplateKind }
+   194→export interface SanadNode { name: string; role: string; pending?: boolean }
+   195→
+   196→export interface PreviewEntity {
+   197→  kind: TemplateKind
+   198→  globalId: string
+   199→  slug: string
+   200→  name: string
+   201→  arabic?: string
+   202→  subtitle: string
+   203→  dates?: string
+   204→  status: VerificationStatusKey
+   205→  level: EvidenceLevelKey
+   206→  updated: string
+   207→  summary: string
+   208→  facts: PreviewFact[]
+   209→  sections: PreviewSection[]
+   210→  related: RelatedLink[]
+   211→  sanadNodes?: SanadNode[]
+   212→  faqs?: { q: string; a: string }[]
+   213→  byline?: string
+   214→  demoNote: string
+   215→}
+   216→
+   217→export const PREVIEW_ENTITIES: Record<TemplateKind, PreviewEntity> = {
+   218→  person: {
+   219→    kind: 'person',
+   220→    globalId: '165-PERSON-000001',
+   221→    slug: 'abdul-qadir-al-jilani',
+   222→    name: 'ʿAbd al-Qādir al-Jīlānī',
+   223→    arabic: 'عبد القادر الجيلاني',
+   224→    subtitle: 'Titik pangkal silsilah Qadiriyyah — Baghdad',
+   225→    dates: '± 1077 – 1166 M (± 470 – 561 H)',
+   226→    status: 'DOCUMENTED',
+   227→    level: 'C',
+   228→    updated: '2025-11-20',
+   229→    summary:
+   230→      'Tokoh tasawuf Baghdad yang dalam sejarah tarekat dikenal sebagai titik pangkal silsilah Qadiriyyah. Entri ini memisahkan fakta biografis yang terdokumentasi dari gelar dan kisah kehormatan yang beredar sebagai tradisi.',
+   231→    facts: [
+   232→      { label: 'Nama lengkap', value: 'Abū Muḥammad ʿAbd al-Qādir ibn Abī Sāliḥ al-Jīlī / al-Kīlānī' },
+   233→      { label: 'Lahir', value: '± 1077 M, Jīlān (Persia) — tanggal bervariasi antar sumber' },
+   234→      { label: 'Wafat', value: '1166 M, Baghdad' },
+   235→      { label: 'Makam', value: 'Baghdad — kompleks yang dinamai dengan namanya' },
+   236→      { label: 'Tarekat', value: 'Qadiriyyah (dinamai setelah namanya)' },
+   237→      { label: 'Gelar kehormatan', value: 'al-Ghawth al-Aʿẓam — tradisional, bukan gelar resmi' },
+   238→    ],
+   239→    sections: [
+   240→      {
+   241→        heading: 'Peran dalam silsilah TQN',
+   242→        body: 'Dalam sebagian besar silsilah TQN, nama beliau menandai cabang Qadiriyyah yang kemudian dipadukan dengan cabang Naqshbandiyyah. Bentuk dan tanggal penyatuan ini bervariasi antar riwayat — 165 menampilkan setiap versi silsilah terpisah, tanpa penggabungan.',
+   243→      },
+   244→      {
+   245→        heading: 'Kehati-hatian sumber',
+   246→        body: 'Banyak kumpulan khotbah dan ucapan dinisbatkan secara populer kepada beliau. Sebelum terbit di produksi, setiap atribusi melewati source review terhadap edisi teks yang teridentifikasi.',
+   247→      },
+   248→    ],
+   249→    related: [
+   250→      { title: 'ʿAwārif al-Maʿārif', kind: 'book' },
+   251→      { title: 'Banten', kind: 'place' },
+   252→      { title: 'Silsilah Naqshbandiyyah', kind: 'sanad' },
+   253→    ],
+   254→    demoNote: 'Entri contoh untuk pratinjau template — bukan entri produksi. Tanda "±" adalah ketidakpastian yang disengaja.',
+   255→  },
+   256→
+   257→  book: {
+   258→    kind: 'book',
+   259→    globalId: '165-BOOK-000001',
+   260→    slug: 'awarif-al-marif',
+   261→    name: 'ʿAwārif al-Maʿārif',
+   262→    arabic: 'عوارف المعارف',
+   263→    subtitle: 'Manual adab tasawuf karya ʿUmar al-Suhrawardī (w. 1234 M)',
+   264→    status: 'DOCUMENTED',
+   265→    level: 'C',
+   266→    updated: '2025-12-08',
+   267→    summary:
+   268→      'Karya klasik tentang adab dan metode tarekat yang menjadi rujukan lintas silsilah, termasuk tradisi yang melatarbelakangi TQN. Halaman kitab di 165 selalu mencantumkan edisi rujukan sebelum kutipan dipublikasikan.',
+   269→    facts: [
+   270→      { label: 'Penulis', value: 'ʿUmar ibn Muḥammad al-Suhrawardī (entitas tersambung)' },
+   271→      { label: 'Bahasa', value: 'Arab' },
+   272→      { label: 'Struktur', value: '± 75 bab (bervariasi antar edisi)' },
+   273→      { label: 'Edisi rujukan', value: 'menunggu penetapan dewan naskah' },
+   274→      { label: 'Peran', value: 'adab & metode suluk' },
+   275→    ],
+   276→    sections: [
+   277→      {
+   278→        heading: 'Mengapa kitab ini penting bagi 165',
+   279→        body: 'Kitab manual adalah penghubung teori dan amalan: adab murid kepada guru, adab dzikr, dan etika tarekat. Halaman kitab menjadi simpul yang menyambungkan tokoh, istilah, dan praktik dalam mesh tautan internal.',
+   280→      },
+   281→    ],
+   282→    related: [
+   283→      { title: 'ʿAbd al-Qādir al-Jīlānī', kind: 'person' },
+   284→      { title: 'Suluk', kind: 'term' },
+   285→      { title: 'Khatm', kind: 'term' },
+   286→    ],
+   287→    demoNote: 'Jumlah bab ditandai "±" karena bervariasi antar edisi — angka final menunggu kolasi edisi.',
+   288→  },
+   289→
+   290→  term: {
+   291→    kind: 'term',
+   292→    globalId: '165-TERM-000001',
+   293→    slug: 'khatm',
+   294→    name: 'Khatm',
+   295→    arabic: 'ختم',
+   296→    subtitle: 'Dzikr jamaah tersusun dalam TQN',
+   297→    status: 'DOCUMENTED',
+   298→    level: 'C',
+   299→    updated: '2025-10-19',
+   300→    summary:
+   301→      'Ibadah dzikir jamaah yang dibaca berurutan sesuai formularium tertentu. Dalam TQN, khatm menjadi amalan pokok jamaah — namun bentuk susunannya bervariasi antar cabang, dan 165 mencatat variasi tersebut tanpa menyatukannya.',
+   302→    facts: [
+   303→      { label: 'Jenis entri', value: 'Glossarium' },
+   304→      { label: 'Bidang', value: 'amalan tarekat' },
+   305→      { label: 'Makna harfiyah', value: 'penyempurnaan / pembacaan lengkap' },
+   306→      { label: 'Variasi antar cabang', value: 'ya — formularium tidak digeneralisasi' },
+   307→    ],
+   308→    sections: [
+   309→      {
+   310→        heading: 'Catatan metodologis glossarium',
+   311→        body: 'Glossarium 165 memberi definisi paling umum yang disepakati lintas literatur, lalu menandai pembedaan penggunaan antar cabang sebagai bidang terbuka. Pendekatan ini membuat halaman glossarium aman untuk dikutip sejak hari pertama.',
+   312→      },
+   313→    ],
+   314→    related: [
+   315→      { title: 'Wird', kind: 'term' },
+   316→      { title: 'Talqin', kind: 'term' },
+   317→      { title: 'Silsilah Naqshbandiyyah', kind: 'sanad' },
+   318→    ],
+   319→    demoNote: 'Definisi umum untuk demonstrasi template glossarium.',
+   320→  },
+   321→
+   322→  event: {
+   323→    kind: 'event',
+   324→    globalId: '165-EVENT-000001',
+   325→    slug: 'dua-silsilah-tqn',
+   326→    name: 'Penyatuan dua silsilah dalam TQN',
+   327→    subtitle: 'Qadiriyyah + Naqshbandiyyah dalam satu amalan',
+   328→    dates: 'Abad 19 – awal abad 20 M (rentang riwayat)',
+   329→    status: 'TRADITIONAL_ACCOUNT',
+   330→    level: 'D',
+   331→    updated: '2025-11-04',
+   332→    summary:
+   333→      'Riwayat tradisional menempatkan lahirnya amalan TQN sebagai perpaduan dzikir jahr Qadiriyyah dan dzikir khafi Naqshbandiyyah. Bentuk, waktu, dan tokoh pelopornya bervariasi antar riwayat komunitas — sehingga entri ini disajikan sebagai akun tradisional, bukan fakta final.',
+   334→    facts: [
+   335→      { label: 'Jenis', value: 'peristiwa silsilah amalan' },
+   336→      { label: 'Rentang', value: 'abad 19 – awal 20 M (bervariasi)' },
+   337→      { label: 'Wilayah', value: 'Nusantara (bervariasi antar riwayat)' },
+   338→      { label: 'Sumber utama', value: 'riwayat lisan & tradisi jamaah (Level D)' },
+   339→    ],
+   340→    sections: [
+   341→      {
+   342→        heading: 'Mengapa entri ini tidak ditegakkan sebagai fakta',
+   343→        body: 'Aturan sejarah kritis 165: tradisi lisan dipertahankan sebagai testimoni. Jika dua riwayat komunitas memberi tokoh pelopor yang berbeda, keduanya ditampilkan berdampingan dengan statusnya masing-masing — dan halaman ini diperbarui tercatat saat sumber primer ditemukan, bukan diganti senyap.',
+   344→      },
+   345→    ],
+   346→    related: [
+   347→      { title: 'Silsilah Naqshbandiyyah', kind: 'sanad' },
+   348→      { title: 'Banten', kind: 'place' },
+   349→      { title: 'Khatm', kind: 'term' },
+   350→    ],
+   351→    demoNote: 'Demonstrasi penanganan akun tradisional pada template peristiwa.',
+   352→  },
+   353→
+   354→  place: {
+   355→    kind: 'place',
+   356→    globalId: '165-PLACE-000001',
+   357→    slug: 'banten',
+   358→    name: 'Banten',
+   359→    subtitle: 'Wilayah penting dalam sejarah TQN di Nusantara',
+   360→    status: 'DOCUMENTED',
+   361→    level: 'C',
+   362→    updated: '2025-10-02',
+   363→    summary:
+   364→      'Provinsi di ujung barat Pulau Jawa yang dalam riwayat tarekat Nusantara menjadi salah satu pusat penting perkembangan TQN. Halaman tempat di 165 menghubungkan geografi dengan peristiwa, institusi, dan tokoh yang terdokumentasi di wilayah tersebut.',
+   365→    facts: [
+   366→      { label: 'Wilayah', value: 'Pulau Jawa bagian barat, Indonesia' },
+   367→      { label: 'Peran dalam TQN', value: 'pusat perkembangan historis (kolasi sumber berjalan)' },
+   368→      { label: 'Entitas tersambung', value: 'institusi & peristiwa di wilayah ini' },
+   369→    ],
+   370→    sections: [
+   371→      {
+   372→        heading: 'Geografi & sejarah',
+   373→        body: 'Halaman tempat bukan halaman wisata: ia adalah simpul antara "di mana" dan "siapa serta kapan". Setiap klaim geografis tentang sejarah tarekat membawa status dan level buktinya sendiri.',
+   374→      },
+   375→    ],
+   376→    related: [
+   377→      { title: 'Penyatuan dua silsilah', kind: 'event' },
+   378→      { title: 'Pesantren TQN (contoh)', kind: 'institution' },
+   379→    ],
+   380→    demoNote: 'Koordinat & batas wilayah menyusul dari data geografis terverifikasi.',
+   381→  },
+   382→
+   383→  institution: {
+   384→    kind: 'institution',
+   385→    globalId: '165-INST-000001',
+   386→    slug: 'pesantren-tqn-contoh',
+   387→    name: 'Pesantren TQN (Profil Contoh)',
+   388→    subtitle: 'Template profil institusi — menunggu entri resmi',
+   389→    status: 'UNVERIFIED',
+   390→    level: 'F',
+   391→    updated: '2026-01-09',
+   392→    summary:
+   393→      'Profil contoh yang menunjukkan bagaimana sebuah pesantren TQN akan tampil: identitas, sejarah pendirian dengan sumbernya, amalan yang diajarkan, silsilah pengasuh, dan fasilitas arsip. Tidak ada nama nyata yang dipakai sebelum sumber resmi tersedia.',
+   394→    facts: [
+   395→      { label: 'Jenis', value: 'pesantren tarekat (contoh)' },
+   396→      { label: 'Status', value: 'placeholder — menunggu pengajuan data komunitas' },
+   397→      { label: 'Data dibutuhkan', value: 'dokumen pendirian · silsilah pengasuh · izin amalan' },
+   398→    ],
+   399→    sections: [
+   400→      {
+   401→        heading: 'Kebijakan profil institusi',
+   402→        body: '165 tidak membuat profil institusi sebelum ada dokumen atau konfirmasi dari pihak institusi itu sendiri. Halaman ini hanya mendemonstrasikan struktur halaman bagi mesin pencari — dan ditarik dari daftar contoh begitu entri nyata pertama terbit.',
+   403→      },
+   404→    ],
+   405→    related: [
+   406→      { title: 'Banten', kind: 'place' },
+   407→      { title: 'Ask 165 — Pertanyaan Umum', kind: 'faq' },
+   408→    ],
+   409→    demoNote: 'Placeholder eksplisit — tidak menyebut institusi nyata.',
+   410→  },
+   411→
+   412→  sanad: {
+   413→    kind: 'sanad',
+   414→    globalId: '165-SANAD-000001',
+   415→    slug: 'silsilah-naqshbandiyyah',
+   416→    name: 'Silsilah Naqshbandiyyah — Segmen Awal',
+   417→    arabic: 'السلسلة النقشبندية',
+   418→    subtitle: 'Rantai transmisi rohani — disajikan sebagai akun tradisional',
+   419→    status: 'TRADITIONAL_ACCOUNT',
+   420→    level: 'D',
+   421→    updated: '2025-12-27',
+   422→    summary:
+   423→      'Segmen awal silsilah Naqshbandiyyah sebagaimana umum diriwayatkan dalam literatur tarekat. Rantai lengkap bervariasi antar kitab dan antar cabang; 165 menampilkan setiap varian terpisah dan tidak pernah menggabungkan, melengkapi, atau memprediksi tautan yang tidak terdokumentasi.',
+   424→    sanadNodes: [
+   425→      { name: 'Nabi Muhammad ﷺ', role: 'sumber transmisi' },
+   426→      { name: 'Abū Bakr aṣ-Ṣiddīq', role: 'pewaris pertama' },
+   427→      { name: 'Salmān al-Fārisī', role: 'pewaris' },
+   428→      { name: 'Qāsim ibn Muḥammad', role: 'pewaris' },
+   429→      { name: 'Jaʿfar aṣ-Ṣādiq', role: 'pewaris' },
+   430→      { name: 'Bāyazīd al-Bisṭāmī', role: 'pewaris' },
+   431→      { name: 'Abū al-Ḥasan al-Kharqānī', role: 'pewaris' },
+   432→      { name: 'Abū ʿAlī al-Fārmadī', role: 'pewaris' },
+   433→      { name: '— segmen lanjutan —', role: 'menunggu kolasi naskah', pending: true },
+   434→      { name: 'Bahāʾ ad-Dīn Naqshband', role: 'eponim cabang' },
+   435→    ],
+   436→    facts: [
+   437→      { label: 'Jenis', value: 'silsilah rohani (sanad)' },
+   438→      { label: 'Sumber rujukan', value: 'literatur hagiografi Naqshbandi (Level D)' },
+   439→      { label: 'Status', value: 'TRADITIONAL ACCOUNT — varian ditampilkan terpisah' },
+   440→      { label: 'Kebijakan', value: 'tidak digabung · tidak dilengkapi · tidak diprediksi' },
+   441→    ],
+   442→    sections: [
+   443→      {
+   444→        heading: 'Sanad safety di 165',
+   445→        body: 'Halaman sanad selalu dibuka dengan peringatan metodologis sebelum konten, karena kesalahan pembacaan sanad bukan sekadar kesalahan data — ia menyentuh legitimasi transmisi. Setiap node akan tersambung ke entri tokohnya begitu entri tersebut terbit.',
+   446→      },
+   447→    ],
+   448→    related: [
+   449→      { title: 'ʿAbd al-Qādir al-Jīlānī', kind: 'person' },
+   450→      { title: 'Talqin', kind: 'term' },
+   451→      { title: 'Penyatuan dua silsilah', kind: 'event' },
+   452→    ],
+   453→    demoNote: 'Node "—" disengaja: bagian yang belum terkolasi tidak pernah diisi diam-diam.',
+   454→  },
+   455→
+   456→  collection: {
+   457→    kind: 'collection',
+   458→    globalId: '165-COLL-000001',
+   459→    slug: 'koleksi-khatm-wirid',
+   460→    name: 'Koleksi Khatm & Wirid (Contoh)',
+   461→    subtitle: 'Template koleksi arsip — katalog menunggu deposit',
+   462→    status: 'UNVERIFIED',
+   463→    level: 'F',
+   464→    updated: '2026-01-22',
+   465→    summary:
+   466→      'Koleksi contoh yang mendemonstrasikan katalog arsip: daftar item dengan izin akses, provenance, dan status digitalisasi. Jumlah item saat ini nol — bukan karena arsip tidak ada, tetapi karena deposit sumber sedang menunggu.',
+   467→    facts: [
+   468→      { label: 'Jumlah item', value: '0 — menunggu arsip dari Founder & jamaah' },
+   469→      { label: 'Kebijakan akses', value: 'per item, ditetapkan pemilik sumber' },
+   470→      { label: 'Digitalisasi', value: 'rencana 3-2-1 preservation' },
+   471→    ],
+   472→    sections: [
+   473→      {
+   474→        heading: 'Arsip yang jujur sejak halaman pertama',
+   475→        body: 'Halaman koleksi tidak pernah memamerkan item yang belum ada. Kondisi "katalog menunggu" ditampilkan terbuka — dan justru menjadi ajakan bagi pemilik manuskrip untuk mendepositkannya.',
+   476→      },
+   477→    ],
+   478→    related: [
+   479→      { title: 'Pesantren TQN (contoh)', kind: 'institution' },
+   480→      { title: 'Kebijakan sanad', kind: 'article' },
+   481→    ],
+   482→    demoNote: 'Demonstrasi template koleksi dengan katalog kosong yang jujur.',
+   483→  },
+   484→
+   485→  article: {
+   486→    kind: 'article',
+   487→    globalId: '165-ARTICLE-000001',
+   488→    slug: 'kebijakan-sanad',
+   489→    name: 'Mengapa Sanad Tidak Pernah Diciptakan, Digabung, atau Diprediksi',
+   490→    subtitle: 'Kebijakan inti 165 tentang integritas silsilah',
+   491→    status: 'DOCUMENTED',
+   492→    level: 'B',
+   493→    updated: '2025-11-20',
+   494→    byline: 'Dewan Editorial 165',
+   495→    summary:
+   496→      'Kebijakan editorial yang melarang penciptaan, penggabungan, atau prediksi rantai sanad dalam sistem apa pun di 165 — termasuk oleh AI. Berlaku pada data, API, pencarian, dan pengalaman "Ask 165".',
+   497→    facts: [
+   498→      { label: 'Jenis', value: 'kebijakan institusional' },
+   499→      { label: 'Dasar', value: 'Master Build Directive 165 (165-SRC-000001)' },
+   500→      { label: 'Berlaku untuk', value: 'data · API · AI · tampilan publik' },
+   501→      { label: 'Perubahan', value: 'hanya oleh Founder melalui dewan' },
+   502→    ],
+   503→    sections: [
+   504→      {
+   505→        heading: 'Aturan',
+   506→        body: 'Tiga larangan mutlak: (1) sanad tidak boleh diciptakan tanpa dokumen; (2) dua varian sanad tidak boleh digabung menjadi satu; (3) tautan yang hilang tidak boleh diprediksi — termasuk oleh mesin. Yang belum diketahui ditulis "BELUM TERVERIFIKASI".',
+   507→      },
+   508→      {
+   509→        heading: 'Mengapa ini menjadi sinyal kepercayaan',
+   510→        body: 'Mesin pencari modern dan pengguna semakin menilai kejujuran institusi. Halaman kebijakan yang tegas, dapat dikutip, dan konsisten dengan praktik adalah salah satu sinyal E-E-A-T terkuat yang bisa dimiliki domain pengetahuan.',
+   511→      },
+   512→    ],
+   513→    related: [
+   514→      { title: 'Silsilah Naqshbandiyyah', kind: 'sanad' },
+   515→      { title: 'Ask 165 — Pertanyaan Umum', kind: 'faq' },
+   516→    ],
+   517→    demoNote: 'Level B — sumber institusional resmi 165.',
+   518→  },
+   519→
+   520→  faq: {
+   521→    kind: 'faq',
+   522→    globalId: '165-FAQ-000001',
+   523→    slug: 'pertanyaan-umum',
+   524→    name: 'Ask 165 — Pertanyaan Umum',
+   525→    subtitle: 'Halaman FAQ dengan skema FAQPage',
+   526→    status: 'DOCUMENTED',
+   527→    level: 'B',
+   528→    updated: '2026-01-09',
+   529→    summary:
+   530→      'Halaman tanya-jawab inti yang menjelaskan apa itu 165, cara kerja verifikasi, dan kebijakan bahasa — disusun agar mesin pencari menampilkannya pada rich results "people also ask".',
+   531→    faqs: [
+   532→      {
+   533→        q: 'Apa itu 165?',
+   534→        a: '165 adalah platform pengetahuan, warisan, dan preservasi digital global untuk TQN Qodiriah Naqsabandiyah: arsip, direktori, peta pengetahuan, dan sistem kutipan dalam satu infrastruktur.',
+   535→      },
+   536→      {
+   537→        q: 'Bagaimana 165 memverifikasi informasi?',
+   538→        a: 'Setiap pernyataan membawa level bukti (A–F) dan status verifikasi (mis. VERIFIED, DOCUMENTED, TRADITIONAL ACCOUNT). Alurnya: SUBMITTED → SCREENING → EDITORIAL REVIEW → SOURCE REVIEW → VERIFICATION → PUBLISHED.',
+   539→      },
+   540→      {
+   541→        q: 'Mengapa ada informasi yang ditampilkan "BELUM TERVERIFIKASI"?',
+   542→        a: 'Karena bagi 165, ketidakpastian yang jujur lebih baik daripada kepastian yang direkayasa. Yang belum diketahui ditandai terbuka — tidak pernah diisi diam-diam.',
+   543→      },
+   544→      {
+   545→        q: 'Bisakah saya mengirimkan sejarah keluarga kiai atau jamaah?',
+   546→        a: 'Bisa — melalui halaman Contribute. Kiriman menerima nomor referensi 165-SUB-… dan melewati alur review penuh. Kontribusi ≠ publikasi.',
+   547→      },
+   548→      {
+   549→        q: 'Dalam bahasa apa 165 tersedia?',
+   550→        a: 'Bahasa Indonesia, Inggris, dan Arab — satu entitas, satu sumber, tiga pengalaman bahasa dengan hreflang yang benar.',
+   551→      },
+   552→    ],
+   553→    facts: [
+   554→      { label: 'Jenis', value: 'FAQ — pengetahuan dasar' },
+   555→      { label: 'Skema', value: 'FAQPage (rich results)' },
+   556→      { label: 'Pemutakhiran', value: 'menyusul keputusan dewan' },
+   557→    ],
+   558→    sections: [],
+   559→    related: [
+   560→      { title: 'Kebijakan sanad', kind: 'article' },
+   561→      { title: 'Pesantren TQN (contoh)', kind: 'institution' },
+   562→    ],
+   563→    demoNote: 'Contoh FAQPage — jawaban ringkas untuk rich results.',
+   564→  },
+   565→}
+   566→
+   567→// ---------- JSON-LD builders ----------
+   568→
+   569→const BASE_URL = 'https://165.web.id'
+   570→
+   571→export function buildJsonLd(e: PreviewEntity): Record<string, unknown> {
+   572→  const url = `${BASE_URL}${TEMPLATE_CATALOG.find((t) => t.kind === e.kind)!.path}${e.slug}`
+   573→  const crumb = {
+   574→    '@type': 'BreadcrumbList',
+   575→    itemListElement: [
+   576→      { '@type': 'ListItem', position: 1, name: 'Beranda', item: `${BASE_URL}/` },
+   577→      { '@type': 'ListItem', position: 2, name: TEMPLATE_CATALOG.find((t) => t.kind === e.kind)!.label },
+   578→      { '@type': 'ListItem', position: 3, name: e.name, item: url },
+   579→    ],
+   580→  }
+   581→  let main: Record<string, unknown>
+   582→  switch (e.kind) {
+   583→    case 'person':
+   584→      main = {
+   585→        '@type': 'Person',
+   586→        name: e.name,
+   587→        description: e.summary,
+   588→        identifier: e.globalId,
+   589→        ...(e.arabic ? { alternateName: e.arabic } : {}),
+   590→      }
+   591→      break
+   592→    case 'book':
+   593→      main = {
+   594→        '@type': 'Book',
+   595→        name: e.name,
+   596→        description: e.summary,
+   597→        identifier: e.globalId,
+   598→        inLanguage: 'ar',
+   599→        author: { '@type': 'Person', name: 'ʿUmar ibn Muḥammad al-Suhrawardī' },
+   600→      }
+   601→      break
+   602→    case 'term':
+   603→      main = {
+   604→        '@type': 'DefinedTerm',
+   605→        name: e.name,
+   606→        description: e.summary,
+   607→        identifier: e.globalId,
+   608→        inDefinedTermSet: { '@type': 'DefinedTermSet', name: 'Glossarium 165', url: `${BASE_URL}/glossary/` },
+   609→      }
+   610→      break
+   611→    case 'event':
+   612→      main = {
+   613→        '@type': 'Event',
+   614→        name: e.name,
+   615→        description: e.summary,
+   616→        identifier: e.globalId,
+   617→        eventStatus: 'https://schema.org/EventScheduled',
+   618→      }
+   619→      break
+   620→    case 'place':
+   621→      main = { '@type': 'Place', name: e.name, description: e.summary, identifier: e.globalId }
+   622→      break
+   623→    case 'institution':
+   624→      main = { '@type': 'Organization', name: e.name, description: e.summary, identifier: e.globalId }
+   625→      break
+   626→    case 'sanad':
+   627→      main = {
+   628→        '@type': 'ItemList',
+   629→        name: e.name,
+   630→        description: e.summary,
+   631→        identifier: e.globalId,
+   632→        itemListElement: (e.sanadNodes ?? []).map((n, i) => ({
+   633→          '@type': 'ListItem', position: i + 1, name: n.name,
+   634→          ...(n.pending ? { description: 'menunggu kolasi naskah' } : {}),
+   635→        })),
+   636→      }
+   637→      break
+   638→    case 'collection':
+   639→      main = {
+   640→        '@type': 'CollectionPage',
+   641→        name: e.name,
+   642→        description: e.summary,
+   643→        identifier: e.globalId,
+   644→        hasPart: [],
+   645→      }
+   646→      break
+   647→    case 'article':
+   648→      main = {
+   649→        '@type': 'Article',
+   650→        headline: e.name,
+   651→        description: e.summary,
+   652→        identifier: e.globalId,
+   653→        author: { '@type': 'Organization', name: e.byline ?? 'Dewan Editorial 165' },
+   654→        publisher: { '@type': 'Organization', name: '165 — TQN Qodiriah Naqsabandiyah' },
+   655→      }
+   656→      break
+   657→    case 'faq':
+   658→      main = {
+   659→        '@type': 'FAQPage',
+   660→        identifier: e.globalId,
+   661→        mainEntity: (e.faqs ?? []).map((f) => ({
+   662→          '@type': 'Question', name: f.q,
+   663→          acceptedAnswer: { '@type': 'Answer', text: f.a },
+   664→        })),
+   665→      }
+   666→      break
+   667→  }
+   668→  return {
+   669→    '@context': 'https://schema.org',
+   670→    '@graph': [
+   671→      crumb,
+   672→      { ...main, url, dateModified: e.updated, isPartOf: { '@type': 'WebSite', name: '165', url: `${BASE_URL}/` } },
+   673→    ],
+   674→  }
+   675→}
+   676→
+   677→// ---------- SEO checklist ----------
+   678→
+   679→export const CHECKLIST_BASE: string[] = [
+   680→  '<title> unik ≤ 60 karakter',
+   681→  'Meta description 140–160 karakter',
+   682→  'Satu <h1> = nama entitas',
+   683→  'URL stabil: slug manusiawi + Global ID',
+   684→  'rel=canonical pada setiap halaman',
+   685→  'BreadcrumbList JSON-LD',
+   686→  'Markah semantik (article · header · aside · time)',
+   687→  'Skema inti JSON-LD sesuai tipe halaman',
+   688→  '≥ 5 tautan internal ke entitas tersambung',
+   689→  'Mobile-first · target sentuh ≥ 44px',
+   690→  'hreflang id · en · ar',
+   691→  'Byline + dateModified (E-E-A-T)',
+   692→]
+   693→
+   694→// ---------- derived meta for SERP simulation ----------
+   695→
+   696→export function metaTitle(e: PreviewEntity): string {
+   697→  const m = TEMPLATE_CATALOG.find((t) => t.kind === e.kind)!
+   698→  return `${e.name} — ${m.label} | 165`
+   699→}
+   700→export function metaDescription(e: PreviewEntity): string {
+   701→  const d = e.summary.replace(/\s+/g, ' ').trim()
+   702→  return d.length > 158 ? `${d.slice(0, 155).trimEnd()}…` : d
+   703→}
+   704→

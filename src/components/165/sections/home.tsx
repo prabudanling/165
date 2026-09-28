@@ -3,7 +3,7 @@
 // 165 — HOME: institutional identity, founder recognition, trust spine, featured records
 import { useState } from 'react'
 import {
-  Archive, BookOpen, Compass, FileBadge2, FlaskConical, Landmark, Languages, Layers,
+  Archive, BookOpen, CalendarDays, Compass, FileBadge2, FlaskConical, Landmark, Languages, Layers,
   Library, Link2, Scale, ScrollText, ShieldCheck, Sparkles, User, Network, MapPin, Video,
 } from 'lucide-react'
 import { ENTITY_TYPES, type EntitySummaryDTO } from '@/lib/165'
@@ -26,7 +26,7 @@ const IDENTITY = [
 
 const STATS_ICONS: Record<string, React.ComponentType<{ className?: string }>> = {
   PERSON: User, INSTITUTION: Landmark, PLACE: MapPin, TRADITION: Sparkles,
-  TERM: Languages, EVENT: undefined,
+  TERM: Languages, EVENT: CalendarDays,
 }
 
 export function HomeSection({ onOpenEntity, onNavigate }: {
