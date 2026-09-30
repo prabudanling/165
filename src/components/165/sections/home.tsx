@@ -3,7 +3,7 @@
 // 165 — HOME: institutional identity, founder recognition, trust spine, featured records
 import { useState } from 'react'
 import {
-  Archive, BookOpen, CalendarDays, Compass, FileBadge2, FlaskConical, Landmark, Languages, Layers,
+  Archive, ArrowRight, BookOpen, BookOpenText, CalendarDays, Compass, FileBadge2, FlaskConical, Landmark, Languages, Layers,
   Library, Link2, Scale, ScrollText, ShieldCheck, Sparkles, User, Network, MapPin, Video,
 } from 'lucide-react'
 import { ENTITY_TYPES, type EntitySummaryDTO } from '@/lib/165'
@@ -150,12 +150,36 @@ export function HomeSection({ onOpenEntity, onNavigate }: {
         <Ask165 />
       </section>
 
+      {/* ---------------- canonical documents banner ---------------- */}
+      <div className="border-[var(--brass)]/40 from-[var(--brass-soft)] to-card rounded-md border bg-gradient-to-r p-5 sm:p-6">
+        <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+          <div className="flex items-start gap-3.5">
+            <span className="border-[var(--brass)]/50 bg-secondary flex size-10 shrink-0 items-center justify-center rounded-sm border">
+              <BookOpenText className="size-4.5 text-[var(--brass)]" aria-hidden />
+            </span>
+            <div>
+              <p className="label-caps text-[11px] text-[var(--brass)]">Now open · Ruang Dokumen</p>
+              <p className="font-display mt-1 text-[16px] leading-snug font-semibold sm:text-[17px]">
+                Enam dokumen kendali 165 — Master Control, Tata Kelola, Konstitusi Editorial, Kebijakan Sumber — kini dapat dibaca utuh.
+              </p>
+              <p className="text-muted-foreground mt-1 text-[12.5px]">Salinan verbatim · v1.0 · pencarian lintas dokumen · daftar isi hidup</p>
+            </div>
+          </div>
+          <button
+            onClick={() => onNavigate('documents')}
+            className="bg-primary text-primary-foreground hover:bg-primary/90 inline-flex h-9 shrink-0 items-center gap-2 self-start rounded-sm px-4 text-[13px] font-medium transition-colors sm:self-center"
+          >
+            Buka Ruang Dokumen <ArrowRight className="size-3.5" aria-hidden />
+          </button>
+        </div>
+      </div>
+
       {/* ---------------- honesty banner ---------------- */}
       <HonestNote tone="amber">
-        <strong>Transparency of deposit:</strong> seven founding documents (Constitutions, Founder&apos;s Charter,
-        Master Blueprint) were declared but are not yet accessible to the build. Until they are deposited and reviewed,
-        no page of this platform claims to represent them — and this notice stands.{' '}
-        <button onClick={() => onNavigate('about')} className="underline underline-offset-2">Read the discovery flags</button>
+        <strong>Transparency of deposit — updated:</strong> six canonical control documents (Master Control 000, Governance 007,
+        Editorial Constitution 008, Source &amp; Citation Policy 009, Master Blueprint, Master System Architecture) are now
+        deposited and readable in full under <button onClick={() => onNavigate('documents')} className="underline underline-offset-2">Dokumen</button>.{' '}
+        The Founder&apos;s Charter and the remaining declared documents are still awaited — this notice stands until the declared set is complete.
       </HonestNote>
     </div>
   )

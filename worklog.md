@@ -151,3 +151,24 @@ Stage Summary:
 - Founder now has a WordPress-style admin room in Bahasa Indonesia at footer → Ruang Admin (dev password documented; ADMIN_PASSWORD env must be set in Vercel).
 - Free-DB path documented in-app: Turso recommended (SQLite-native, no schema change); founder sends URL+token → next session wires live cloud editing.
 - Data discipline preserved: versioning, audit, guarded delete, contribution≠publication, sanad untouched.
+
+---
+Task ID: 23
+Agent: Chief Digital Architect (main)
+Task: Masukkan 6 dokumen kanonik Founder (000, BP, ARCH, 007, 008, 009) ke website sebagai "Ruang Dokumen Sistem" — rak dokumen + pembaca markdown institusional (TOC, scroll-spy, progress bar, pencarian lintas dokumen), bundle-safe tanpa DB.
+
+Work Log:
+- Ground truth: worklog Task 0–22 terbaca; 6 file .md diterima di upload/ (144 KB, 6.871 baris, ±20.300 kata).
+- BUNDLE PIPELINE: dokumen asli diarsipkan ke docs/canon/*.md (verbatim); scripts/gen-documents.ts membaca & meng-JSON-escape ke src/data/documents/canon.ts (140.9 KB, di dalam bundle → Vercel-safe, tanpa filesystem/DB — doctrine snapshot yang sama). Script terdaftar sebagai `bun run docs:gen`.
+- REGISTRY: src/lib/documents.ts — metadata 6 dokumen (key/docId/code/kind/status/version/role/layer), stats korpus (kata/bagian/menit baca), docToc() parse H1/H2 + anchor deterministik (anchorSlug, sama dengan renderer), headingAboveLine, searchDocuments() full-text lintas dokumen dengan excerpt + jangkar bagian.
+- SECTION: src/components/165/sections/documents.tsx ('use client', react-markdown 10 + remark-gfm 4 baru diinstall):
+  * Rak: SectionHeading, HonestNote hijau "Salinan verbatim", strip statistik (6 dokumen · 20.300 kata · 580 bagian · ±93 mnt), pencarian lintas dokumen dengan <mark> highlight + klik → buka dokumen pada bagian yang memuat potongan, grid 6 kartu dokumen (kode besar brass, kind icon, role, layer, meta).
+  * Pembaca: header sticky top-16 (kembali ke rak, kode|judul, chip 165-000/v1.0) + progress bar baca brass 2px; TOC sidebar sticky (desktop, scroll-spy border brass aktif) + <details> accordion (mobile); front matter dokumen (kind/docId/version/status/judul/subtitle/role/meta); ReactMarkdown dengan tipografi institusional (h1 ber-anker + rule brass, tabel scrollable & bergaya, blockquote brass, pre/code mono, hr rule-double); navigasi Sebelumnya/Berikutnya.
+- WIRE: NAV + 'Dokumen' (setelah About), router #documents, footer "Dokumen Sistem", home: banner pengantar "Now open · Ruang Dokumen" + HonestNote amber diperbarui secara jujur (6 dokumen deposited & readable; Founder's Charter sisanya masih ditunggu).
+- VERIFIKASI (agent-browser): lint ✓ tsc ✓ (tanpa error baru); shelf render; buka 000 (TOC 67 bagian, 15 tabel, 133 paragraf); lompat TOC presisi (heading top = 96px); search "Tier A" → 1 potongan → klik → terbuka pada bagian TIER A (scrollY 3296); progress bar 50% di tengah; buka 008 (89 h1+11 h2, TOC 99); navigasi Berikutnya 000→BP ✓; footer link ✓; home banner1+banner2 ✓; mobile iPhone 14: shelf & reader tanpa overflow horizontal, TOC mobile buka + lompat ✓; console & page errors bersih; dev.log hanya query normal.
+- Screenshot: tool-results/documents-shelf.png, documents-reader-000.png, documents-home-banner.png.
+
+Stage Summary:
+- Keenam dokumen kendali 165 kini TAMPIL UTUH (verbatim) di situs — nav "Dokumen" / footer "Dokumen Sistem" / #documents — dan ikut ter-bundle sehingga tampil bahkan tanpa database (Vercel-safe, doctrine resilience dipertahankan).
+- Disiplin Source-First dijaga: tidak ada parafrasa; ID kanonik, versi, status, dan catatan "salinan verbatim" tampil; alur perubahan tetap lewat governance (dokumen sumber di docs/canon/, regenerate via `bun run docs:gen`).
+- Banner transparansi home diperbarui jujur: 6 dari dokumen yang dideklarasikan sudah terdeposit; Founder's Charter & sisanya masih ditunggu.

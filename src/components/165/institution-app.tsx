@@ -15,6 +15,7 @@ import { AcademySection } from './sections/academy'
 import { TrustSection } from './sections/trust'
 import { AboutSection } from './sections/about'
 import { SeoSection } from './sections/seo'
+import { DocumentsSection } from './sections/documents'
 import { ContributeSection } from './sections/contribute'
 import { AdminSection } from './admin/admin'
 
@@ -28,6 +29,7 @@ const NAV = [
   { key: 'media', label: 'Media' },
   { key: 'trust', label: 'Trust & Method' },
   { key: 'about', label: 'About 165' },
+  { key: 'documents', label: 'Dokumen' },
   { key: 'seo', label: 'SEO' },
 ] as const
 
@@ -172,6 +174,7 @@ export function InstitutionApp() {
             {section === 'media' && <MediaSection onOpenEntity={openEntity} onNavigate={navigate} />}
             {section === 'trust' && <TrustSection />}
             {section === 'about' && <AboutSection onOpenEntity={openEntity} onNavigate={navigate} />}
+            {section === 'documents' && <DocumentsSection onNavigate={navigate} />}
             {section === 'seo' && <SeoSection onNavigate={navigate} />}
             {section === 'contribute' && <ContributeSection />}
             {section === 'admin' && <AdminSection />}
@@ -207,7 +210,7 @@ export function InstitutionApp() {
             <nav aria-label="Footer — institution">
               <p className="label-caps text-[12px] text-muted-foreground">Institution</p>
               <ul className="mt-2 space-y-1.5 text-[13px]">
-                {[['about', 'About 165'], ['trust', 'Trust & Method'], ['academy', 'Academy'], ['media', 'Media'], ['seo', 'SEO & Pages']].map(([k, label]) => (
+                {[['about', 'About 165'], ['trust', 'Trust & Method'], ['documents', 'Dokumen Sistem'], ['academy', 'Academy'], ['media', 'Media'], ['seo', 'SEO & Pages']].map(([k, label]) => (
                   <li key={k}>
                     <button onClick={() => navigate(k)} className="text-muted-foreground hover:text-foreground transition-colors">{label}</button>
                   </li>

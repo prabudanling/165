@@ -1,0 +1,1173 @@
+     1→     1→# 000 — 165 MASTER SYSTEM CONTROL & INDEX
+     2→     2→
+     3→     3→**Project:** 165.web.id  
+     4→     4→**Institutional Vision:** TQN Qodiriyah wa Naqsyabandiyah Global Knowledge, Heritage & Digital Preservation Platform  
+     5→     5→**Document Class:** Master Control Document  
+     6→     6→**Document ID:** 165-000  
+     7→     7→**Version:** 1.0  
+     8→     8→**Status:** MASTER DRAFT — CONTROL BASELINE  
+     9→     9→**Owner:** Founder & Chief Architect — 165.web.id  
+    10→    10→**Language:** Bahasa Indonesia (canonical working language); architecture must remain English-ready  
+    11→    11→**Last Updated:** 2026-10-01
+    12→    12→
+    13→    13→---
+    14→    14→
+    15→    15→## 0. PURPOSE
+    16→    16→
+    17→    17→Document 000 adalah **dokumen kendali tertinggi tingkat proyek** untuk seluruh sistem 165.web.id.
+    18→    18→
+    19→    19→Dokumen ini bukan artikel, bukan halaman publik biasa, dan bukan sekadar daftar isi. Fungsinya adalah menjadi:
+    20→    20→
+    21→    21→- master index,
+    22→    22→- system map,
+    23→    23→- document registry,
+    24→    24→- decision register,
+    25→    25→- roadmap controller,
+    26→    26→- dependency map,
+    27→    27→- implementation tracker,
+    28→    28→- governance reference,
+    29→    29→- continuity reference.
+    30→    30→
+    31→    31→Prinsip utama:
+    32→    32→
+    33→    33→> **Tidak ada pekerjaan penting 165 yang boleh kehilangan identitas, konteks, sumber, status, atau tempat dalam arsitektur.**
+    34→    34→
+    35→    35→Setiap keputusan strategis, dokumen, sistem, data model, arsip, fitur, campaign, dan sumber pendanaan harus dapat dipetakan kembali ke struktur Document 000.
+    36→    36→
+    37→    37→---
+    38→    38→
+    39→    39→# 1. NORTH STAR
+    40→    40→
+    41→    41→## 1.1 Vision
+    42→    42→
+    43→    43→Membangun 165.web.id sebagai infrastruktur pengetahuan dan warisan digital TQN Qodiriyah wa Naqsyabandiyah yang:
+    44→    44→
+    45→    45→- credible,
+    46→    46→- documented,
+    47→    47→- source-aware,
+    48→    48→- searchable,
+    49→    49→- multilingual,
+    50→    50→- preservable,
+    51→    51→- accessible,
+    52→    52→- scalable,
+    53→    53→- ethical,
+    54→    54→- useful lintas generasi.
+    55→    55→
+    56→    56→## 1.2 Mission
+    57→    57→
+    58→    58→165 mengumpulkan, menata, memverifikasi, menjelaskan, menghubungkan, melestarikan, dan mendistribusikan pengetahuan serta warisan TQN melalui teknologi digital yang bertanggung jawab.
+    59→    59→
+    60→    60→## 1.3 Core Positioning
+    61→    61→
+    62→    62→> **165 adalah knowledge, heritage, research, media, community, dan digital-preservation infrastructure; bukan pengganti guru, mursyid, talqin, bai'at, atau otoritas spiritual.**
+    63→    63→
+    64→    64→---
+    65→    65→
+    66→    66→# 2. STRATEGIC PRINCIPLES
+    67→    67→
+    68→    68→1. **Accuracy before virality**
+    69→    69→2. **Evidence before assertion**
+    70→    70→3. **Preservation before decoration**
+    71→    71→4. **Structure before scale**
+    72→    72→5. **Long-term value before short-term attention**
+    73→    73→6. **Open knowledge where practical**
+    74→    74→7. **Ethical monetization**
+    75→    75→8. **Institutional credibility**
+    76→    76→9. **Interoperability**
+    77→    77→10. **Reversibility and recoverability**
+    78→    78→11. **Multilingual by design**
+    79→    79→12. **Accessibility by design**
+    80→    80→13. **Security by design**
+    81→    81→14. **Human oversight over automated claims**
+    82→    82→15. **100-year thinking**
+    83→    83→
+    84→    84→---
+    85→    85→
+    86→    86→# 3. TRUTH & SOURCE MODEL
+    87→    87→
+    88→    88→Setiap knowledge object harus dapat dibedakan menurut status epistemiknya.
+    89→    89→
+    90→    90→## TIER A — PRIMARY / DOCUMENTARY EVIDENCE
+    91→    91→
+    92→    92→Contoh:
+    93→    93→
+    94→    94→- manuscripts,
+    95→    95→- letters,
+    96→    96→- official institutional documents,
+    97→    97→- dated photographs,
+    98→    98→- archival records,
+    99→    99→- recordings,
+   100→   100→- contemporaneous publications,
+   101→   101→- original inscriptions.
+   102→   102→
+   103→   103→## TIER B — SCHOLARLY / SECONDARY SOURCES
+   104→   104→
+   105→   105→Contoh:
+   106→   106→
+   107→   107→- peer-reviewed research,
+   108→   108→- academic books,
+   109→   109→- theses/dissertations,
+   110→   110→- critical editions,
+   111→   111→- reputable reference works.
+   112→   112→
+   113→   113→## TIER C — INSTITUTIONAL / LIVING TRADITION
+   114→   114→
+   115→   115→Contoh:
+   116→   116→
+   117→   117→- institutional histories,
+   118→   118→- manaqib,
+   119→   119→- family records,
+   120→   120→- oral histories,
+   121→   121→- teacher/student testimony,
+   122→   122→- community traditions.
+   123→   123→
+   124→   124→## TIER D — 165 EDITORIAL SYNTHESIS
+   125→   125→
+   126→   126→Interpretasi, synthesis, educational framing, timeline construction, or explanatory models prepared by 165.
+   127→   127→
+   128→   128→**Rule:** TIER D tidak boleh dipresentasikan seolah-olah merupakan primary evidence.
+   129→   129→
+   130→   130→---
+   131→   131→
+   132→   132→# 4. DOCUMENT CONTROL SYSTEM
+   133→   133→
+   134→   134→Setiap dokumen memiliki:
+   135→   135→
+   136→   136→- Document ID
+   137→   137→- Title
+   138→   138→- Version
+   139→   139→- Status
+   140→   140→- Owner
+   141→   141→- Date Created
+   142→   142→- Last Updated
+   143→   143→- Review Date
+   144→   144→- Dependencies
+   145→   145→- Source References
+   146→   146→- Change Log
+   147→   147→- Implementation Mapping
+   148→   148→
+   149→   149→## 4.1 Status Codes
+   150→   150→
+   151→   151→| Code | Meaning |
+   152→   152→|---|---|
+   153→   153→| 🔴 MISSING | Belum dibuat |
+   154→   154→| 🟡 DRAFT | Sedang disusun |
+   155→   155→| 🔵 REVIEW | Sedang ditinjau |
+   156→   156→| 🟣 APPROVED | Disetujui sebagai standar |
+   157→   157→| 🟠 IMPLEMENTED | Sudah diterapkan ke sistem |
+   158→   158→| 🟢 MAINTAINED | Aktif dan dipelihara |
+   159→   159→| ⚫ RETIRED | Tidak lagi aktif; tetap disimpan untuk histori |
+   160→   160→
+   161→   161→## 4.2 Versioning
+   162→   162→
+   163→   163→Gunakan:
+   164→   164→
+   165→   165→`MAJOR.MINOR`
+   166→   166→
+   167→   167→Contoh:
+   168→   168→
+   169→   169→- `1.0` — baseline approved
+   170→   170→- `1.1` — minor clarification
+   171→   171→- `2.0` — major structural change
+   172→   172→
+   173→   173→Tidak menghapus histori versi.
+   174→   174→
+   175→   175→---
+   176→   176→
+   177→   177→# 5. 165 MASTER DOCUMENT ARCHITECTURE
+   178→   178→
+   179→   179→Target utama: **144 core documents**
+   180→   180→
+   181→   181→Document 000 berada di luar 144 dan berfungsi sebagai control layer.
+   182→   182→
+   183→   183→## LAYER 01 — CONSTITUTIONAL & GOVERNANCE
+   184→   184→### Documents 001–012
+   185→   185→
+   186→   186→| ID | Proposed / Known Document | Initial Status |
+   187→   187→|---|---|---|
+   188→   188→| 001 | Constitution of 165 | EXISTING — RECONCILE |
+   189→   189→| 002 | 165 Operating Constitution | EXISTING — RECONCILE |
+   190→   190→| 003 | The Founder's Charter: Tuan Haji Gugun Gunara — Muhammad Lutfi Azmi | EXISTING — RECONCILE |
+   191→   191→| 004 | 165 Institutional Identity & Mandate | TO REVIEW |
+   192→   192→| 005 | Existing Foundational Document 005 — exact title to reconcile | EXISTING — RECONCILE |
+   193→   193→| 006 | Existing Foundational Document 006 — exact title to reconcile | EXISTING — RECONCILE |
+   194→   194→| 007 | 165 Governance & Decision Rights | MISSING |
+   195→   195→| 008 | 165 Editorial Constitution | MISSING |
+   196→   196→| 009 | 165 Source & Citation Policy | MISSING |
+   197→   197→| 010 | 165 Correction, Retraction & Dispute Policy | MISSING |
+   198→   198→| 011 | 165 Ethics, Conflict of Interest & Transparency Policy | MISSING |
+   199→   199→| 012 | 165 Authority, Attribution & Representation Policy | MISSING |
+   200→   200→
+   201→   201→---
+   202→   202→
+   203→   203→# LAYER 02 — HISTORICAL SPINE
+   204→   204→### Documents 013–030
+   205→   205→
+   206→   206→| ID | Document |
+   207→   207→|---|---|
+   208→   208→| 013 | History Methodology & Periodization |
+   209→   209→| 014 | Tasawwuf: Historical Context |
+   210→   210→| 015 | Early Qadiriyah Historical Overview |
+   211→   211→| 016 | 'Abd al-Qadir al-Jilani: Sources & Biography Framework |
+   212→   212→| 017 | Qadiriyah Transmission History |
+   213→   213→| 018 | Naqsyabandiyah Historical Overview |
+   214→   214→| 019 | Baha al-Din Naqshband: Sources & Biography Framework |
+   215→   215→| 020 | Naqsyabandiyah Transmission History |
+   216→   216→| 021 | Ahmad Khatib Sambas: Historical Dossier |
+   217→   217→| 022 | Fath al-'Arifin: Textual & Historical Dossier |
+   218→   218→| 023 | TQN Formation: Qadiriyah + Naqsyabandiyah |
+   219→   219→| 024 | TQN in the Indonesian Archipelago |
+   220→   220→| 025 | TQN in Java |
+   221→   221→| 026 | TQN in West Java & Sundanese Contexts |
+   222→   222→| 027 | Major TQN Transmission Centers |
+   223→   223→| 028 | Suryalaya Historical Dossier |
+   224→   224→| 029 | Rejoso, Mranggen, Pangentongan & Other Major Centers |
+   225→   225→| 030 | Modern TQN History & 165 Historical Transition |
+   226→   226→
+   227→   227→---
+   228→   228→
+   229→   229→# LAYER 03 — KNOWLEDGE SYSTEM
+   230→   230→### Documents 031–050
+   231→   231→
+   232→   232→| ID | Document |
+   233→   233→|---|---|
+   234→   234→| 031 | 165 Knowledge Architecture |
+   235→   235→| 032 | TQN Core Concepts Taxonomy |
+   236→   236→| 033 | TQN Glossary & Controlled Vocabulary |
+   237→   237→| 034 | Syariat |
+   238→   238→| 035 | Tarekat |
+   239→   239→| 036 | Hakikat |
+   240→   240→| 037 | Mahabbah |
+   241→   241→| 038 | Ihsan |
+   242→   242→| 039 | Dzikr |
+   243→   243→| 040 | Adab |
+   244→   244→| 041 | Mursyid |
+   245→   245→| 042 | Murid |
+   246→   246→| 043 | Talqin |
+   247→   247→| 044 | Bai'at |
+   248→   248→| 045 | Suluk |
+   249→   249→| 046 | Riyadhah |
+   250→   250→| 047 | Silsilah, Sanad & Transmission |
+   251→   251→| 048 | Khirqah & Symbolic Transmission |
+   252→   252→| 049 | Terminology: Variants, Translation & Usage |
+   253→   253→| 050 | 165 Knowledge Quality Standard |
+   254→   254→
+   255→   255→---
+   256→   256→
+   257→   257→# LAYER 04 — PEOPLE, SILSILAH & INSTITUTIONS
+   258→   258→### Documents 051–068
+   259→   259→
+   260→   260→| ID | Document |
+   261→   261→|---|---|
+   262→   262→| 051 | People Data Model |
+   263→   263→| 052 | Master TQN Figures Register |
+   264→   264→| 053 | Founder / Master Profile Standard |
+   265→   265→| 054 | Lineage & Silsilah Data Model |
+   266→   266→| 055 | Transmission Graph Methodology |
+   267→   267→| 056 | Teacher–Student Relationship Model |
+   268→   268→| 057 | Institution Data Model |
+   269→   269→| 058 | TQN Institution Registry |
+   270→   270→| 059 | Place Data Model |
+   271→   271→| 060 | TQN Place Registry |
+   272→   272→| 061 | Event Data Model |
+   273→   273→| 062 | Historical Event Registry |
+   274→   274→| 063 | Biography Research Protocol |
+   275→   275→| 064 | Oral Testimony Protocol |
+   276→   276→| 065 | Conflicting Genealogies Protocol |
+   277→   277→| 066 | Name / Title / Alias Authority File |
+   278→   278→| 067 | Entity Resolution & Duplicate Control |
+   279→   279→| 068 | 165 TQN Knowledge Graph Specification |
+   280→   280→
+   281→   281→---
+   282→   282→
+   283→   283→# LAYER 05 — HERITAGE & DIGITAL ARCHIVE
+   284→   284→### Documents 069–086
+   285→   285→
+   286→   286→| ID | Document |
+   287→   287→|---|---|
+   288→   288→| 069 | 165 Digital Archive Charter |
+   289→   289→| 070 | Archive Collection Policy |
+   290→   290→| 071 | Manuscript Collection Standard |
+   291→   291→| 072 | Book / Printed Material Collection Standard |
+   292→   292→| 073 | Historical Photograph Collection Standard |
+   293→   293→| 074 | Audio Preservation Standard |
+   294→   294→| 075 | Video Preservation Standard |
+   295→   295→| 076 | Oral History Archive Standard |
+   296→   296→| 077 | Physical Artifact Documentation Standard |
+   297→   297→| 078 | Digitization Workflow |
+   298→   298→| 079 | Metadata Standard |
+   299→   299→| 080 | Preservation Metadata / PREMIS Alignment |
+   300→   300→| 081 | File Naming & Persistent ID Standard |
+   301→   301→| 082 | Provenance & Chain of Custody |
+   302→   302→| 083 | Rights, Consent & Licensing |
+   303→   303→| 084 | Access Levels & Sensitive Materials |
+   304→   304→| 085 | Backup, Replication & Integrity Checks |
+   305→   305→| 086 | Digital Preservation & Disaster Recovery |
+   306→   306→
+   307→   307→---
+   308→   308→
+   309→   309→# LAYER 06 — WEBSITE, INFORMATION ARCHITECTURE & UX
+   310→   310→### Documents 087–100
+   311→   311→
+   312→   312→| ID | Document |
+   313→   313→|---|---|
+   314→   314→| 087 | 165 Website Product Vision |
+   315→   315→| 088 | Information Architecture |
+   316→   316→| 089 | Navigation & Taxonomy |
+   317→   317→| 090 | Page / Content Type Specification |
+   318→   318→| 091 | URL & Slug Convention |
+   319→   319→| 092 | Search Architecture |
+   320→   320→| 093 | Internal Linking & Knowledge Graph UX |
+   321→   321→| 094 | Structured Data / Semantic Web Strategy |
+   322→   322→| 095 | Accessibility Standard |
+   323→   323→| 096 | Multilingual / Internationalization Architecture |
+   324→   324→| 097 | UX & Design System |
+   325→   325→| 098 | Editorial Publishing Workflow |
+   326→   326→| 099 | Website Security Standard |
+   327→   327→| 100 | Website QA, Analytics & Release Management |
+   328→   328→
+   329→   329→---
+   330→   330→
+   331→   331→# LAYER 07 — MEDIA & COMMUNICATION
+   332→   332→### Documents 101–112
+   333→   333→
+   334→   334→| ID | Document |
+   335→   335→|---|---|
+   336→   336→| 101 | 165 Global Communication Strategy |
+   337→   337→| 102 | Editorial Voice & Brand Language |
+   338→   338→| 103 | Content Pillars |
+   339→   339→| 104 | Master Content Engine |
+   340→   340→| 105 | Instagram Strategy |
+   341→   341→| 106 | Facebook Strategy |
+   342→   342→| 107 | TikTok Strategy |
+   343→   343→| 108 | X Strategy |
+   344→   344→| 109 | LinkedIn Strategy |
+   345→   345→| 110 | YouTube & Documentary Strategy |
+   346→   346→| 111 | Newsletter & Email Strategy |
+   347→   347→| 112 | Social-to-Website Distribution Protocol |
+   348→   348→
+   349→   349→---
+   350→   350→
+   351→   351→# LAYER 08 — COMMUNITY & MEMBERSHIP
+   352→   352→### Documents 113–120
+   353→   353→
+   354→   354→| ID | Document |
+   355→   355→|---|---|
+   356→   356→| 113 | Community Architecture |
+   357→   357→| 114 | User Account Model |
+   358→   358→| 115 | 165 Membership Architecture |
+   359→   359→| 116 | Contributor Program |
+   360→   360→| 117 | Researcher Program |
+   361→   361→| 118 | Institutional Account Program |
+   362→   362→| 119 | Moderation, Safety & Community Standards |
+   363→   363→| 120 | Events, Participation & Engagement System |
+   364→   364→
+   365→   365→---
+   366→   366→
+   367→   367→# LAYER 09 — RESEARCH & SCHOLARSHIP
+   368→   368→### Documents 121–128
+   369→   369→
+   370→   370→| ID | Document |
+   371→   371→|---|---|
+   372→   372→| 121 | Research Charter |
+   373→   373→| 122 | Research Methodology |
+   374→   374→| 123 | Bibliography & Citation Standard |
+   375→   375→| 124 | Manuscript Research Protocol |
+   376→   376→| 125 | Oral History Research Protocol |
+   377→   377→| 126 | Peer / Expert Review Model |
+   378→   378→| 127 | Research Publication Standard |
+   379→   379→| 128 | Academic Partnership Framework |
+   380→   380→
+   381→   381→---
+   382→   382→
+   383→   383→# LAYER 10 — TECHNOLOGY, DATA & AI
+   384→   384→### Documents 129–136
+   385→   385→
+   386→   386→| ID | Document |
+   387→   387→|---|---|
+   388→   388→| 129 | 165 Technology Architecture |
+   389→   389→| 130 | Master Data Model |
+   390→   390→| 131 | Database Architecture |
+   391→   391→| 132 | Knowledge Graph & Ontology |
+   392→   392→| 133 | AI Governance & Safety |
+   393→   393→| 134 | AI Research Assistant Specification |
+   394→   394→| 135 | API & Interoperability Strategy |
+   395→   395→| 136 | 165 Heritage Cloud Product Architecture |
+   396→   396→
+   397→   397→---
+   398→   398→
+   399→   399→# LAYER 11 — BUSINESS, REVENUE & PARTNERSHIP
+   400→   400→### Documents 137–142
+   401→   401→
+   402→   402→| ID | Document |
+   403→   403→|---|---|
+   404→   404→| 137 | 165 Sustainable Business Model |
+   405→   405→| 138 | Revenue Architecture |
+   406→   406→| 139 | Membership & Subscription Economics |
+   407→   407→| 140 | Institutional Services & B2B Model |
+   408→   408→| 141 | Publishing, Media & Licensing Model |
+   409→   409→| 142 | Partnerships, Grants, Philanthropy & Sponsorship |
+   410→   410→
+   411→   411→---
+   412→   412→
+   413→   413→# LAYER 12 — CONTINUITY, PRESERVATION & LEGACY
+   414→   414→### Documents 143–144
+   415→   415→
+   416→   416→| ID | Document |
+   417→   417→|---|---|
+   418→   418→| 143 | 165 Digital Preservation Charter |
+   419→   419→| 144 | 165 100-Year Continuity, Succession & Institutional Memory Plan |
+   420→   420→
+   421→   421→---
+   422→   422→
+   423→   423→# 6. CANONICAL SYSTEM MAP
+   424→   424→
+   425→   425→165 harus dipahami sebagai satu connected system:
+   426→   426→
+   427→   427→```text
+   428→   428→                  165 MASTER CONTROL
+   429→   429→                         │
+   430→   430→             ┌───────────┴───────────┐
+   431→   431→             │                       │
+   432→   432→        KNOWLEDGE                  GOVERNANCE
+   433→   433→             │                       │
+   434→   434→      ┌──────┼──────┐                │
+   435→   435→      │      │      │                │
+   436→   436→   HISTORY PEOPLE HERITAGE            │
+   437→   437→      │      │      │                │
+   438→   438→      └──────┼──────┘                │
+   439→   439→             │                       │
+   440→   440→        KNOWLEDGE GRAPH              │
+   441→   441→             │                       │
+   442→   442→      ┌──────┼──────────┐            │
+   443→   443→      │      │          │            │
+   444→   444→   WEBSITE  RESEARCH   ARCHIVE       │
+   445→   445→      │      │          │            │
+   446→   446→      └──────┼──────────┘            │
+   447→   447→             │                       │
+   448→   448→          CONTENT ENGINE              │
+   449→   449→             │                       │
+   450→   450→   IG / FB / TT / X / LI / YT         │
+   451→   451→             │                       │
+   452→   452→          COMMUNITY                   │
+   453→   453→             │                       │
+   454→   454→       PRODUCTS & SERVICES            │
+   455→   455→             │                       │
+   456→   456→       REVENUE ENGINE                 │
+   457→   457→             │                       │
+   458→   458→   PARTNERSHIP / PRESERVATION        │
+   459→   459→             │                       │
+   460→   460→        LONG-TERM LEGACY              │
+   461→   461→             └───────────────────────┘
+   462→   462→```
+   463→   463→
+   464→   464→---
+   465→   465→
+   466→   466→# 7. CANONICAL DATA OBJECTS
+   467→   467→
+   468→   468→165 harus memiliki standard object/entity untuk:
+   469→   469→
+   470→   470→- PERSON
+   471→   471→- INSTITUTION
+   472→   472→- PLACE
+   473→   473→- EVENT
+   474→   474→- DOCUMENT
+   475→   475→- MANUSCRIPT
+   476→   476→- BOOK
+   477→   477→- PHOTOGRAPH
+   478→   478→- AUDIO
+   479→   479→- VIDEO
+   480→   480→- ORAL HISTORY
+   481→   481→- CONCEPT
+   482→   482→- TERM
+   483→   483→- SOURCE
+   484→   484→- PUBLICATION
+   485→   485→- COLLECTION
+   486→   486→- RELATIONSHIP
+   487→   487→- RIGHTS RECORD
+   488→   488→- PRESERVATION EVENT
+   489→   489→- CONTRIBUTOR
+   490→   490→
+   491→   491→Setiap object sedapat mungkin mempunyai:
+   492→   492→
+   493→   493→`Permanent ID + Title + Type + Description + Date + Source + Rights + Provenance + Relations + Status + Version`
+   494→   494→
+   495→   495→---
+   496→   496→
+   497→   497→# 8. PERMANENT IDENTIFIER SYSTEM
+   498→   498→
+   499→   499→Suggested prefixes:
+   500→   500→
+   501→   501→```text
+   502→   502→165-PER-####   Person
+   503→   503→165-INS-####   Institution
+   504→   504→165-PLC-####   Place
+   505→   505→165-EVT-####   Event
+   506→   506→165-DOC-####   Document
+   507→   507→165-MSS-####   Manuscript
+   508→   508→165-BOK-####   Book
+   509→   509→165-PHO-####   Photograph
+   510→   510→165-AUD-####   Audio
+   511→   511→165-VID-####   Video
+   512→   512→165-OHI-####   Oral History
+   513→   513→165-CNC-####   Concept
+   514→   514→165-TRM-####   Term
+   515→   515→165-SRC-####   Source
+   516→   516→165-PUB-####   Publication
+   517→   517→165-COL-####   Collection
+   518→   518→165-RGT-####   Rights
+   519→   519→165-PRS-####   Preservation Event
+   520→   520→```
+   521→   521→
+   522→   522→---
+   523→   523→
+   524→   524→# 9. WEBSITE AS CANONICAL SOURCE
+   525→   525→
+   526→   526→Rule:
+   527→   527→
+   528→   528→> **Website = canonical knowledge layer.**
+   529→   529→
+   530→   530→Social platforms are distribution and discovery layers.
+   531→   531→
+   532→   532→## Platform Roles
+   533→   533→
+   534→   534→| Platform | Primary Role |
+   535→   535→|---|---|
+   536→   536→| Website | Canonical knowledge & archive |
+   537→   537→| Instagram | Visual discovery |
+   538→   538→| Facebook | Community & legacy audience |
+   539→   539→| TikTok | Short-form education & discovery |
+   540→   540→| X | Research conversation |
+   541→   541→| LinkedIn | Institutional network |
+   542→   542→| YouTube | Documentary & long-form media |
+   543→   543→| Newsletter | Owned audience relationship |
+   544→   544→
+   545→   545→Every significant social asset should have a route back to a canonical website object.
+   546→   546→
+   547→   547→---
+   548→   548→
+   549→   549→# 10. CONTENT PRODUCTION ENGINE
+   550→   550→
+   551→   551→One source package should produce multiple outputs.
+   552→   552→
+   553→   553→Example:
+   554→   554→
+   555→   555→```text
+   556→   556→Research
+   557→   557→   ↓
+   558→   558→Source Package
+   559→   559→   ↓
+   560→   560→Master Article
+   561→   561→   ↓
+   562→   562→Timeline / Knowledge Object
+   563→   563→   ↓
+   564→   564→Instagram Carousel
+   565→   565→   ↓
+   566→   566→Short Video
+   567→   567→   ↓
+   568→   568→Facebook Post
+   569→   569→   ↓
+   570→   570→X Thread
+   571→   571→   ↓
+   572→   572→YouTube
+   573→   573→   ↓
+   574→   574→Newsletter
+   575→   575→```
+   576→   576→
+   577→   577→The canonical source remains the research package and website object.
+   578→   578→
+   579→   579→---
+   580→   580→
+   581→   581→# 11. MEMBERSHIP ARCHITECTURE
+   582→   582→
+   583→   583→Membership is a **digital participation model**, not spiritual initiation.
+   584→   584→
+   585→   585→Suggested levels:
+   586→   586→
+   587→   587→### PUBLIC
+   588→   588→No login required for core knowledge.
+   589→   589→
+   590→   590→### ACCOUNT
+   591→   591→Bookmark, newsletter, event registration, saved research.
+   592→   592→
+   593→   593→### SUPPORTER
+   594→   594→Optional financial support and supporter benefits.
+   595→   595→
+   596→   596→### CONTRIBUTOR
+   597→   597→Archive and oral-history contribution workflow.
+   598→   598→
+   599→   599→### RESEARCHER
+   600→   600→Advanced research tools and collections.
+   601→   601→
+   602→   602→### INSTITUTION
+   603→   603→Institutional tools, private collections, dashboards, preservation services.
+   604→   604→
+   605→   605→No digital membership may imply:
+   606→   606→
+   607→   607→- talqin,
+   608→   608→- bai'at,
+   609→   609→- spiritual rank,
+   610→   610→- authorization as mursyid,
+   611→   611→- authorization as representative of a TQN institution.
+   612→   612→
+   613→   613→---
+   614→   614→
+   615→   615→# 12. BUSINESS SYSTEM
+   616→   616→
+   617→   617→165 should not depend on a single revenue source.
+   618→   618→
+   619→   619→Potential economic engines:
+   620→   620→
+   621→   621→1. Supporter contributions
+   622→   622→2. Membership/subscription
+   623→   623→3. Research tools
+   624→   624→4. Institutional subscriptions
+   625→   625→5. Archive digitization
+   626→   626→6. Digital preservation
+   627→   627→7. Heritage technology services
+   628→   628→8. Heritage Cloud SaaS
+   629→   629→9. API access
+   630→   630→10. Publishing
+   631→   631→11. Documentary/licensing
+   632→   632→12. Education
+   633→   633→13. Events
+   634→   634→14. Consulting
+   635→   635→15. Grants
+   636→   636→16. Philanthropy
+   637→   637→17. Ethical sponsorship
+   638→   638→18. Selected merchandise/licensing
+   639→   639→
+   640→   640→## Core Economic Principle
+   641→   641→
+   642→   642→> Monetize utility, convenience, professional capability, technology, preservation, research, and services — not spiritual authority.
+   643→   643→
+   644→   644→---
+   645→   645→
+   646→   646→# 13. LONG-TERM BUSINESS FLYWHEEL
+   647→   647→
+   648→   648→```text
+   649→   649→Open Knowledge
+   650→   650→      ↓
+   651→   651→Organic Discovery
+   652→   652→      ↓
+   653→   653→Social Distribution
+   654→   654→      ↓
+   655→   655→165.web.id
+   656→   656→      ↓
+   657→   657→Returning Users
+   658→   658→      ↓
+   659→   659→Accounts / Newsletter
+   660→   660→      ↓
+   661→   661→Community
+   662→   662→      ↓
+   663→   663→Premium Utility
+   664→   664→      ↓
+   665→   665→Institutional Adoption
+   666→   666→      ↓
+   667→   667→Archive Contributions
+   668→   668→      ↓
+   669→   669→More Knowledge
+   670→   670→      ↓
+   671→   671→More Search Value
+   672→   672→      ↓
+   673→   673→More Partnerships
+   674→   674→      ↓
+   675→   675→More Sustainable Revenue
+   676→   676→      ↓
+   677→   677→More Preservation
+   678→   678→```
+   679→   679→
+   680→   680→---
+   681→   681→
+   682→   682→# 14. 165 PRODUCT FAMILY — LONG-TERM
+   683→   683→
+   684→   684→Potential product ecosystem:
+   685→   685→
+   686→   686→### 165.web.id
+   687→   687→Public knowledge portal.
+   688→   688→
+   689→   689→### 165 Archive
+   690→   690→Digital heritage archive.
+   691→   691→
+   692→   692→### 165 Research
+   693→   693→Research and scholarly tools.
+   694→   694→
+   695→   695→### 165 Academy
+   696→   696→Educational platform.
+   697→   697→
+   698→   698→### 165 Heritage Cloud
+   699→   699→Archive/preservation SaaS.
+   700→   700→
+   701→   701→### 165 Knowledge Graph
+   702→   702→Structured knowledge network.
+   703→   703→
+   704→   704→### 165 API
+   705→   705→Machine-readable access.
+   706→   706→
+   707→   707→### 165 Heritage Films
+   708→   708→Documentary/media studio.
+   709→   709→
+   710→   710→### 165 Heritage Press
+   711→   711→Publishing.
+   712→   712→
+   713→   713→### 165 Preservation Fund
+   714→   714→Mission-aligned funding mechanism.
+   715→   715→
+   716→   716→---
+   717→   717→
+   718→   718→# 15. GLOBALIZATION
+   719→   719→
+   720→   720→Internationalization should not be an afterthought.
+   721→   721→
+   722→   722→Priority language architecture:
+   723→   723→
+   724→   724→1. Bahasa Indonesia
+   725→   725→2. English
+   726→   726→3. Malay
+   727→   727→4. Arabic
+   728→   728→5. French
+   729→   729→6. Turkish
+   730→   730→7. other languages based on demonstrated audience and research need
+   731→   731→
+   732→   732→Translation must preserve:
+   733→   733→
+   734→   734→- terminology,
+   735→   735→- names,
+   736→   736→- titles,
+   737→   737→- citations,
+   738→   738→- source uncertainty,
+   739→   739→- historical nuance.
+   740→   740→
+   741→   741→Do not flatten specialized TQN terms into inaccurate generic translations.
+   742→   742→
+   743→   743→---
+   744→   744→
+   745→   745→# 16. RESEARCH GOVERNANCE
+   746→   746→
+   747→   747→Every research-heavy publication should identify:
+   748→   748→
+   749→   749→- question,
+   750→   750→- scope,
+   751→   751→- sources,
+   752→   752→- methodology,
+   753→   753→- evidence,
+   754→   754→- uncertainty,
+   755→   755→- attribution,
+   756→   756→- competing interpretations where relevant,
+   757→   757→- editorial conclusion,
+   758→   758→- revision history.
+   759→   759→
+   760→   760→For disputed material:
+   761→   761→
+   762→   762→> **Document the disagreement instead of hiding it.**
+   763→   763→
+   764→   764→---
+   765→   765→
+   766→   766→# 17. ARCHIVE GOVERNANCE
+   767→   767→
+   768→   768→Every archival item should eventually record:
+   769→   769→
+   770→   770→- object ID,
+   771→   771→- original owner/source,
+   772→   772→- acquisition/submission date,
+   773→   773→- digitization method,
+   774→   774→- file format,
+   775→   775→- checksum/integrity metadata where applicable,
+   776→   776→- metadata,
+   777→   777→- provenance,
+   778→   778→- rights,
+   779→   779→- access level,
+   780→   780→- preservation copies,
+   781→   781→- publication status.
+   782→   782→
+   783→   783→Suggested access classes:
+   784→   784→
+   785→   785→`PUBLIC / REGISTERED / RESEARCH / RESTRICTED / PRIVATE`
+   786→   786→
+   787→   787→---
+   788→   788→
+   789→   789→# 18. SECURITY & CONTINUITY
+   790→   790→
+   791→   791→Minimum strategic requirements:
+   792→   792→
+   793→   793→- MFA for privileged accounts
+   794→   794→- least-privilege access
+   795→   795→- encrypted transport
+   796→   796→- secure secrets management
+   797→   797→- backup rotation
+   798→   798→- off-site replication
+   799→   799→- restore testing
+   800→   800→- audit logs
+   801→   801→- incident response
+   802→   802→- vulnerability management
+   803→   803→- domain/DNS protection
+   804→   804→- administrator succession
+   805→   805→
+   806→   806→The archive must be recoverable without relying on a single person or machine.
+   807→   807→
+   808→   808→---
+   809→   809→
+   810→   810→# 19. DECISION REGISTER
+   811→   811→
+   812→   812→Every major architectural decision should be recorded here or in a linked decision log.
+   813→   813→
+   814→   814→Template:
+   815→   815→
+   816→   816→| Decision ID | Date | Decision | Reason | Alternatives | Impact | Owner |
+   817→   817→|---|---|---|---|---|---|---|
+   818→   818→| DEC-001 | 2026-10-01 | Document 000 becomes master control document | Centralized project control | Separate spreadsheets/docs | High | Founder |
+   819→   819→
+   820→   820→Future decisions continue:
+   821→   821→
+   822→   822→`DEC-002`, `DEC-003`, etc.
+   823→   823→
+   824→   824→---
+   825→   825→
+   826→   826→# 20. CHANGE CONTROL
+   827→   827→
+   828→   828→No major structural change should be made without recording:
+   829→   829→
+   830→   830→1. What changes?
+   831→   831→2. Why?
+   832→   832→3. Which documents are affected?
+   833→   833→4. Which website systems are affected?
+   834→   834→5. Which database entities are affected?
+   835→   835→6. Which business assumptions are affected?
+   836→   836→7. What must be migrated?
+   837→   837→8. Who approves?
+   838→   838→9. What version follows?
+   839→   839→
+   840→   840→---
+   841→   841→
+   842→   842→# 21. MASTER ROADMAP
+   843→   843→
+   844→   844→## PHASE 0 — CONTROL
+   845→   845→Documents 000–012
+   846→   846→
+   847→   847→Outcome:
+   848→   848→- identity,
+   849→   849→- constitutional clarity,
+   850→   850→- governance,
+   851→   851→- editorial integrity.
+   852→   852→
+   853→   853→## PHASE 1 — HISTORICAL FOUNDATION
+   854→   854→Documents 013–030
+   855→   855→
+   856→   856→Outcome:
+   857→   857→- historical spine,
+   858→   858→- chronology,
+   859→   859→- transmission history.
+   860→   860→
+   861→   861→## PHASE 2 — KNOWLEDGE MODEL
+   862→   862→Documents 031–068
+   863→   863→
+   864→   864→Outcome:
+   865→   865→- taxonomy,
+   866→   866→- glossary,
+   867→   867→- people,
+   868→   868→- institutions,
+   869→   869→- places,
+   870→   870→- silsilah,
+   871→   871→- knowledge graph foundation.
+   872→   872→
+   873→   873→## PHASE 3 — HERITAGE
+   874→   874→Documents 069–086
+   875→   875→
+   876→   876→Outcome:
+   877→   877→- archive,
+   878→   878→- metadata,
+   879→   879→- digitization,
+   880→   880→- preservation.
+   881→   881→
+   882→   882→## PHASE 4 — WEBSITE
+   883→   883→Documents 087–100
+   884→   884→
+   885→   885→Outcome:
+   886→   886→- public portal,
+   887→   887→- search,
+   888→   888→- structured data,
+   889→   889→- accessibility,
+   890→   890→- security.
+   891→   891→
+   892→   892→## PHASE 5 — MEDIA
+   893→   893→Documents 101–112
+   894→   894→
+   895→   895→Outcome:
+   896→   896→- scalable content engine,
+   897→   897→- social distribution.
+   898→   898→
+   899→   899→## PHASE 6 — COMMUNITY
+   900→   900→Documents 113–120
+   901→   901→
+   902→   902→Outcome:
+   903→   903→- accounts,
+   904→   904→- contributors,
+   905→   905→- researchers,
+   906→   906→- institutions.
+   907→   907→
+   908→   908→## PHASE 7 — RESEARCH
+   909→   909→Documents 121–128
+   910→   910→
+   911→   911→Outcome:
+   912→   912→- scholarship infrastructure.
+   913→   913→
+   914→   914→## PHASE 8 — TECHNOLOGY
+   915→   915→Documents 129–136
+   916→   916→
+   917→   917→Outcome:
+   918→   918→- database,
+   919→   919→- AI,
+   920→   920→- knowledge graph,
+   921→   921→- API,
+   922→   922→- Heritage Cloud.
+   923→   923→
+   924→   924→## PHASE 9 — BUSINESS
+   925→   925→Documents 137–142
+   926→   926→
+   927→   927→Outcome:
+   928→   928→- diversified revenue.
+   929→   929→
+   930→   930→## PHASE 10 — CONTINUITY
+   931→   931→Documents 143–144
+   932→   932→
+   933→   933→Outcome:
+   934→   934→- 100-year institutional continuity.
+   935→   935→
+   936→   936→---
+   937→   937→
+   938→   938→# 22. EXECUTION RULE
+   939→   939→
+   940→   940→At any point, the project must answer:
+   941→   941→
+   942→   942→### WHERE ARE WE?
+   943→   943→Current document / task.
+   944→   944→
+   945→   945→### WHAT IS BLOCKING US?
+   946→   946→Dependency.
+   947→   947→
+   948→   948→### WHAT IS NEXT?
+   949→   949→Single highest-value next task.
+   950→   950→
+   951→   951→### WHAT DOES “DONE” MEAN?
+   952→   952→Definition of Done.
+   953→   953→
+   954→   954→### WHERE IS THE OUTPUT?
+   955→   955→Exact repository/path.
+   956→   956→
+   957→   957→---
+   958→   958→
+   959→   959→# 23. MASTER TASK CONTROL
+   960→   960→
+   961→   961→Each task should have:
+   962→   962→
+   963→   963→```text
+   964→   964→TASK ID
+   965→   965→TITLE
+   966→   966→OBJECTIVE
+   967→   967→INPUTS
+   968→   968→DEPENDENCIES
+   969→   969→OWNER
+   970→   970→PRIORITY
+   971→   971→ESTIMATED EFFORT
+   972→   972→OUTPUT
+   973→   973→DEFINITION OF DONE
+   974→   974→STATUS
+   975→   975→NOTES
+   976→   976→```
+   977→   977→
+   978→   978→Priority:
+   979→   979→
+   980→   980→`P0 Critical`
+   981→   981→`P1 High`
+   982→   982→`P2 Medium`
+   983→   983→`P3 Later`
+   984→   984→
+   985→   985→---
+   986→   986→
+   987→   987→# 24. CURRENT BASELINE — 2026-10-01
+   988→   988→
+   989→   989→Known project assets:
+   990→   990→
+   991→   991→- 165.web.id
+   992→   992→- foundational Documents 001–006
+   993→   993→- 144-document architecture
+   994→   994→- constitutional direction
+   995→   995→- founder charter direction
+   996→   996→- website architecture direction
+   997→   997→- global communications direction
+   998→   998→- internationalization direction
+   999→   999→- IP/preservation direction
+  1000→  1000→- social media direction
+  1001→  1001→- revenue-system direction
+  1002→  1002→
+  1003→  1003→Exact titles/content of Documents 004–006 must be reconciled from the canonical project archive before the index is marked fully synchronized.
+  1004→  1004→
+  1005→  1005→---
+  1006→  1006→
+  1007→  1007→# 25. CURRENT PRIORITY STACK
+  1008→  1008→
+  1009→  1009→At the current stage:
+  1010→  1010→
+  1011→  1011→### P0
+  1012→  1012→1. Approve Document 000 structure.
+  1013→  1013→2. Reconcile exact Documents 001–006.
+  1014→  1014→3. Lock 007–012.
+  1015→  1015→4. Build master source register.
+  1016→  1016→5. Build master chronology.
+  1017→  1017→6. Define canonical data model.
+  1018→  1018→7. Define website information architecture.
+  1019→  1019→
+  1020→  1020→### P1
+  1021→  1021→8. Build initial archive specification.
+  1022→  1022→9. Build content engine.
+  1023→  1023→10. Build MVP website.
+  1024→  1024→11. Establish source/citation workflow.
+  1025→  1025→12. Establish backup and security baseline.
+  1026→  1026→
+  1027→  1027→### P2
+  1028→  1028→13. Membership.
+  1029→  1029→14. Research portal.
+  1030→  1030→15. Knowledge graph.
+  1031→  1031→16. AI layer.
+  1032→  1032→17. Revenue products.
+  1033→  1033→18. International scaling.
+  1034→  1034→
+  1035→  1035→---
+  1036→  1036→
+  1037→  1037→# 26. DEFINITION OF DONE FOR DOCUMENT 000
+  1038→  1038→
+  1039→  1039→Document 000 is considered **APPROVED** only when:
+  1040→  1040→
+  1041→  1041→- [ ] 001–006 exact titles verified
+  1042→  1042→- [ ] 001–006 latest versions linked
+  1043→  1043→- [ ] 007–144 titles approved
+  1044→  1044→- [ ] document statuses populated
+  1045→  1045→- [ ] dependencies mapped
+  1046→  1046→- [ ] master repository structure created
+  1047→  1047→- [ ] decision log active
+  1048→  1048→- [ ] change-control system active
+  1049→  1049→- [ ] task-control system active
+  1050→  1050→- [ ] website mapping established
+  1051→  1051→- [ ] archive mapping established
+  1052→  1052→- [ ] business mapping established
+  1053→  1053→- [ ] continuity mapping established
+  1054→  1054→
+  1055→  1055→---
+  1056→  1056→
+  1057→  1057→# 27. MASTER REPOSITORY STRUCTURE
+  1058→  1058→
+  1059→  1059→Recommended:
+  1060→  1060→
+  1061→  1061→```text
+  1062→  1062→165/
+  1063→  1063→│
+  1064→  1064→├── 00-CONTROL/
+  1065→  1065→│   ├── 000_165_MASTER_SYSTEM_CONTROL_AND_INDEX.md
+  1066→  1066→│   ├── DECISION_LOG.md
+  1067→  1067→│   ├── CHANGELOG.md
+  1068→  1068→│   └── MASTER_TASKS.md
+  1069→  1069→│
+  1070→  1070→├── 01-CONSTITUTION/
+  1071→  1071→├── 02-HISTORY/
+  1072→  1072→├── 03-KNOWLEDGE/
+  1073→  1073→├── 04-PEOPLE-SILSILAH/
+  1074→  1074→├── 05-HERITAGE-ARCHIVE/
+  1075→  1075→├── 06-WEBSITE/
+  1076→  1076→├── 07-MEDIA/
+  1077→  1077→├── 08-COMMUNITY/
+  1078→  1078→├── 09-RESEARCH/
+  1079→  1079→├── 10-TECH-AI/
+  1080→  1080→├── 11-BUSINESS/
+  1081→  1081→├── 12-CONTINUITY/
+  1082→  1082→│
+  1083→  1083→├── SOURCES/
+  1084→  1084→├── DATA/
+  1085→  1085→├── METADATA/
+  1086→  1086→├── BRAND/
+  1087→  1087→├── LEGAL/
+  1088→  1088→├── MEDIA-ASSETS/
+  1089→  1089→└── BACKUPS/
+  1090→  1090→```
+  1091→  1091→
+  1092→  1092→---
+  1093→  1093→
+  1094→  1094→# 28. MASTER OPERATING LOOP
+  1095→  1095→
+  1096→  1096→The 165 operating loop:
+  1097→  1097→
+  1098→  1098→```text
+  1099→  1099→DISCOVER
+  1100→  1100→   ↓
+  1101→  1101→RESEARCH
+  1102→  1102→   ↓
+  1103→  1103→VERIFY
+  1104→  1104→   ↓
+  1105→  1105→DOCUMENT
+  1106→  1106→   ↓
+  1107→  1107→CLASSIFY
+  1108→  1108→   ↓
+  1109→  1109→PRESERVE
+  1110→  1110→   ↓
+  1111→  1111→PUBLISH
+  1112→  1112→   ↓
+  1113→  1113→DISTRIBUTE
+  1114→  1114→   ↓
+  1115→  1115→ENGAGE
+  1116→  1116→   ↓
+  1117→  1117→MEASURE
+  1118→  1118→   ↓
+  1119→  1119→IMPROVE
+  1120→  1120→   ↓
+  1121→  1121→PRESERVE AGAIN
+  1122→  1122→```
+  1123→  1123→
+  1124→  1124→This loop applies to both knowledge and operations.
+  1125→  1125→
+  1126→  1126→---
+  1127→  1127→
+  1128→  1128→# 29. FINAL PRINCIPLE
+  1129→  1129→
+  1130→  1130→165 should be built so that:
+  1131→  1131→
+  1132→  1132→> **A visitor can discover it.**
+  1133→  1133→>
+  1134→  1134→> **A student can learn from it.**
+  1135→  1135→>
+  1136→  1136→> **A researcher can cite it.**
+  1137→  1137→>
+  1138→  1138→> **An archivist can trust its provenance.**
+  1139→  1139→>
+  1140→  1140→> **An institution can collaborate with it.**
+  1141→  1141→>
+  1142→  1142→> **A contributor can preserve family heritage through it.**
+  1143→  1143→>
+  1144→  1144→> **A future engineer can rebuild it.**
+  1145→  1145→>
+  1146→  1146→> **A future generation can understand why it existed.**
+  1147→  1147→
+  1148→  1148→That is the standard for Document 000.
+  1149→  1149→
+  1150→  1150→---
+  1151→  1151→
+  1152→  1152→# 30. NEXT DOCUMENT CONTROL
+  1153→  1153→
+  1154→  1154→**Next document:** 007 — 165 Governance & Decision Rights
+  1155→  1155→
+  1156→  1156→**Current master objective:** Finish the constitutional/control layer before building complex downstream systems.
+  1157→  1157→
+  1158→  1158→**Do not skip reconciliation of Documents 001–006.**
+  1159→  1159→
+  1160→  1160→---
+  1161→  1161→
+  1162→  1162→## SAVE INSTRUCTION
+  1163→  1163→
+  1164→  1164→Save this document as:
+  1165→  1165→
+  1166→  1166→`000_165_MASTER_SYSTEM_CONTROL_AND_INDEX_v1_0.md`
+  1167→  1167→
+  1168→  1168→Recommended canonical path:
+  1169→  1169→
+  1170→  1170→`165/00-CONTROL/000_165_MASTER_SYSTEM_CONTROL_AND_INDEX.md`
+  1171→  1171→
+  1172→  1172→Every future substantive 165 conversation should produce or update a corresponding `.md` or `.txt` artifact and register the change in the 165 control system.
+  1173→  1173→
