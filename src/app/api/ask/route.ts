@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { db } from '@/lib/db'
+import { getAskIndex } from '@/lib/queries'
 import { EVIDENCE_LEVELS, VERIFICATION_STATUSES } from '@/lib/165'
 
 // simple in-memory rate limiter (per-IP, MVP scale)
@@ -39,10 +39,7 @@ export async function POST(req: NextRequest) {
     // tokenize question — drop common stopwords, keep meaningful terms (min 3 chars)
     const stop = new Set(['what', 'who', 'is', 'the', 'a', 'an', 'of', 'in', 'on', 'to', 'and', 'or', 'does', 'do', 'did', 'how', 'when', 'where', 'apa', 'siapa', 'adalah', 'itu', 'yang', 'dari', 'dan', 'atau', 'bagaimana', 'kapan', 'dimana', 'di', 'ke', 'untuk', 'dengan', 'tell', 'me', 'about'])
     const words = question.toLowerCase().split(/[^\p{L}\p{N}]+/u).filter((w) => w.length >= 3 && !stop.has(w))
-    const cand = await db.entity.findMany({
-      where: { visibility: 'PUBLIC' },
-      include: { nameVariants: true },
-    })
+    const cand = await getAskIndex()
 
     const scored = cand
       .map((e) => {

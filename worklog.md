@@ -128,3 +128,26 @@ Stage Summary:
 - Browser-verified (Agent Browser): SEO nav → all sections render; template switching + all 4 tabs work (sanad JSON-LD shows ItemList with honest pending node); directory search "khatm"→2, filter Profil Tokoh→250, pagination 26–50 ✓; console clean; mobile iPhone 14: hamburger→SEO ok, template selector scroll-x, footer naturally pushed (5642px doc). Desktop full-page screenshot reviewed — palette/typography on-institution.
 - SEO infra live: /robots.txt 200, /sitemap.xml 200, canonical + 4 hreflang links + 3 JSON-LD blocks in homepage HTML.
 - Doctrine preserved: every preview entity labeled demo, evidence levels shown, publication gates visible, no fabricated sanad/names (synthetic slugs only).
+
+---
+Task ID: 22
+Agent: Chief Digital Architect (main)
+Task: Root-cause answer for founder ("Vercel = no database") + rebuild snapshot resilience layer (previous session's artifacts were NOT present in this working copy) + WordPress-style Ruang Admin (login, dashboard, registry CRUD, contribution moderation, snapshot publish, free-DB guide) — full Indonesian UI.
+
+Work Log:
+- Ground-truth audit: disk state matched worklog Task 0–8 only (30 entities / 16 relations / 1 contribution); snapshot fallback + motion artifacts from the prior session were absent → rebuilt from scratch.
+- SNAPSHOT LAYER REBUILD: prisma/export-snapshot.ts (CLI wrapper) + src/lib/snapshot-export.ts (shared core) + src/lib/snapshot.ts (typed static layer w/ indexes; shape-matching helpers: search/profile/stats/graph/terms/timeline/ask) + src/data/heritage-snapshot.json + src/data/snapshot-counts.json (generated via `bun run db:export`, package.json script added).
+- queries.ts rewritten under RESILIENCE DOCTRINE: every reader try/catch → logFallback("[queries:X] database unavailable — serving bundled snapshot") → snapshot result; graph/timeline/terms/ask routes refactored onto façades (getGraphData/getTimelineEvents/getGlossaryTerms/getAskIndex) keeping response shapes byte-compatible.
+- home.tsx trust strip: static counts floor (data?.stats.total ?? counts.entities) → 0-display structurally impossible even client-side.
+- NO-DB PROOF: moved db/custom.db out, restarted → all 9 public endpoints returned full data (stats 30/16/1, graph 30n/16e, terms 10, timeline 2, profile complete, search 7 groups, ask grounded); honest fallback lines present in dev.log; DB restored after.
+- ADMIN BACKEND: src/lib/admin-auth.ts (ADMIN_PASSWORD env w/ documented dev default, HMAC-signed 7d httpOnly cookie, timing-safe compare, 5-attempt/10-min lock) + src/lib/admin-data.ts (globalId sequencing per-type prefix, slugify+unique, guarded delete dependency counts, VersionSnapshot-before-update, AuditLog every mutation) + routes: login/logout/session (dbAvailable + fresh counts from disk), entities GET/POST, entities/[id] GET/PUT/DELETE (409 + Indonesian guidance when referenced), contributions GET, contributions/[id] PUT (workflow statuses), snapshot POST (re-export; honest 501/503 on serverless/read-only).
+- ADMIN UI (all Indonesian, institutional parchment/brass design, shadcn): admin.tsx (session shell + login card + 5 tabs), registry.tsx (searchable table incl. PRIVATE rows, editor dialog w/ full fields + JSON details validation + guarded delete two-step), extras.tsx (DashboardPanel w/ honest system status, ContributionsPanel w/ 9-state workflow, PublishPanel w/ rebuild button + 3-step flow, GuidePanel: WordPress-honest comparison, Turso recommended w/ 4 layman steps, Neon/Supabase alternatives, ADMIN_PASSWORD security steps, 4-step work rhythm).
+- institution-app.tsx: 'admin' section + footer "Ruang Admin" link + deep-link hash routing (history.replaceState + hashchange, deferred setState per hooks lint).
+- Fixes during verification: editingId null/undefined typing; session endpoint reads snapshot-counts.json from disk at request time (fresh after export) w/ build-time import fallback; silent session refresh after snapshot publish (message no longer unmounted).
+- Verification: lint clean; tsc clean (excl. pre-existing examples/skills); curl suite (login wrong/right, session, list, create→165-BOOK-000001 auto-ID/slug, put rename slug-rotate + evidence, public profile reflects, delete, 409 guard, contribution SCREENING→SUBMITTED, snapshot export) all green; audit trail verified (CREATE/UPDATE field-list/DELETE/STATUS_CHANGE, 30 version snapshots); agent-browser golden path: home 30/16 → #admin deep-link → login → dashboard → registry search/table → editor load/save/revert (subtitle null after revert) → publish rebuild (message + fresh badge 17.40.32) → guide content checks → logout → footer link → mobile iPhone 14 no horizontal overflow; console clean; screenshots admin-dasbor/registri/terbitkan/panduan/mobile.png.
+
+Stage Summary:
+- Zero-display is structurally impossible site-wide (server fallback + client static floor); Vercel "0" incident class is closed regardless of DB availability.
+- Founder now has a WordPress-style admin room in Bahasa Indonesia at footer → Ruang Admin (dev password documented; ADMIN_PASSWORD env must be set in Vercel).
+- Free-DB path documented in-app: Turso recommended (SQLite-native, no schema change); founder sends URL+token → next session wires live cloud editing.
+- Data discipline preserved: versioning, audit, guarded delete, contribution≠publication, sanad untouched.

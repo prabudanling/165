@@ -7,6 +7,7 @@ import {
   Library, Link2, Scale, ScrollText, ShieldCheck, Sparkles, User, Network, MapPin, Video,
 } from 'lucide-react'
 import { ENTITY_TYPES, type EntitySummaryDTO } from '@/lib/165'
+import counts from '@/data/snapshot-counts.json'
 import { EntityCard } from '../entity-card'
 import { Ask165 } from '../ask165'
 import { EvidenceBadge, HonestNote, Kicker, SkeletonCard, StatusBadge, useApi } from '../ui'
@@ -75,18 +76,18 @@ export function HomeSection({ onOpenEntity, onNavigate }: {
       </section>
 
       {/* ---------------- trust strip ---------------- */}
+      {/* Snapshot counts are the structural floor: even if the API is
+          unreachable (serverless), the real numbers are always displayed — 0 is impossible. */}
       <section aria-label="Institutional statistics" className="grid grid-cols-2 gap-3 sm:grid-cols-4">
         {[
-          { label: 'Records', value: data?.stats.total, icon: Layers },
-          { label: 'Typed relationships', value: data?.stats.relations, icon: Link2 },
-          { label: 'Sanad chains', value: data?.stats.sanadChains, icon: ScrollText, note: 'empty by design' },
+          { label: 'Records', value: data?.stats.total ?? counts.entities, icon: Layers },
+          { label: 'Typed relationships', value: data?.stats.relations ?? counts.relations, icon: Link2 },
+          { label: 'Sanad chains', value: data?.stats.sanadChains ?? counts.sanadChains, icon: ScrollText, note: 'empty by design' },
           { label: 'Evidence levels', value: 6, icon: Scale, note: 'A – F' },
         ].map((s) => (
           <div key={s.label} className="rounded-md border border-border bg-card p-4 sm:p-5">
             {s.icon && <s.icon className="size-4 text-[var(--brass)]" aria-hidden />}
-            <p className="font-display mt-2 text-2xl font-semibold sm:text-3xl">
-              {s.value === undefined ? (loading ? '—' : '0') : s.value}
-            </p>
+            <p className="font-display mt-2 text-2xl font-semibold sm:text-3xl">{s.value}</p>
             <p className="text-muted-foreground mt-0.5 text-[12px] leading-tight">{s.label}{s.note ? ` · ${s.note}` : ''}</p>
           </div>
         ))}

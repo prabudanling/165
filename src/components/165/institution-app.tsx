@@ -16,6 +16,7 @@ import { TrustSection } from './sections/trust'
 import { AboutSection } from './sections/about'
 import { SeoSection } from './sections/seo'
 import { ContributeSection } from './sections/contribute'
+import { AdminSection } from './admin/admin'
 
 const NAV = [
   { key: 'home', label: 'Home' },
@@ -30,7 +31,11 @@ const NAV = [
   { key: 'seo', label: 'SEO' },
 ] as const
 
-type SectionKey = (typeof NAV)[number]['key'] | 'contribute'
+type SectionKey = (typeof NAV)[number]['key'] | 'contribute' | 'admin'
+
+const VALID_SECTIONS: readonly string[] = [
+  ...NAV.map((n) => n.key), 'contribute', 'admin',
+]
 
 export function InstitutionApp() {
   const [section, setSection] = useState<SectionKey>('home')
@@ -41,6 +46,7 @@ export function InstitutionApp() {
     setSection(s as SectionKey)
     setEntitySlug(null)
     setMenuOpen(false)
+    try { history.replaceState(null, '', s === 'home' ? '#' : `#${s}`) } catch { /* noop */ }
   }, [])
 
   const openEntity = useCallback((slug: string) => {
@@ -52,6 +58,23 @@ export function InstitutionApp() {
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'smooth' })
   }, [section, entitySlug])
+
+  // deep-link support: /#admin opens the admin room (deferred setState keeps hooks rules happy)
+  useEffect(() => {
+    const applyHash = () => {
+      const h = window.location.hash.replace('#', '')
+      if (h && VALID_SECTIONS.includes(h)) {
+        setSection(h as SectionKey)
+        setEntitySlug(null)
+      }
+    }
+    const t = window.setTimeout(applyHash, 0)
+    window.addEventListener('hashchange', applyHash)
+    return () => {
+      window.clearTimeout(t)
+      window.removeEventListener('hashchange', applyHash)
+    }
+  }, [])
 
   return (
     <QueryProvider>
@@ -151,6 +174,7 @@ export function InstitutionApp() {
             {section === 'about' && <AboutSection onOpenEntity={openEntity} onNavigate={navigate} />}
             {section === 'seo' && <SeoSection onNavigate={navigate} />}
             {section === 'contribute' && <ContributeSection />}
+            {section === 'admin' && <AdminSection />}
           </>
         )}
       </main>
@@ -195,6 +219,15 @@ export function InstitutionApp() {
               <ul className="mt-2 space-y-1.5 text-[13px]">
                 <li><button onClick={() => navigate('contribute')} className="text-muted-foreground hover:text-foreground transition-colors">Contribute knowledge</button></li>
                 <li><button onClick={() => navigate('contribute')} className="text-muted-foreground hover:text-foreground transition-colors">Propose a correction</button></li>
+                <li>
+                  <button
+                    onClick={() => navigate('admin')}
+                    className="text-muted-foreground inline-flex items-center gap-1 hover:text-foreground transition-colors"
+                    aria-label="Buka Ruang Admin pendiri"
+                  >
+                    <ShieldCheck className="size-3.5 text-[var(--brass)]" aria-hidden /> Ruang Admin
+                  </button>
+                </li>
               </ul>
             </div>
           </div>
