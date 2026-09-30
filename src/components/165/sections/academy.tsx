@@ -3,6 +3,7 @@
 // 165 — ACADEMY: curriculum outline (planned) + multilingual glossary of terms
 import { GraduationCap, Languages } from 'lucide-react'
 import type { EntitySummaryDTO } from '@/lib/165'
+import { useI18n } from '@/lib/i18n'
 import { EntityCard } from '../entity-card'
 import { EvidenceBadge, EmptyState, Kicker, SectionHeading, SkeletonCard, StatusBadge, TypeBadge, useApi } from '../ui'
 
@@ -10,13 +11,14 @@ type Term = EntitySummaryDTO & { summary?: string | null; summaryId?: string | n
 
 export function AcademySection({ onOpenEntity }: { onOpenEntity: (slug: string) => void }) {
   const { data, loading } = useApi<{ terms: Term[] }>('/api/terms')
+  const { t } = useI18n()
 
   return (
     <div className="space-y-8">
       <SectionHeading
-        kicker="Academy"
-        title="Learning built on sources, not on authority"
-        lede="The Academy will host courses, curriculum and fellowship — every lesson citing the records it rests on. Its foundations are laid here: the terminology system is already live."
+        kicker={t('sec.academy.kicker')}
+        title={t('sec.academy.title')}
+        lede={t('sec.academy.lede')}
       />
 
       {/* curriculum outline */}

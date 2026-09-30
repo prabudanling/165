@@ -9,6 +9,7 @@ import {
 import { Button } from '@/components/ui/button'
 import { Table, TableBody, TableCell, TableFooter, TableHead, TableHeader, TableRow } from '@/components/ui/table'
 import { HonestNote, SectionHeading } from '../ui'
+import { useI18n } from '@/lib/i18n'
 import { TemplateGallery } from '../seo/seo-templates'
 import { UrlDirectory } from '../seo/url-directory'
 import { PAGE_MAP_TOTAL, RELEASE_PHASES, TEMPLATE_CATALOG } from '@/lib/seo-blueprint'
@@ -128,12 +129,13 @@ const ETERNITY = [
 ]
 
 export function SeoSection({ onNavigate }: { onNavigate?: (s: string) => void }) {
+  const { t } = useI18n()
   return (
     <div>
       <SectionHeading
-        kicker="Search Engine Architecture · Peta Halaman Publik"
-        title="Halaman yang Dicintai Mesin Pencari"
-        lede={`Rencana pembangunan ${PAGE_MAP_TOTAL.toLocaleString('id-ID')}+ halaman permanen untuk warisan TQN Qodiriah Naqsabandiyah. Setiap halaman membawa data terstruktur, markah semantik, URL stabil, dan gerbang verifikasi. Dibangun sekali — terindeks, dikutip, diwariskan.`}
+        kicker={t('sec.seo.kicker')}
+        title={t('sec.seo.title')}
+        lede={t('sec.seo.lede')}
       />
 
       {/* stats */}

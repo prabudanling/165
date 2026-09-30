@@ -4,6 +4,7 @@
 import { useMemo, useState } from 'react'
 import { CalendarClock, Compass, Network, Search, Undo2 } from 'lucide-react'
 import { cn } from '@/lib/utils'
+import { useI18n } from '@/lib/i18n'
 import { ENTITY_TYPES, dateLabel, type EntitySummaryDTO } from '@/lib/165'
 import { EntityCard, EntityCardGrid } from '../entity-card'
 import { KnowledgeGraph } from '../knowledge-graph'
@@ -25,13 +26,14 @@ const TABS = [
 
 export function ExploreSection({ onOpenEntity }: { onOpenEntity: (slug: string) => void }) {
   const [tab, setTab] = useState<(typeof TABS)[number]['key']>('search')
+  const { t } = useI18n()
 
   return (
     <div className="space-y-6">
       <SectionHeading
-        kicker="Explore"
-        title="Every record, one atlas of knowledge"
-        lede="Search people, institutions, places, traditions, terms, sources and claims. Each result travels with its evidence level and verification status."
+        kicker={t('sec.explore.kicker')}
+        title={t('sec.explore.title')}
+        lede={t('sec.explore.lede')}
       />
       <div role="tablist" aria-label="Explore views" className="flex flex-wrap gap-1.5">
         {TABS.map((t) => (

@@ -23,6 +23,7 @@ import {
   X,
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
+import { useI18n } from '@/lib/i18n'
 import {
   DOCUMENTS,
   corpusStats,
@@ -189,6 +190,7 @@ export function DocumentsSection({ onNavigate }: { onNavigate?: (section: string
   const [activeAnchor, setActiveAnchor] = useState<string | null>(null)
   const [progress, setProgress] = useState(0)
   const [pendingAnchor, setPendingAnchor] = useState<string | null>(null)
+  const { t } = useI18n()
 
   const doc = selectedKey ? getDocument(selectedKey) : undefined
   const stats = useMemo(() => corpusStats(), [])
@@ -271,7 +273,7 @@ export function DocumentsSection({ onNavigate }: { onNavigate?: (section: string
               onClick={backToShelf}
               className="border-border bg-card hover:bg-accent inline-flex h-8 shrink-0 items-center gap-1.5 rounded-sm border px-3 text-[13px] font-medium transition-colors"
             >
-              <ArrowLeft aria-hidden className="size-3.5" /> Rak Dokumen
+              <ArrowLeft aria-hidden className="size-3.5" /> {t('docs.back')}
             </button>
             <p className="font-display min-w-0 flex-1 truncate text-[14.5px] font-semibold sm:text-[15.5px]">
               <span className="text-[var(--brass)] font-mono text-[12px] font-normal">{doc.code}</span>
@@ -291,9 +293,9 @@ export function DocumentsSection({ onNavigate }: { onNavigate?: (section: string
 
         <div className="mt-7 flex gap-10">
           {/* TOC sidebar (desktop) */}
-          <aside className="hidden w-64 shrink-0 xl:block" aria-label="Daftar isi dokumen">
+          <aside className="hidden w-64 shrink-0 xl:block" aria-label={t('docs.toc')}>
             <div className="border-border/70 bg-card/40 sticky top-[9.5rem] max-h-[calc(100vh-11rem)] overflow-y-auto rounded-md border p-3 nice-scroll">
-              <p className="label-caps px-1 pb-2 text-[11px] text-muted-foreground">Daftar Isi · {toc.length} bagian</p>
+              <p className="label-caps px-1 pb-2 text-[11px] text-muted-foreground">{t('docs.toc')} · {t('docs.tocCount', { n: toc.length })}</p>
               <TocList toc={toc} active={activeAnchor} onJump={jump} />
             </div>
           </aside>
@@ -303,7 +305,7 @@ export function DocumentsSection({ onNavigate }: { onNavigate?: (section: string
             {/* mobile TOC */}
             <details className="border-border bg-card/40 mb-6 rounded-md border xl:hidden">
               <summary className="cursor-pointer list-none px-4 py-3 text-[13px] font-medium">
-                Daftar Isi · {toc.length} bagian
+                {t('docs.toc')} · {t('docs.tocCount', { n: toc.length })}
                 <span aria-hidden className="text-muted-foreground float-right">buka/tutup</span>
               </summary>
               <div className="border-border/60 max-h-72 overflow-y-auto border-t px-3 py-2 nice-scroll">
@@ -327,7 +329,7 @@ export function DocumentsSection({ onNavigate }: { onNavigate?: (section: string
                 {doc.role}
               </p>
               <p className="text-muted-foreground mt-4 font-mono text-[11.5px]">
-                {doc.layer} · {nf.format(docWords(doc.content))} kata · {toc.length} bagian · ± {readingMinutes(docWords(doc.content))} menit baca
+                {doc.layer} · {t('docs.words', { n: nf.format(docWords(doc.content)) })} · {t('docs.tocCount', { n: toc.length })} · {t('docs.minutes', { n: readingMinutes(docWords(doc.content)) })}
               </p>
             </header>
 
@@ -339,7 +341,7 @@ export function DocumentsSection({ onNavigate }: { onNavigate?: (section: string
             </div>
 
             {/* prev / next */}
-            <nav aria-label="Dokumen berikutnya" className="border-border/70 mt-14 grid gap-3 border-t pt-6 sm:grid-cols-2">
+            <nav aria-label={t('c.next')} className="border-border/70 mt-14 grid gap-3 border-t pt-6 sm:grid-cols-2">
               {prev ? (
                 <button
                   onClick={() => openDoc(prev.key)}
@@ -347,7 +349,7 @@ export function DocumentsSection({ onNavigate }: { onNavigate?: (section: string
                 >
                   <ArrowLeft aria-hidden className="size-4 shrink-0 text-muted-foreground transition-transform group-hover:-translate-x-0.5" />
                   <span className="min-w-0">
-                    <span className="label-caps block text-[10.5px] text-muted-foreground">Sebelumnya · {prev.code}</span>
+                    <span className="label-caps block text-[10.5px] text-muted-foreground">{t('docs.prevDoc', { code: prev.code })}</span>
                     <span className="block truncate text-[13.5px] font-medium">{prev.title}</span>
                   </span>
                 </button>
@@ -360,7 +362,7 @@ export function DocumentsSection({ onNavigate }: { onNavigate?: (section: string
                   className="border-border bg-card hover:border-[var(--brass)]/60 hover:bg-accent group flex items-center justify-end gap-3 rounded-md border px-4 py-3 text-right transition-colors"
                 >
                   <span className="min-w-0">
-                    <span className="label-caps block text-[10.5px] text-muted-foreground">Berikutnya · {next.code}</span>
+                    <span className="label-caps block text-[10.5px] text-muted-foreground">{t('docs.nextDoc', { code: next.code })}</span>
                     <span className="block truncate text-[13.5px] font-medium">{next.title}</span>
                   </span>
                   <ArrowRight aria-hidden className="size-4 shrink-0 text-muted-foreground transition-transform group-hover:translate-x-0.5" />
@@ -377,16 +379,16 @@ export function DocumentsSection({ onNavigate }: { onNavigate?: (section: string
   return (
     <div>
       <SectionHeading
-        kicker="Dokumen Kanonik · Sumber Pertama"
-        title="Ruang Dokumen Sistem 165"
-        lede="Enam dokumen kendali yang menjadi fondasi seluruh sistem 165.web.id — Master Control, Master Blueprint, Arsitektur Sistem, Tata Kelola, Konstitusi Editorial, dan Kebijakan Sumber & Sitasi — kini terbuka untuk dibaca utuh oleh siapa pun."
+        kicker={t('sec.documents.kicker')}
+        title={t('sec.documents.title')}
+        lede={t('sec.documents.lede')}
       />
 
       <HonestNote tone="green" className="mt-6">
         <p className="flex items-start gap-2">
           <BookOpenText aria-hidden className="mt-0.5 size-4 shrink-0" />
           <span>
-            <strong>Salinan verbatim.</strong> Apa yang Anda baca di sini adalah isi asli dokumennya — bukan ringkasan atau parafrasa. Setiap dokumen membawa ID kanonik, versi, dan status resminya sendiri; perubahan hanya lewat alur tata kelola, tidak pernah disunting diam-diam.
+            <strong>{t('docs.verbatimTitle')}</strong> {t('docs.verbatimBody')}
           </span>
         </p>
       </HonestNote>
@@ -394,10 +396,10 @@ export function DocumentsSection({ onNavigate }: { onNavigate?: (section: string
       {/* stats strip */}
       <div className="border-border/80 bg-secondary/40 mt-6 grid grid-cols-2 gap-px overflow-hidden rounded-md border sm:grid-cols-4">
         {[
-          { label: 'Dokumen kanonik', value: nf.format(stats.documents) },
-          { label: 'Total kata', value: nf.format(stats.words) },
-          { label: 'Bagian tersusun', value: nf.format(stats.headings) },
-          { label: 'Total waktu baca', value: `± ${nf.format(DOCUMENTS.reduce((s, d) => s + readingMinutes(docWords(d.content)), 0))} mnt` },
+          { label: t('docs.statDocs'), value: nf.format(stats.documents) },
+          { label: t('docs.statWords'), value: nf.format(stats.words) },
+          { label: t('docs.statSections'), value: nf.format(stats.headings) },
+          { label: t('docs.statTime'), value: t('docs.minutes', { n: nf.format(DOCUMENTS.reduce((s, d) => s + readingMinutes(docWords(d.content)), 0)) }) },
         ].map((s) => (
           <div key={s.label} className="bg-background/60 px-4 py-4 text-center sm:py-5">
             <p className="font-display text-xl font-semibold tracking-tight sm:text-2xl">{s.value}</p>
@@ -414,14 +416,14 @@ export function DocumentsSection({ onNavigate }: { onNavigate?: (section: string
             type="search"
             value={query}
             onChange={(e) => setQuery(e.target.value)}
-            placeholder="Cari di dalam keenam dokumen… mis. sanad, founder, Tier A"
-            aria-label="Cari di dalam dokumen"
+            placeholder={t('docs.searchPlaceholder')}
+            aria-label={t('docs.searchPlaceholder')}
             className="border-border bg-card focus:border-[var(--brass)]/60 h-10 w-full rounded-sm border pr-9 pl-9 text-[14px] outline-none transition-colors placeholder:text-muted-foreground/70"
           />
           {query && (
             <button
               onClick={() => setQuery('')}
-              aria-label="Bersihkan pencarian"
+              aria-label={t('c.clear')}
               className="text-muted-foreground hover:text-foreground absolute top-1/2 right-2.5 -translate-y-1/2 rounded-sm p-1"
             >
               <X aria-hidden className="size-4" />
@@ -433,10 +435,10 @@ export function DocumentsSection({ onNavigate }: { onNavigate?: (section: string
         {query.trim().length >= 2 && (
           <div className="mt-5" aria-live="polite">
             <p className="label-caps text-muted-foreground text-[11px]">
-              {hits.length > 0 ? `${nf.format(hits.length)} potongan ditemukan` : 'Tidak ada hasil'}
+              {hits.length > 0 ? t('docs.resultsFound', { n: nf.format(hits.length) }) : '—'}
             </p>
             {hits.length === 0 ? (
-              <p className="text-muted-foreground mt-3 text-sm">Tidak ada bagian dokumen yang cocok dengan “{query}”. Coba kata kunci lain — mis. “sanad”, “evidence”, “founder”.</p>
+              <p className="text-muted-foreground mt-3 text-sm">{t('docs.noResults', { q: query.trim() })}</p>
             ) : (
               <ul className="mt-3 grid gap-2.5 sm:grid-cols-2">
                 {hits.map((h, i) => (
@@ -468,7 +470,7 @@ export function DocumentsSection({ onNavigate }: { onNavigate?: (section: string
             <li key={d.key}>
               <button
                 onClick={() => openDoc(d.key)}
-                aria-label={`Buka dokumen ${d.title}`}
+                aria-label={t('docs.openDoc', { title: d.title })}
                 className="group border-border bg-card hover:border-[var(--brass)]/60 flex h-full w-full flex-col rounded-md border p-5 text-left transition-all duration-200 hover:-translate-y-0.5 hover:shadow-[0_14px_34px_-20px_rgba(60,45,20,0.45)]"
               >
                 <div className="flex items-start justify-between gap-3">
@@ -482,7 +484,7 @@ export function DocumentsSection({ onNavigate }: { onNavigate?: (section: string
                 <p className="text-muted-foreground mt-3 line-clamp-4 text-[13px] leading-relaxed">{d.role}</p>
                 <div className="border-border/60 mt-auto w-full border-t pt-3.5">
                   <p className="text-muted-foreground font-mono text-[11px]">
-                    {nf.format(docWords(d.content))} kata · ± {readingMinutes(docWords(d.content))} mnt · {d.version}
+                    {t('docs.words', { n: nf.format(docWords(d.content)) })} · {t('docs.minutes', { n: readingMinutes(docWords(d.content)) })} · {d.version}
                   </p>
                   <p className="label-caps text-muted-foreground/80 mt-1.5 text-[10px]">{d.layer}</p>
                 </div>
@@ -495,10 +497,10 @@ export function DocumentsSection({ onNavigate }: { onNavigate?: (section: string
       {/* closing note */}
       <div className="border-border/70 bg-secondary/40 mt-10 rounded-md border px-5 py-4">
         <p className="text-muted-foreground text-[13px] leading-relaxed">
-          Dokumen-dokumen ini adalah <strong className="text-foreground font-medium">sumber pertama</strong> seluruh tampilan situs: struktur entitas, sistem bukti A–F, aturan sanad, hingga disiplin editorial dihalaman lain semuanya lahir dari sini. Punya koreksi atau tambahan terhadap isi dokumen? Sampaikan lewat kanal kontribusi — setiap usulan akan ditelaah, tidak pernah mengubah dokumen secara langsung.
+          {t('docs.closingNote')}
           {onNavigate && (
             <button onClick={() => onNavigate('contribute')} className="text-[#6b4f18] ml-1.5 font-medium underline decoration-dotted underline-offset-2">
-              Ajukan usulan →
+              {t('docs.proposal')}
             </button>
           )}
         </p>

@@ -5,16 +5,18 @@
 // Versioning · Corrections · Dispute · Contributor identity · Editorial review · AI policy
 import { Eye, FileWarning, History, Link2, Scale, ShieldCheck, Sparkles, Users } from 'lucide-react'
 import { EVIDENCE_LEVELS, VERIFICATION_STATUSES } from '@/lib/165'
+import { useI18n } from '@/lib/i18n'
 import { EvidenceBadge, HonestNote, Kicker, SectionHeading, StatusBadge } from '../ui'
 import { SanadRegistry } from '../sanad-registry'
 
 export function TrustSection() {
+  const { t } = useI18n()
   return (
     <div className="space-y-12">
       <SectionHeading
-        kicker="Trust & Method"
-        title="How 165 knows — the trust architecture"
-        lede="165 does not ask to be trusted on authority. It asks to be checked. Every record carries its evidence level, its verification status, its sources and its full change history."
+        kicker={t('sec.trust.kicker')}
+        title={t('sec.trust.title')}
+        lede={t('sec.trust.lede')}
       />
 
       {/* trust engine */}

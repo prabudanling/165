@@ -172,3 +172,24 @@ Stage Summary:
 - Keenam dokumen kendali 165 kini TAMPIL UTUH (verbatim) di situs — nav "Dokumen" / footer "Dokumen Sistem" / #documents — dan ikut ter-bundle sehingga tampil bahkan tanpa database (Vercel-safe, doctrine resilience dipertahankan).
 - Disiplin Source-First dijaga: tidak ada parafrasa; ID kanonik, versi, status, dan catatan "salinan verbatim" tampil; alur perubahan tetap lewat governance (dokumen sumber di docs/canon/, regenerate via `bun run docs:gen`).
 - Banner transparansi home diperbarui jujur: 6 dari dokumen yang dideklarasikan sudah terdeposit; Founder's Charter & sisanya masih ditunggu.
+
+---
+Task ID: 24
+Agent: Chief Digital Architect (main)
+Task: i18n god-mode — seluruh bahasa dunia di 165.web.id, default Bahasa Indonesia penuh: registry 178 bahasa, kamus kurasi tangan (id/en/ms/jv/su/ar), pipeline terjemahan AI ~87 bahasa utama, pemilih bahasa + RTL + persistensi, seluruh chrome diterjemahkan.
+
+Work Log:
+- KATALOG: src/lib/i18n/catalog.ts — 131 kunci (nav, header, footer, umum, home, 11 judul+kicker+lede section, chrome ruang dokumen, pemilih bahasa) berpasangan [id, en]; helper placeholder {n}/{q}/{code}/{title}/{curated}/{ai}.
+- REGISTRY: src/lib/i18n/languages.ts — 178 bahasa (seluruh ISO-639-1 yang hidup + bahasa Nusantara: Bali, Bugis, Aceh, Madura, Minangkabau, Sasak, Makassar, Batak Toba, Iban, Tetum + regional dunia + liturgis sa/pali/la/eo), nama asli (skrip asli), nama Indonesia, dir LTR/RTL (11 RTL), 8 grup region (Nusantara di urutan pertama), tier curated/ai/core.
+- KAMUS KURASI: src/lib/i18n/dictionaries.ts — ms, jv, su, ar ditulis tangan penuh 131 kunci (id/en dari katalog). Arab formal; Jawa/Sunda menghormati register lokal.
+- MESIN: src/lib/i18n/index.ts — useSyncExternalStore dengan SNAPSHOT=versi store (fix bug: snapshot berbasis kode bahasa membuat header tidak re-render saat kamus AI tiba asinkron); fallback berlapis kamus aktif → Indonesia → kunci; persistensi localStorage '165-lang'; initLanguage pasca-hydration bebas mismatch; applyDocumentMeta mengeset html[lang] + html[dir] (RTL penuh untuk ar/fa/ur/he/ps/sd/ug/ku/yi/dv/ckb).
+- PIPELINE AI: scripts/gen-i18n.ts (npm: i18n:gen) — 87 bahasa target via z-ai-web-dev-sdk (backend); prompt institusional (register hormat, placeholder & brand terkunci, skrip asli); konkurensi 2 + stagger + backoff 429 + timeout 120s; resume-safe; validasi 131 kunci per bahasa (yang gagal jatuh hormat ke Indonesia); menulis src/data/i18n/{code}.json + MENULIS ULANG src/data/i18n/registry.ts (loader statis per bahasa — template-literal dynamic import TERBUKTI gagal di Turbopack, loader statis terjamin ter-code-split).
+- PICKER: src/components/165/language-picker.tsx — tombol Globe di nav desktop + mobile menu; dialog pencarian (native/Indonesia/Inggris/kode), grup region, titik tier (hijau=kurasi, kuning=AI, abu=antarmuka Indonesia), badge Bawaan/Aktif, catatan jujur tier; tutup klik-luar/Escape.
+- WIRE t(): institution-app (NAV, header, footer, skip, menu), home (hero, stats, identity, principle, featured, ask, banner dokumen, deposit), documents (seluruh chrome), explore/library/archive/media/research/academy/trust/about/seo/contribute (kicker+title+lede). Konten warisan & grid identity tetap bahasa sumber (kebijakan konten, jujur di picker).
+- VERIFIKASI (agent-browser): default ID SSR ✓; Arab → dir=rtl + nav/hero/footer Arab ✓ (screenshot); Jawa ✓; persistensi pasca-reload ✓; Mandarin (kamus AI via registry) nav+hero+footer ✓ (screenshot); mobile iPhone 14: menu → pemilih bahasa, dialog 359px muat, grup Nusantara pertama ✓ (screenshot); dokumen ✓; konsol & page errors bersih; lint ✓ tsc ✓.
+- Kejadian ditangani: 429 rate-limit (turun ke konkurensi 2 + backoff), proses latar mati sunyi (restart + disown), template dynamic import gagal (registry statis), header tidak re-render (snapshot versi).
+
+Stage Summary:
+- 165 kini bilingual-institutional: BAHASA INDONESIA sebagai bawaan SSR+client, 6 bahasa kurasi penuh, ~87 bahasa kamus AI (pipeline latar berjalan, registry update otomatis/HMR), total 178 bahasa dapat dipilih dengan presentasi jujur; 11 bahasa RTL didukung penuh.
+- Status pipeline saat arsip: 6/87 selesai (id-en-ms-jv-su-ar + zh/ja/fr/de), sisanya terus masuk; bahasa tanpa kamus menampilkan antarmuka Indonesia (bukan kosong, bukan angka 0 — doctrine yang sama).
+- Konten dokumen & catatan warisan sengaja tidak diterjemahkan (verbatim doctrine) — antarmuka multi-bahasa, isi sumber tetap asli.

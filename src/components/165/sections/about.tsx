@@ -4,6 +4,7 @@
 import { Landmark, ScrollText, ShieldCheck, User, Mail } from 'lucide-react'
 import { useState } from 'react'
 import { cn } from '@/lib/utils'
+import { useI18n } from '@/lib/i18n'
 import type { EntitySummaryDTO } from '@/lib/165'
 import { EntityCard } from '../entity-card'
 import { EvidenceBadge, HonestNote, Kicker, SectionHeading, SkeletonCard, useApi } from '../ui'
@@ -18,12 +19,13 @@ const TABS = [
 
 export function AboutSection({ onOpenEntity, onNavigate }: { onOpenEntity: (slug: string) => void; onNavigate: (s: string) => void }) {
   const [tab, setTab] = useState<(typeof TABS)[number]['key']>('institution')
+  const { t } = useI18n()
   return (
     <div className="space-y-6">
       <SectionHeading
-        kicker="About 165"
-        title="An institution, established"
-        lede="What 165 is, who established it, how it is governed, and the ethics that bind every record."
+        kicker={t('sec.about.kicker')}
+        title={t('sec.about.title')}
+        lede={t('sec.about.lede')}
       />
       <div role="tablist" aria-label="About views" className="flex flex-wrap gap-1.5">
         {TABS.map((t) => (

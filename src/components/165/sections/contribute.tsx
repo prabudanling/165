@@ -4,6 +4,7 @@
 import { ArrowRight, CheckCircle2, Search, Send } from 'lucide-react'
 import { useState } from 'react'
 import { cn } from '@/lib/utils'
+import { useI18n } from '@/lib/i18n'
 import { CONTRIBUTION_FLOW, CONTRIBUTION_KINDS, CONTRIBUTION_TERMINAL } from '@/lib/165'
 import { HonestNote, Kicker, SectionHeading } from '../ui'
 
@@ -23,6 +24,7 @@ export function ContributeSection() {
   const [state, setState] = useState<SubmitState>({ phase: 'idle' })
   const [refQuery, setRefQuery] = useState('')
   const [refResult, setRefResult] = useState<{ status: string; statusNote?: string | null; title: string; kind: string } | null | 'notfound'>(null)
+  const { t } = useI18n()
 
   const [form, setForm] = useState({
     kind: 'KNOWLEDGE', title: '', description: '', sourceNote: '', submitterName: '', submitterContact: '', consent: false,
@@ -67,9 +69,9 @@ export function ContributeSection() {
   return (
     <div className="space-y-10">
       <SectionHeading
-        kicker="Contribute"
-        title="Add to the record — through review, not around it"
-        lede="The public may submit knowledge, sources, biographies, institutions, manuscripts, oral history and corrections. Contribution is not publication: every submission is reviewed before it enters the record."
+        kicker={t('sec.contribute.kicker')}
+        title={t('sec.contribute.title')}
+        lede={t('sec.contribute.lede')}
       />
 
       {/* workflow */}

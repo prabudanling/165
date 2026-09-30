@@ -4,6 +4,7 @@
 import { FlaskConical, Library, Scale } from 'lucide-react'
 import { useState } from 'react'
 import { cn } from '@/lib/utils'
+import { useI18n } from '@/lib/i18n'
 import type { EntitySummaryDTO } from '@/lib/165'
 import { EntityCard } from '../entity-card'
 import { EvidenceBadge, EmptyState, HonestNote, Kicker, SectionHeading, SkeletonCard, StatusBadge, useApi } from '../ui'
@@ -11,6 +12,7 @@ import { EvidenceBadge, EmptyState, HonestNote, Kicker, SectionHeading, Skeleton
 export function ResearchSection({ onOpenEntity, onNavigate }: { onOpenEntity: (slug: string) => void; onNavigate: (s: string) => void }) {
   const [tab, setTab] = useState<'research' | 'sources' | 'claims'>('sources')
   const { data, loading } = useApi<{ entities: EntitySummaryDTO[] }>('/api/entities?limit=200')
+  const { t } = useI18n()
 
   const research = (data?.entities ?? []).filter((e) => e.type === 'RESEARCH')
   const sources = (data?.entities ?? []).filter((e) => e.type === 'SOURCE')
@@ -19,9 +21,9 @@ export function ResearchSection({ onOpenEntity, onNavigate }: { onOpenEntity: (s
   return (
     <div className="space-y-6">
       <SectionHeading
-        kicker="Research"
-        title="Sources, claims & the bibliography"
-        lede="The research layer separates what is said from what supports it. Claims carry their stances; sources carry their levels; nothing outranks its evidence."
+        kicker={t('sec.research.kicker')}
+        title={t('sec.research.title')}
+        lede={t('sec.research.lede')}
       />
       <div role="tablist" aria-label="Research views" className="flex flex-wrap gap-1.5">
         {([['sources', 'Sources & Bibliography', Library], ['claims', 'Claims Under Review', Scale], ['research', 'Research & Publications', FlaskConical]] as const).map(([k, label, Icon]) => (

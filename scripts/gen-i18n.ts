@@ -1,0 +1,245 @@
+// 165 — Pipeline terjemahan antarmuka via LLM (backend only)
+// Menerjemahkan katalog UI (src/lib/i18n/catalog.ts) ke ~88 bahasa utama dunia.
+// Output: src/data/i18n/{code}.json — dimuat dinamis oleh mesin i18n.
+// Resume-safe: bahasa yang sudah punya file dilewati. Jalankan ulang: bun scripts/gen-i18n.ts
+import ZAI from 'z-ai-web-dev-sdk'
+import { writeFileSync, existsSync, mkdirSync, readdirSync } from 'node:fs'
+import { CATALOG, CATALOG_KEYS } from '../src/lib/i18n/catalog'
+
+const OUT_DIR = 'src/data/i18n'
+mkdirSync(OUT_DIR, { recursive: true })
+
+/** Tulis ulang src/data/i18n/registry.ts — loader statis per bahasa (chunk terpisah, Turbopack-safe). */
+function writeRegistry() {
+  const codes = readdirSync(OUT_DIR)
+    .filter((f) => f.endsWith('.json'))
+    .map((f) => f.replace(/\.json$/, ''))
+    .sort()
+  const entries = codes.map((c) => `  ${JSON.stringify(c)}: () => import(${JSON.stringify(`./${c}.json`)}),`).join('\n')
+  const body = `// GENERATED FILE — jangan sunting. Regenerate: bun scripts/gen-i18n.ts
+// Loader statis per bahasa — dijamin ter-code-split per bahasa oleh bundler.
+import type { CatalogKey } from '@/lib/i18n/catalog'
+
+export type DictModule = { strings: Partial<Record<CatalogKey, string>> }
+
+export const AI_DICT_LOADERS: Record<string, () => Promise<DictModule>> = {
+${entries}
+}
+`
+  writeFileSync('src/data/i18n/registry.ts', body, 'utf8')
+  return codes.length
+}
+
+// [code, native name, english name]
+const TARGETS: Array<[string, string, string]> = [
+  ['zh', '中文', 'Chinese (Mandarin)'],
+  ['ja', '日本語', 'Japanese'],
+  ['ko', '한국어', 'Korean'],
+  ['mn', 'Монгол', 'Mongolian'],
+  ['fr', 'Français', 'French'],
+  ['es', 'Español', 'Spanish'],
+  ['de', 'Deutsch', 'German'],
+  ['pt', 'Português', 'Portuguese'],
+  ['it', 'Italiano', 'Italian'],
+  ['ru', 'Русский', 'Russian'],
+  ['uk', 'Українська', 'Ukrainian'],
+  ['pl', 'Polski', 'Polish'],
+  ['nl', 'Nederlands', 'Dutch'],
+  ['el', 'Ελληνικά', 'Greek'],
+  ['ro', 'Română', 'Romanian'],
+  ['hu', 'Magyar', 'Hungarian'],
+  ['cs', 'Čeština', 'Czech'],
+  ['sk', 'Slovenčina', 'Slovak'],
+  ['bg', 'Български', 'Bulgarian'],
+  ['sr', 'Српски', 'Serbian'],
+  ['hr', 'Hrvatski', 'Croatian'],
+  ['bs', 'Bosanski', 'Bosnian'],
+  ['sl', 'Slovenščina', 'Slovenian'],
+  ['mk', 'Македонски', 'Macedonian'],
+  ['sq', 'Shqip', 'Albanian'],
+  ['lt', 'Lietuvių', 'Lithuanian'],
+  ['lv', 'Latviešu', 'Latvian'],
+  ['et', 'Eesti', 'Estonian'],
+  ['is', 'Íslenska', 'Icelandic'],
+  ['fi', 'Suomi', 'Finnish'],
+  ['sv', 'Svenska', 'Swedish'],
+  ['no', 'Norsk', 'Norwegian'],
+  ['da', 'Dansk', 'Danish'],
+  ['ga', 'Gaeilge', 'Irish'],
+  ['cy', 'Cymraeg', 'Welsh'],
+  ['mt', 'Malti', 'Maltese'],
+  ['ca', 'Català', 'Catalan'],
+  ['gl', 'Galego', 'Galician'],
+  ['eu', 'Euskara', 'Basque'],
+  ['he', 'עברית', 'Hebrew'],
+  ['fa', 'فارسی', 'Persian'],
+  ['tr', 'Türkçe', 'Turkish'],
+  ['ku', 'کوردی', 'Kurdish (Kurmanji)'],
+  ['ps', 'پښتو', 'Pashto'],
+  ['ug', 'ئۇيغۇرچە', 'Uyghur'],
+  ['az', 'Azərbaycan', 'Azerbaijani'],
+  ['kk', 'Қазақша', 'Kazakh'],
+  ['ky', 'Кыргызча', 'Kyrgyz'],
+  ['uz', 'Oʻzbekcha', 'Uzbek'],
+  ['tk', 'Türkmençe', 'Turkmen'],
+  ['tg', 'Тоҷикӣ', 'Tajik'],
+  ['hy', 'Հայերեն', 'Armenian'],
+  ['ka', 'ქართული', 'Georgian'],
+  ['hi', 'हिन्दी', 'Hindi'],
+  ['ur', 'اردو', 'Urdu'],
+  ['bn', 'বাংলা', 'Bengali'],
+  ['pa', 'ਪੰਜਾਬੀ', 'Punjabi'],
+  ['gu', 'ગુજરાતી', 'Gujarati'],
+  ['mr', 'मराठी', 'Marathi'],
+  ['ta', 'தமிழ்', 'Tamil'],
+  ['te', 'తెలుగు', 'Telugu'],
+  ['kn', 'ಕನ್ನಡ', 'Kannada'],
+  ['ml', 'മലയാളം', 'Malayalam'],
+  ['si', 'සිංහල', 'Sinhala'],
+  ['ne', 'नेपाली', 'Nepali'],
+  ['sd', 'سنڌي', 'Sindhi'],
+  ['th', 'ไทย', 'Thai'],
+  ['vi', 'Tiếng Việt', 'Vietnamese'],
+  ['km', 'ខ្មែរ', 'Khmer'],
+  ['lo', 'ລາວ', 'Lao'],
+  ['my', 'မြန်မာ', 'Burmese'],
+  ['tl', 'Tagalog', 'Filipino'],
+  ['sw', 'Kiswahili', 'Swahili'],
+  ['am', 'አማርኛ', 'Amharic'],
+  ['ha', 'Hausa', 'Hausa'],
+  ['yo', 'Yorùbá', 'Yoruba'],
+  ['ig', 'Igbo', 'Igbo'],
+  ['zu', 'isiZulu', 'Zulu'],
+  ['xh', 'isiXhosa', 'Xhosa'],
+  ['af', 'Afrikaans', 'Afrikaans'],
+  ['sn', 'chiShona', 'Shona'],
+  ['so', 'Soomaali', 'Somali'],
+  ['mg', 'Malagasy', 'Malagasy'],
+  ['ff', 'Fulfulde', 'Fula'],
+  ['rw', 'Kinyarwanda', 'Kinyarwanda'],
+  ['eo', 'Esperanto', 'Esperanto'],
+  ['ht', 'Kreyòl ayisyen', 'Haitian Creole'],
+]
+
+const payload = CATALOG_KEYS.map((k) => `${k}\n  id: ${CATALOG[k][0]}\n  en: ${CATALOG[k][1]}`).join('\n')
+
+function systemPrompt(lang: string, native: string, english: string) {
+  return [
+    'You are a professional UI localizer for 165.web.id — a dignified, scholarly Islamic heritage institution (TQN Qodiriah Naqsabandiyah knowledge & preservation platform).',
+    `Translate interface strings into: ${english} (${native}). Output language: ${lang}.`,
+    'Rules:',
+    '- Respectful, formal, clean register suited to a scholarly Islamic institution. No slang.',
+    '- Keep placeholders EXACTLY as-is: {n} {q} {code} {title} {curated} {ai}.',
+    '- Keep brand tokens unchanged: "165", "TQN Qodiriah Naqsabandiyah", "Master Control", "Master Blueprint", "SEO", "API", "AI", "v1.0", "000/007/008/009".',
+    '- Terms like "sanad" may stay romanized when natural.',
+    '- Do NOT transliterate into Latin for languages that use another script (write Arabic-fa-ur-ps-sd in Arabic script, Hindi in Devanagari, etc.).',
+    '- Return ONLY a valid JSON object: {"key": "translation", ...} with EXACTLY the same keys. No markdown fences, no commentary.',
+  ].join('\n')
+}
+
+function userPrompt() {
+  return `Translate ALL ${CATALOG_KEYS.length} strings below. Respond with JSON only.\n\n${payload}`
+}
+
+function extractJson(raw: string): Record<string, string> | null {
+  let t = raw.trim()
+  const fence = t.match(/```(?:json)?\s*([\s\S]*?)```/)
+  if (fence) t = fence[1].trim()
+  const start = t.indexOf('{')
+  const end = t.lastIndexOf('}')
+  if (start === -1 || end === -1) return null
+  try {
+    const obj = JSON.parse(t.slice(start, end + 1))
+    if (obj && typeof obj === 'object') return obj as Record<string, string>
+    return null
+  } catch {
+    return null
+  }
+}
+
+function withTimeout<T>(p: Promise<T>, ms: number): Promise<T> {
+  return Promise.race([
+    p,
+    new Promise<T>((_, reject) => setTimeout(() => reject(new Error(`timeout after ${ms}ms`)), ms)),
+  ])
+}
+
+async function translateOne(zai: Awaited<ReturnType<typeof ZAI.create>>, code: string, native: string, english: string): Promise<{ ok: boolean; missing: number; err?: string }> {
+  const outPath = `${OUT_DIR}/${code}.json`
+  if (existsSync(outPath)) return { ok: true, missing: 0 }
+
+  for (let attempt = 1; attempt <= 4; attempt++) {
+    try {
+      const completion = await withTimeout(
+        zai.chat.completions.create({
+          messages: [
+            { role: 'assistant', content: systemPrompt(code, native, english) },
+            { role: 'user', content: userPrompt() },
+          ],
+          thinking: { type: 'disabled' },
+        }),
+        120_000,
+      )
+      const raw = completion.choices[0]?.message?.content ?? ''
+      const parsed = extractJson(raw)
+      if (!parsed) throw new Error('unparseable response')
+      const strings: Record<string, string> = {}
+      let missing = 0
+      for (const key of CATALOG_KEYS) {
+        const v = parsed[key]
+        if (typeof v === 'string' && v.trim().length > 0) strings[key] = v.trim()
+        else {
+          strings[key] = CATALOG[key][0] // honest fallback to Indonesian
+          missing++
+        }
+      }
+      writeFileSync(
+        outPath,
+        JSON.stringify({ code, generatedAt: new Date().toISOString(), tier: 'ai', strings }, null, 1),
+        'utf8',
+      )
+      const total = writeRegistry()
+      console.log(`[${code}] ok (${CATALOG_KEYS.length - missing}/${CATALOG_KEYS.length} translated) · registry=${total}`)
+      return { ok: true, missing }
+    } catch (err) {
+      const msg = err instanceof Error ? err.message : String(err)
+      console.warn(`[${code}] attempt ${attempt} failed: ${msg.slice(0, 120)}`)
+      if (attempt < 4) await new Promise((r) => setTimeout(r, 8000 * attempt))
+      else return { ok: false, missing: 0, err: msg }
+    }
+  }
+  return { ok: false, missing: 0, err: 'unreachable' }
+}
+
+async function main() {
+  const zai = await ZAI.create()
+  const queue = TARGETS.filter(([code]) => !existsSync(`${OUT_DIR}/${code}.json`))
+  console.log(`targets=${TARGETS.length} remaining=${queue.length}`)
+  const CONCURRENCY = 2
+  let idx = 0
+  let done = 0
+  let failed = 0
+
+  async function worker(id: number) {
+    // stagger worker starts to avoid burst rate-limiting
+    await new Promise((r) => setTimeout(r, id * 4000))
+    while (idx < queue.length) {
+      const my = idx++
+      const [code, native, english] = queue[my]
+      const res = await translateOne(zai, code, native, english)
+      done++
+      if (!res.ok) failed++
+      console.log(`progress ${done}/${queue.length} (${code}: ${res.ok ? 'ok' : 'FAILED'})`)
+      await new Promise((r) => setTimeout(r, 2500))
+    }
+  }
+
+  await Promise.all(Array.from({ length: CONCURRENCY }, (_, i) => worker(i)))
+  const total = writeRegistry()
+  console.log(`DONE ok=${queue.length - failed} failed=${failed} registry=${total}`)
+}
+
+main().catch((e) => {
+  console.error('FATAL', e)
+  process.exit(1)
+})

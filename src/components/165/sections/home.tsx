@@ -8,6 +8,7 @@ import {
 } from 'lucide-react'
 import { ENTITY_TYPES, type EntitySummaryDTO } from '@/lib/165'
 import counts from '@/data/snapshot-counts.json'
+import { useI18n } from '@/lib/i18n'
 import { EntityCard } from '../entity-card'
 import { Ask165 } from '../ask165'
 import { EvidenceBadge, HonestNote, Kicker, SkeletonCard, StatusBadge, useApi } from '../ui'
@@ -36,6 +37,7 @@ export function HomeSection({ onOpenEntity, onNavigate }: {
 }) {
   const { data, loading } = useApi<{ stats: { total: number; byType: Record<string, number>; relations: number; sanadChains: number; contributions: number } }>('/api/stats')
   const { data: feat, loading: featLoading } = useApi<{ entities: EntitySummaryDTO[] }>('/api/entities?limit=60')
+  const { t } = useI18n()
 
   const featuredTypes = ['INSTITUTION', 'PERSON', 'TRADITION', 'COLLECTION']
   const featured = (feat?.entities ?? []).filter((e) => featuredTypes.includes(e.type)).slice(0, 6)
@@ -48,28 +50,27 @@ export function HomeSection({ onOpenEntity, onNavigate }: {
           backgroundImage: 'radial-gradient(circle at 1px 1px, currentColor 1px, transparent 0)', backgroundSize: '18px 18px',
         }} />
         <div className="relative mx-auto max-w-3xl text-center">
-          <Kicker className="justify-center">TQN Qodiriah Naqsabandiyah · Knowledge · Heritage · Preservation</Kicker>
+          <Kicker className="justify-center">{t('home.kicker')}</Kicker>
           <p className="font-display mt-6 text-7xl leading-none font-semibold tracking-tight sm:text-8xl" aria-label="165">165</p>
           <p className="font-arabic mt-3 text-2xl text-[var(--brass)]" dir="rtl" lang="ar" aria-hidden>مَعْدِنُ العِلْمِ وَالحِفْظِ الرَّقَمِيِّ</p>
           <h1 className="font-display mt-4 text-xl leading-snug font-semibold sm:text-2xl">
-            The Global Knowledge, Heritage &amp; Digital Preservation Platform of TQN Qodiriah Naqsabandiyah
+            {t('home.subtitle')}
           </h1>
-          <p className="text-muted-foreground mx-auto mt-4 max-w-2xl text-[15px] leading-relaxed sm:text-base">
-            165 is not a website. It is a digital institution — a knowledge platform, archive, research base,
-            directory, graph and citation system, built so that <em>every statement can be traced to its evidence.</em>
+          <p className="text-muted-foreground mx-auto mt-4 max-w-2xl text-[15px] leading-relaxed">
+            {t('home.lede')}
           </p>
           <p className="text-muted-foreground mt-3 text-[13px]">
-            Founded by <strong className="text-foreground font-medium">Tuan Haji Gugun Gunara — Muhammad Lutfi Azmi</strong>, Founder &amp; Founding Steward
+            {t('home.foundedBy')} <strong className="text-foreground font-medium">Tuan Haji Gugun Gunara — Muhammad Lutfi Azmi</strong>, {t('home.founderRole')}
           </p>
           <div className="mt-7 flex flex-wrap items-center justify-center gap-2.5">
             <button onClick={() => onNavigate('explore')} className="bg-primary text-primary-foreground hover:bg-primary/90 inline-flex h-10 items-center gap-2 rounded-sm px-5 text-sm font-medium transition-colors">
-              <Compass className="size-4" aria-hidden /> Explore the records
+              <Compass className="size-4" aria-hidden /> {t('home.ctaExplore')}
             </button>
             <button onClick={() => onNavigate('trust')} className="border-border bg-card hover:bg-accent inline-flex h-10 items-center gap-2 rounded-sm border px-5 text-sm font-medium transition-colors">
-              <ShieldCheck className="size-4 text-[var(--brass)]" aria-hidden /> How 165 knows
+              <ShieldCheck className="size-4 text-[var(--brass)]" aria-hidden /> {t('home.ctaHow')}
             </button>
             <button onClick={() => onNavigate('contribute')} className="border-border bg-card hover:bg-accent inline-flex h-10 items-center gap-2 rounded-sm border px-5 text-sm font-medium transition-colors">
-              Contribute knowledge
+              {t('home.ctaContribute')}
             </button>
           </div>
         </div>
@@ -80,10 +81,10 @@ export function HomeSection({ onOpenEntity, onNavigate }: {
           unreachable (serverless), the real numbers are always displayed — 0 is impossible. */}
       <section aria-label="Institutional statistics" className="grid grid-cols-2 gap-3 sm:grid-cols-4">
         {[
-          { label: 'Records', value: data?.stats.total ?? counts.entities, icon: Layers },
-          { label: 'Typed relationships', value: data?.stats.relations ?? counts.relations, icon: Link2 },
-          { label: 'Sanad chains', value: data?.stats.sanadChains ?? counts.sanadChains, icon: ScrollText, note: 'empty by design' },
-          { label: 'Evidence levels', value: 6, icon: Scale, note: 'A – F' },
+          { label: t('home.statRecords'), value: data?.stats.total ?? counts.entities, icon: Layers },
+          { label: t('home.statRelations'), value: data?.stats.relations ?? counts.relations, icon: Link2 },
+          { label: t('home.statSanad'), value: data?.stats.sanadChains ?? counts.sanadChains, icon: ScrollText, note: t('home.statSanadNote') },
+          { label: t('home.statEvidence'), value: 6, icon: Scale, note: 'A – F' },
         ].map((s) => (
           <div key={s.label} className="rounded-md border border-border bg-card p-4 sm:p-5">
             {s.icon && <s.icon className="size-4 text-[var(--brass)]" aria-hidden />}
@@ -95,10 +96,10 @@ export function HomeSection({ onOpenEntity, onNavigate }: {
 
       {/* ---------------- what 165 is ---------------- */}
       <section aria-labelledby="identity-h">
-        <Kicker>The institution</Kicker>
-        <h2 id="identity-h" className="font-display mt-1.5 text-2xl font-semibold tracking-tight sm:text-3xl">Ten things at once — one infrastructure</h2>
+        <Kicker>{t('home.identityKicker')}</Kicker>
+        <h2 id="identity-h" className="font-display mt-1.5 text-2xl font-semibold tracking-tight sm:text-3xl">{t('home.identityTitle')}</h2>
         <p className="text-muted-foreground mt-2 max-w-2xl text-[15px] leading-relaxed">
-          165 is deliberately architected as a combination of ten institutional functions, sharing one data foundation.
+          {t('home.identityLede')}
         </p>
         <ul className="mt-6 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
           {IDENTITY.map((it) => (
@@ -113,11 +114,10 @@ export function HomeSection({ onOpenEntity, onNavigate }: {
 
       {/* ---------------- master principle ---------------- */}
       <section className="rounded-lg border border-[var(--brass)]/40 bg-[var(--brass-soft)]/30 px-5 py-10 text-center sm:px-10">
-        <Kicker className="justify-center">Master principle</Kicker>
-        <p className="font-display mt-3 text-2xl font-semibold tracking-tight sm:text-4xl">One Source, Many Experiences</p>
+        <Kicker className="justify-center">{t('home.principleKicker')}</Kicker>
+        <p className="font-display mt-3 text-2xl font-semibold tracking-tight sm:text-4xl">{t('home.principleTitle')}</p>
         <p className="text-muted-foreground mx-auto mt-3 max-w-2xl text-[15px] leading-relaxed">
-          One correct datum feeds the profile, the search, the map, the timeline, the graph, the archive,
-          the research, the citation, the AI, the API and the education of tomorrow. No duplication. No drift.
+          {t('home.principleLede')}
         </p>
       </section>
 
@@ -125,11 +125,11 @@ export function HomeSection({ onOpenEntity, onNavigate }: {
       <section aria-labelledby="featured-h">
         <div className="flex flex-wrap items-end justify-between gap-3">
           <div>
-            <Kicker>From the records</Kicker>
-            <h2 id="featured-h" className="font-display mt-1.5 text-2xl font-semibold tracking-tight">Featured entities</h2>
+            <Kicker>{t('home.featuredKicker')}</Kicker>
+            <h2 id="featured-h" className="font-display mt-1.5 text-2xl font-semibold tracking-tight">{t('home.featuredTitle')}</h2>
           </div>
           <button onClick={() => onNavigate('explore')} className="text-muted-foreground hover:text-foreground inline-flex items-center gap-1.5 text-sm underline decoration-dotted underline-offset-4">
-            Browse all records <span aria-hidden>→</span>
+            {t('home.featuredAll')} <span aria-hidden>→</span>
           </button>
         </div>
         {featLoading ? (
@@ -145,8 +145,8 @@ export function HomeSection({ onOpenEntity, onNavigate }: {
 
       {/* ---------------- ask 165 ---------------- */}
       <section aria-labelledby="ask-h">
-        <Kicker>Intelligence layer — preview</Kicker>
-        <h2 id="ask-h" className="font-display mt-1.5 mb-4 text-2xl font-semibold tracking-tight">Ask 165</h2>
+        <Kicker>{t('home.askKicker')}</Kicker>
+        <h2 id="ask-h" className="font-display mt-1.5 mb-4 text-2xl font-semibold tracking-tight">{t('home.askTitle')}</h2>
         <Ask165 />
       </section>
 
@@ -158,28 +158,27 @@ export function HomeSection({ onOpenEntity, onNavigate }: {
               <BookOpenText className="size-4.5 text-[var(--brass)]" aria-hidden />
             </span>
             <div>
-              <p className="label-caps text-[11px] text-[var(--brass)]">Now open · Ruang Dokumen</p>
+              <p className="label-caps text-[11px] text-[var(--brass)]">{t('home.docsKicker')}</p>
               <p className="font-display mt-1 text-[16px] leading-snug font-semibold sm:text-[17px]">
-                Enam dokumen kendali 165 — Master Control, Tata Kelola, Konstitusi Editorial, Kebijakan Sumber — kini dapat dibaca utuh.
+                {t('home.docsTitle')}
               </p>
-              <p className="text-muted-foreground mt-1 text-[12.5px]">Salinan verbatim · v1.0 · pencarian lintas dokumen · daftar isi hidup</p>
+              <p className="text-muted-foreground mt-1 text-[12.5px]">{t('home.docsSub')}</p>
             </div>
           </div>
           <button
             onClick={() => onNavigate('documents')}
             className="bg-primary text-primary-foreground hover:bg-primary/90 inline-flex h-9 shrink-0 items-center gap-2 self-start rounded-sm px-4 text-[13px] font-medium transition-colors sm:self-center"
           >
-            Buka Ruang Dokumen <ArrowRight className="size-3.5" aria-hidden />
+            {t('home.docsCta')} <ArrowRight className="size-3.5" aria-hidden />
           </button>
         </div>
       </div>
 
       {/* ---------------- honesty banner ---------------- */}
       <HonestNote tone="amber">
-        <strong>Transparency of deposit — updated:</strong> six canonical control documents (Master Control 000, Governance 007,
-        Editorial Constitution 008, Source &amp; Citation Policy 009, Master Blueprint, Master System Architecture) are now
-        deposited and readable in full under <button onClick={() => onNavigate('documents')} className="underline underline-offset-2">Dokumen</button>.{' '}
-        The Founder&apos;s Charter and the remaining declared documents are still awaited — this notice stands until the declared set is complete.
+        <strong>{t('home.depositTitle')}</strong>{' '}
+        {t('home.depositBody')}{' '}
+        <button onClick={() => onNavigate('documents')} className="underline underline-offset-2">{t('nav.documents')}</button>.
       </HonestNote>
     </div>
   )

@@ -5,6 +5,9 @@
 import { useCallback, useEffect, useState } from 'react'
 import { Menu, ShieldCheck, X } from 'lucide-react'
 import { cn } from '@/lib/utils'
+import { initLanguage, useI18n } from '@/lib/i18n'
+import type { CatalogKey } from '@/lib/i18n/catalog'
+import { LanguagePicker } from './language-picker'
 import { EntityProfile } from './entity-profile'
 import { QueryProvider } from './query-provider'
 import { HomeSection } from './sections/home'
@@ -43,6 +46,12 @@ export function InstitutionApp() {
   const [section, setSection] = useState<SectionKey>('home')
   const [entitySlug, setEntitySlug] = useState<string | null>(null)
   const [menuOpen, setMenuOpen] = useState(false)
+  const { t } = useI18n()
+
+  // muat bahasa tersimpan (setelah hydration — bebas mismatch)
+  useEffect(() => {
+    initLanguage()
+  }, [])
 
   const navigate = useCallback((s: string) => {
     setSection(s as SectionKey)
@@ -82,7 +91,7 @@ export function InstitutionApp() {
     <QueryProvider>
       <div className="bg-background text-foreground flex min-h-screen flex-col">
       <a href="#main" className="sr-only focus:not-sr-only focus:absolute focus:top-2 focus:left-2 focus:z-[60] focus:rounded-sm focus:bg-primary focus:px-3 focus:py-1.5 focus:text-sm focus:text-primary-foreground">
-        Skip to content
+        {t('header.skip')}
       </a>
 
       {/* ---------------- header ---------------- */}
@@ -94,8 +103,8 @@ export function InstitutionApp() {
               165
             </span>
             <span className="hidden min-w-0 sm:block">
-              <span className="label-caps block text-[11px] leading-tight text-[var(--brass)]">TQN Qodiriah Naqsabandiyah</span>
-              <span className="text-muted-foreground block text-[11px] leading-tight">Knowledge · Heritage · Digital Preservation</span>
+              <span className="label-caps block text-[11px] leading-tight text-[var(--brass)]">{t('header.tagline')}</span>
+              <span className="text-muted-foreground block text-[11px] leading-tight">{t('header.sub')}</span>
             </span>
           </button>
 
@@ -111,17 +120,18 @@ export function InstitutionApp() {
                   section === n.key && !entitySlug ? 'text-primary' : 'text-muted-foreground hover:text-foreground',
                 )}
               >
-                {n.label}
+                {t(`nav.${n.key}` as CatalogKey)}
               </button>
             ))}
+            <LanguagePicker />
             <button
               onClick={() => navigate('contribute')}
               className={cn(
-                'ml-2 inline-flex h-8 items-center rounded-sm px-3.5 text-[13px] font-medium transition-colors',
+                'ml-1 inline-flex h-8 items-center rounded-sm px-3.5 text-[13px] font-medium transition-colors',
                 section === 'contribute' && !entitySlug ? 'bg-primary text-primary-foreground' : 'bg-primary/90 text-primary-foreground hover:bg-primary',
               )}
             >
-              Contribute
+              {t('nav.contribute')}
             </button>
           </nav>
 
@@ -130,7 +140,7 @@ export function InstitutionApp() {
             className="border-border ml-auto inline-flex size-10 items-center justify-center rounded-sm border lg:hidden"
             onClick={() => setMenuOpen((v) => !v)}
             aria-expanded={menuOpen}
-            aria-label={menuOpen ? 'Close menu' : 'Open menu'}
+            aria-label={menuOpen ? t('header.closeMenu') : t('header.openMenu')}
           >
             {menuOpen ? <X className="size-4.5" aria-hidden /> : <Menu className="size-4.5" aria-hidden />}
           </button>
@@ -150,10 +160,13 @@ export function InstitutionApp() {
                       section === n.key && !entitySlug ? 'text-primary' : 'text-foreground/80',
                     )}
                   >
-                    {n.label}
+                    {t(`nav.${n.key}` as CatalogKey)}
                   </button>
                 </li>
               ))}
+              <li className="border-border/60 mt-1 border-t pt-2 pb-1">
+                <LanguagePicker compact />
+              </li>
             </ul>
           </nav>
         )}
@@ -189,53 +202,52 @@ export function InstitutionApp() {
             <div>
               <p className="font-display text-lg font-semibold">165</p>
               <p className="text-muted-foreground mt-1.5 text-[13px] leading-relaxed">
-                Global Knowledge, Heritage &amp; Digital Preservation — TQN Qodiriah Naqsabandiyah.
-                One source, many experiences.
+                {t('footer.desc')}
               </p>
               <p className="text-muted-foreground mt-3 inline-flex items-center gap-1.5 text-[12px]">
                 <ShieldCheck className="size-3.5 text-[var(--brass)]" aria-hidden />
-                Every statement carries its evidence.
+                {t('footer.everyStatement')}
               </p>
             </div>
             <nav aria-label="Footer — explore">
-              <p className="label-caps text-[12px] text-muted-foreground">Explore</p>
+              <p className="label-caps text-[12px] text-muted-foreground">{t('footer.colExplore')}</p>
               <ul className="mt-2 space-y-1.5 text-[13px]">
                 {['explore', 'library', 'archive', 'research'].map((k) => (
                   <li key={k}>
-                    <button onClick={() => navigate(k)} className="text-muted-foreground hover:text-foreground capitalize transition-colors">{k}</button>
+                    <button onClick={() => navigate(k)} className="text-muted-foreground hover:text-foreground transition-colors">{t(`nav.${k}` as CatalogKey)}</button>
                   </li>
                 ))}
               </ul>
             </nav>
             <nav aria-label="Footer — institution">
-              <p className="label-caps text-[12px] text-muted-foreground">Institution</p>
+              <p className="label-caps text-[12px] text-muted-foreground">{t('footer.colInstitution')}</p>
               <ul className="mt-2 space-y-1.5 text-[13px]">
-                {[['about', 'About 165'], ['trust', 'Trust & Method'], ['documents', 'Dokumen Sistem'], ['academy', 'Academy'], ['media', 'Media'], ['seo', 'SEO & Pages']].map(([k, label]) => (
+                {[['about', 'nav.about'], ['trust', 'nav.trust'], ['documents', 'nav.documents'], ['academy', 'nav.academy'], ['media', 'nav.media'], ['seo', 'nav.seo']].map(([k, key]) => (
                   <li key={k}>
-                    <button onClick={() => navigate(k)} className="text-muted-foreground hover:text-foreground transition-colors">{label}</button>
+                    <button onClick={() => navigate(k)} className="text-muted-foreground hover:text-foreground transition-colors">{t(key as CatalogKey)}</button>
                   </li>
                 ))}
               </ul>
             </nav>
             <div>
-              <p className="label-caps text-[12px] text-muted-foreground">Participate</p>
+              <p className="label-caps text-[12px] text-muted-foreground">{t('footer.colParticipate')}</p>
               <ul className="mt-2 space-y-1.5 text-[13px]">
-                <li><button onClick={() => navigate('contribute')} className="text-muted-foreground hover:text-foreground transition-colors">Contribute knowledge</button></li>
-                <li><button onClick={() => navigate('contribute')} className="text-muted-foreground hover:text-foreground transition-colors">Propose a correction</button></li>
+                <li><button onClick={() => navigate('contribute')} className="text-muted-foreground hover:text-foreground transition-colors">{t('footer.contributeLink')}</button></li>
+                <li><button onClick={() => navigate('contribute')} className="text-muted-foreground hover:text-foreground transition-colors">{t('footer.correctionLink')}</button></li>
                 <li>
                   <button
                     onClick={() => navigate('admin')}
                     className="text-muted-foreground inline-flex items-center gap-1 hover:text-foreground transition-colors"
-                    aria-label="Buka Ruang Admin pendiri"
+                    aria-label={t('footer.adminLink')}
                   >
-                    <ShieldCheck className="size-3.5 text-[var(--brass)]" aria-hidden /> Ruang Admin
+                    <ShieldCheck className="size-3.5 text-[var(--brass)]" aria-hidden /> {t('footer.adminLink')}
                   </button>
                 </li>
               </ul>
             </div>
           </div>
           <div className="border-border/70 mt-8 flex flex-col gap-1.5 border-t pt-5 text-[12px] text-muted-foreground sm:flex-row sm:items-center sm:justify-between">
-            <p>© 165 — established by <strong className="text-foreground font-medium">Tuan Haji Gugun Gunara — Muhammad Lutfi Azmi</strong>, Founder &amp; Founding Steward.</p>
+            <p>{t('footer.rightsPrefix')} <strong className="text-foreground font-medium">Tuan Haji Gugun Gunara — Muhammad Lutfi Azmi</strong>, {t('footer.rightsRole')}.</p>
             <p className="font-mono">165.web.id</p>
           </div>
         </div>

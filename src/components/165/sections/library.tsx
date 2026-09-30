@@ -6,6 +6,7 @@
 import { BookOpen, Layers, ScrollText } from 'lucide-react'
 import { useState } from 'react'
 import { cn } from '@/lib/utils'
+import { useI18n } from '@/lib/i18n'
 import type { EntityProfileDTO, EntitySummaryDTO } from '@/lib/165'
 import { EntityCard } from '../entity-card'
 import { EmptyState, HonestNote, Kicker, SectionHeading, SkeletonCard, useApi } from '../ui'
@@ -13,6 +14,7 @@ import { EmptyState, HonestNote, Kicker, SectionHeading, SkeletonCard, useApi } 
 export function LibrarySection({ onOpenEntity, onNavigate }: { onOpenEntity: (slug: string) => void; onNavigate: (s: string) => void }) {
   const [tab, setTab] = useState<'books' | 'manuscripts' | 'collections'>('books')
   const { data, loading } = useApi<{ entities: EntitySummaryDTO[] }>('/api/entities?limit=200')
+  const { t } = useI18n()
 
   const books = (data?.entities ?? []).filter((e) => e.type === 'BOOK')
   const manuscripts = (data?.entities ?? []).filter((e) => e.type === 'MANUSCRIPT')
@@ -21,9 +23,9 @@ export function LibrarySection({ onOpenEntity, onNavigate }: { onOpenEntity: (sl
   return (
     <div className="space-y-6">
       <SectionHeading
-        kicker="Library"
-        title="Books, manuscripts & collections"
-        lede="The Library catalogues works and holdings with citation-grade metadata: authorship, provenance, holding institutions and sources. Nothing enters the catalogue without a record."
+        kicker={t('sec.library.kicker')}
+        title={t('sec.library.title')}
+        lede={t('sec.library.lede')}
       />
       <div role="tablist" aria-label="Library views" className="flex flex-wrap gap-1.5">
         {([['books', 'Books', BookOpen], ['manuscripts', 'Manuscripts', ScrollText], ['collections', 'Collections', Layers]] as const).map(([k, label, Icon]) => (
@@ -83,15 +85,16 @@ export function LibrarySection({ onOpenEntity, onNavigate }: { onOpenEntity: (sl
 
 // ---------------- ARCHIVE ----------------
 export function ArchiveSection({ onOpenEntity, onNavigate }: { onOpenEntity: (slug: string) => void; onNavigate: (s: string) => void }) {
+  const { t } = useI18n()
   const { data, loading } = useApi<{ entities: EntitySummaryDTO[] }>('/api/entities?limit=200')
   const documents = (data?.entities ?? []).filter((e) => e.type === 'DOCUMENT')
 
   return (
     <div className="space-y-6">
       <SectionHeading
-        kicker="Archive"
-        title="Documents, oral history & heritage records"
-        lede="The Archive treats digital records as heritage: versioned, audited and exportable. Historical records are immutable — corrections add, they never erase."
+        kicker={t('sec.archive.kicker')}
+        title={t('sec.archive.title')}
+        lede={t('sec.archive.lede')}
       />
 
       <section aria-labelledby="arch-docs">
@@ -126,12 +129,13 @@ export function ArchiveSection({ onOpenEntity, onNavigate }: { onOpenEntity: (sl
 
 // ---------------- MEDIA ----------------
 export function MediaSection({ onNavigate }: { onOpenEntity: (slug: string) => void; onNavigate: (s: string) => void }) {
+  const { t } = useI18n()
   return (
     <div className="space-y-6">
       <SectionHeading
-        kicker="Media"
-        title="Video, audio, documentary & photography"
-        lede="The media registry will document events, interviews and heritage footage — each item linked to the entities it documents, never floating freely."
+        kicker={t('sec.media.kicker')}
+        title={t('sec.media.title')}
+        lede={t('sec.media.lede')}
       />
       <EmptyState icon={ScrollText} title="Media registry — reserved, not padded">
         <p>
