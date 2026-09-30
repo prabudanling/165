@@ -8,7 +8,7 @@ type Dict = Partial<Record<CatalogKey, string>>
 const MS: Dict = {
   'nav.home': 'Laman Utama', 'nav.explore': 'Teroka', 'nav.library': 'Perpustakaan', 'nav.archive': 'Arkib',
   'nav.research': 'Penyelidikan', 'nav.academy': 'Akademi', 'nav.media': 'Media', 'nav.trust': 'Kepercayaan & Metod',
-  'nav.about': 'Tentang 165', 'nav.documents': 'Dokumen', 'nav.seo': 'SEO', 'nav.contribute': 'Menyumbang', 'nav.admin': 'Bilik Admin',
+  'nav.about': 'Tentang 165', 'nav.documents': 'Dokumen', 'nav.seo': 'SEO', 'nav.contribute': 'Menyumbang', 'nav.admin': 'Bilik Admin', 'nav.more': 'Lainnya',
   'header.tagline': 'TQN Qodiriah Naqsabandiyah', 'header.sub': 'Pengetahuan · Warisan · Pemeliharaan Digital',
   'header.openMenu': 'Buka menu', 'header.closeMenu': 'Tutup menu', 'header.skip': 'Langkau ke kandungan', 'header.language': 'Bahasa',
   'footer.desc': 'Pengetahuan Global, Warisan & Pemeliharaan Digital — TQN Qodiriah Naqsabandiyah. Satu sumber, banyak pengalaman.',
@@ -78,7 +78,7 @@ const MS: Dict = {
 const JV: Dict = {
   'nav.home': 'Omahe', 'nav.explore': 'Jlajah', 'nav.library': 'Perpustakaan', 'nav.archive': 'Arsip',
   'nav.research': 'Panlitèn', 'nav.academy': 'Akademi', 'nav.media': 'Media', 'nav.trust': 'Kapercayan & Metode',
-  'nav.about': 'Babagan 165', 'nav.documents': 'Dokumen', 'nav.seo': 'SEO', 'nav.contribute': 'Nyumbang', 'nav.admin': 'Panggonan Admin',
+  'nav.about': 'Babagan 165', 'nav.documents': 'Dokumen', 'nav.seo': 'SEO', 'nav.contribute': 'Nyumbang', 'nav.admin': 'Panggonan Admin', 'nav.more': 'Liyané',
   'header.tagline': 'TQN Qodiriah Naqsabandiyah', 'header.sub': 'Kawruh · Warisan · Pelestarian Digital',
   'header.openMenu': 'Bukak menu', 'header.closeMenu': 'Tutup menu', 'header.skip': 'Lumple menyang isi', 'header.language': 'Basa',
   'footer.desc': 'Kawruh Global, Warisan & Pelestarian Digital — TQN Qodiriah Naqsabandiyah. Siji sumber, akeh pengalaman.',
@@ -148,7 +148,7 @@ const JV: Dict = {
 const SU: Dict = {
   'nav.home': 'Imah', 'nav.explore': 'Ngalanglang', 'nav.library': 'Perpustakaan', 'nav.archive': 'Arsip',
   'nav.research': 'Panalungtikan', 'nav.academy': 'Akademi', 'nav.media': 'Média', 'nav.trust': 'Kapercayaan & Métode',
-  'nav.about': 'Ngeunaan 165', 'nav.documents': 'Dokumén', 'nav.seo': 'SEO', 'nav.contribute': 'Nyumbang', 'nav.admin': 'Ruang Admin',
+  'nav.about': 'Ngeunaan 165', 'nav.documents': 'Dokumén', 'nav.seo': 'SEO', 'nav.contribute': 'Nyumbang', 'nav.admin': 'Ruang Admin', 'nav.more': 'Sejenna',
   'header.tagline': 'TQN Qodiriah Naqsabandiyah', 'header.sub': 'Pangaweruh · Warisan · Pelestarian Digital',
   'header.openMenu': 'Buka menu', 'header.closeMenu': 'Tutup menu', 'header.skip': 'Luncat ka eusi', 'header.language': 'Basa',
   'footer.desc': 'Pangaweruh Global, Warisan & Pelestarian Digital — TQN Qodiriah Naqsabandiyah. Hiji sumber, réa pangalaman.',
@@ -218,7 +218,7 @@ const SU: Dict = {
 const AR: Dict = {
   'nav.home': 'الرئيسية', 'nav.explore': 'استكشاف', 'nav.library': 'المكتبة', 'nav.archive': 'الأرشيف',
   'nav.research': 'البحث', 'nav.academy': 'الأكاديمية', 'nav.media': 'الوسائط', 'nav.trust': 'الثقة والمنهج',
-  'nav.about': 'عن 165', 'nav.documents': 'الوثائق', 'nav.seo': 'SEO', 'nav.contribute': 'المشاركة', 'nav.admin': 'غرفة الإدارة',
+  'nav.about': 'عن 165', 'nav.documents': 'الوثائق', 'nav.seo': 'SEO', 'nav.contribute': 'المشاركة', 'nav.admin': 'غرفة الإدارة', 'nav.more': 'المزيد',
   'header.tagline': 'طريقة القادرية والنقشبندية', 'header.sub': 'المعرفة · التراث · الحفظ الرقمي',
   'header.openMenu': 'افتح القائمة', 'header.closeMenu': 'أغلق القائمة', 'header.skip': 'تجاوز إلى المحتوى', 'header.language': 'اللغة',
   'footer.desc': 'المعرفة العالمية والتراث والحفظ الرقمي — طريقة القادرية والنقشبندية. مصدر واحد، تجارب كثيرة.',

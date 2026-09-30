@@ -21,7 +21,7 @@ export function EntityCard({
       type="button"
       onClick={() => onOpen(entity.slug)}
       className={cn(
-        'group flex w-full flex-col items-start gap-2 rounded-md border border-border bg-card p-4 text-left transition-colors hover:border-[var(--brass)]/60 hover:bg-accent/40 focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none sm:p-5',
+        'group v4-card v4-lift flex w-full flex-col items-start gap-2 rounded-2xl border border-border bg-card p-4 text-left hover:border-[var(--brass)]/60 focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none sm:p-5',
         className,
       )}
       aria-label={`Open profile: ${entity.primaryName}`}

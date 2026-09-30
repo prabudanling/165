@@ -4,17 +4,18 @@ export const CATALOG = {
   // ---------- navigasi ----------
   'nav.home': ['Beranda', 'Home'],
   'nav.explore': ['Jelajah', 'Explore'],
-  'nav.library': ['Perpustakaan', 'Library'],
+  'nav.library': ['Pustaka', 'Library'],
   'nav.archive': ['Arsip', 'Archive'],
   'nav.research': ['Riset', 'Research'],
   'nav.academy': ['Akademi', 'Academy'],
   'nav.media': ['Media', 'Media'],
-  'nav.trust': ['Kepercayaan & Metode', 'Trust & Method'],
-  'nav.about': ['Tentang 165', 'About 165'],
+  'nav.trust': ['Kepercayaan', 'Trust'],
+  'nav.about': ['Tentang', 'About'],
   'nav.documents': ['Dokumen', 'Documents'],
   'nav.seo': ['SEO', 'SEO'],
-  'nav.contribute': ['Berpartisipasi', 'Contribute'],
+  'nav.contribute': ['Kontribusi', 'Contribute'],
   'nav.admin': ['Ruang Admin', 'Admin Room'],
+  'nav.more': ['Lainnya', 'More'],
 
   // ---------- kepala halaman ----------
   'header.tagline': ['TQN Qodiriah Naqsabandiyah', 'TQN Qodiriah Naqsabandiyah'],

@@ -67,7 +67,7 @@ export function LanguagePicker({ compact = false }: { compact?: boolean }) {
         aria-haspopup="dialog"
         aria-label={`${t('header.language')}: ${meta?.native ?? lang}`}
         className={cn(
-          'border-border bg-card hover:bg-accent inline-flex h-8 items-center gap-1.5 rounded-sm border px-2.5 text-[13px] font-medium transition-colors',
+          'border-border bg-card hover:bg-accent inline-flex h-8 items-center gap-1.5 whitespace-nowrap rounded-full border px-3 text-[12.5px] font-semibold transition-colors',
           compact && 'h-9 w-full justify-center px-3',
         )}
       >

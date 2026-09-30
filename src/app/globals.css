@@ -3,7 +3,7 @@
 
 @custom-variant dark (&:is(.dark *));
 
-/* 165 display & multilingual fonts — non-inline so variables are emitted */
+/* 165 v.4 — display & multilingual fonts (non-inline so variables are emitted) */
 @theme {
   --font-display: "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, "Times New Roman", serif;
   --font-arabic: "Amiri", "Scheherazade New", "Noto Naskh Arabic", serif;
@@ -12,7 +12,8 @@
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
+  /* v.4 — Nunito: rounded, friendly, smooth (self-hosted via next/font) */
+  --font-sans: var(--font-nunito), var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
   --font-mono: var(--font-geist-mono);
   --color-sidebar-ring: var(--sidebar-ring);
   --color-sidebar-border: var(--sidebar-border);
@@ -47,74 +48,74 @@
   --color-brass-soft: var(--brass-soft);
   --color-ink: var(--ink);
   --color-parchment: var(--parchment);
-  --radius-sm: calc(var(--radius) - 4px);
+  --radius-sm: calc(var(--radius) - 6px);
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
-  --radius-xl: calc(var(--radius) + 4px);
+  --radius-xl: calc(var(--radius) + 6px);
 }
 
 :root {
-  --radius: 0.375rem;
-  /* 165 institutional palette — parchment, deep green ink, brass */
-  --background: oklch(0.969 0.009 95);
-  --foreground: oklch(0.25 0.025 165);
-  --card: oklch(0.993 0.004 95);
-  --card-foreground: oklch(0.25 0.025 165);
-  --popover: oklch(0.993 0.004 95);
-  --popover-foreground: oklch(0.25 0.025 165);
-  --primary: oklch(0.33 0.062 165);
-  --primary-foreground: oklch(0.975 0.008 95);
-  --secondary: oklch(0.935 0.012 100);
-  --secondary-foreground: oklch(0.3 0.05 165);
-  --muted: oklch(0.94 0.012 100);
-  --muted-foreground: oklch(0.475 0.025 150);
-  --accent: oklch(0.935 0.018 100);
-  --accent-foreground: oklch(0.3 0.05 165);
-  --destructive: oklch(0.5 0.14 25);
-  --border: oklch(0.885 0.018 100);
-  --input: oklch(0.885 0.018 100);
-  --ring: oklch(0.4 0.07 160);
-  --chart-1: oklch(0.4 0.09 160);
-  --chart-2: oklch(0.62 0.1 80);
-  --chart-3: oklch(0.55 0.08 150);
-  --chart-4: oklch(0.45 0.05 130);
-  --chart-5: oklch(0.5 0.07 60);
-  --sidebar: oklch(0.96 0.01 98);
-  --sidebar-foreground: oklch(0.25 0.025 165);
-  --sidebar-primary: oklch(0.33 0.062 165);
-  --sidebar-primary-foreground: oklch(0.975 0.008 95);
-  --sidebar-accent: oklch(0.935 0.012 100);
-  --sidebar-accent-foreground: oklch(0.3 0.05 165);
-  --sidebar-border: oklch(0.885 0.018 100);
-  --sidebar-ring: oklch(0.4 0.07 160);
-  /* 165 tokens */
-  --brass: oklch(0.55 0.09 85);
-  --brass-soft: oklch(0.9 0.06 90);
-  --ink: oklch(0.25 0.025 165);
-  --parchment: oklch(0.969 0.009 95);
+  /* 165 v.4 — "Emerald Radiance": cream canvas, vivid emerald, glowing gold */
+  --radius: 1rem;
+  --background: oklch(0.975 0.009 95);
+  --foreground: oklch(0.26 0.03 165);
+  --card: oklch(0.994 0.003 95);
+  --card-foreground: oklch(0.26 0.03 165);
+  --popover: oklch(0.994 0.003 95);
+  --popover-foreground: oklch(0.26 0.03 165);
+  --primary: oklch(0.46 0.105 163);
+  --primary-foreground: oklch(0.985 0.005 120);
+  --secondary: oklch(0.947 0.018 128);
+  --secondary-foreground: oklch(0.3 0.055 163);
+  --muted: oklch(0.95 0.014 110);
+  --muted-foreground: oklch(0.48 0.032 155);
+  --accent: oklch(0.93 0.028 145);
+  --accent-foreground: oklch(0.3 0.055 163);
+  --destructive: oklch(0.55 0.16 25);
+  --border: oklch(0.905 0.02 115);
+  --input: oklch(0.905 0.02 115);
+  --ring: oklch(0.62 0.12 80);
+  --chart-1: oklch(0.5 0.11 163);
+  --chart-2: oklch(0.68 0.13 78);
+  --chart-3: oklch(0.55 0.08 172);
+  --chart-4: oklch(0.6 0.09 130);
+  --chart-5: oklch(0.62 0.1 45);
+  --sidebar: oklch(0.965 0.012 110);
+  --sidebar-foreground: oklch(0.26 0.03 165);
+  --sidebar-primary: oklch(0.46 0.105 163);
+  --sidebar-primary-foreground: oklch(0.985 0.005 120);
+  --sidebar-accent: oklch(0.947 0.018 128);
+  --sidebar-accent-foreground: oklch(0.3 0.055 163);
+  --sidebar-border: oklch(0.905 0.02 115);
+  --sidebar-ring: oklch(0.62 0.12 80);
+  /* 165 tokens — brass is now vivid glowing gold */
+  --brass: oklch(0.64 0.125 78);
+  --brass-soft: oklch(0.935 0.055 88);
+  --ink: oklch(0.26 0.03 165);
+  --parchment: oklch(0.975 0.009 95);
 }
 
 .dark {
-  --background: oklch(0.18 0.02 165);
-  --foreground: oklch(0.93 0.01 95);
-  --card: oklch(0.22 0.025 165);
-  --card-foreground: oklch(0.93 0.01 95);
-  --popover: oklch(0.22 0.025 165);
-  --popover-foreground: oklch(0.93 0.01 95);
-  --primary: oklch(0.83 0.06 90);
-  --primary-foreground: oklch(0.2 0.03 165);
-  --secondary: oklch(0.27 0.03 165);
-  --secondary-foreground: oklch(0.93 0.01 95);
-  --muted: oklch(0.27 0.03 165);
-  --muted-foreground: oklch(0.68 0.02 120);
-  --accent: oklch(0.27 0.03 165);
-  --accent-foreground: oklch(0.93 0.01 95);
-  --destructive: oklch(0.62 0.16 25);
-  --border: oklch(0.32 0.03 165);
-  --input: oklch(0.32 0.03 165);
-  --ring: oklch(0.5 0.06 120);
-  --brass: oklch(0.72 0.1 85);
-  --brass-soft: oklch(0.3 0.04 90);
+  --background: oklch(0.19 0.022 165);
+  --foreground: oklch(0.94 0.01 95);
+  --card: oklch(0.23 0.026 165);
+  --card-foreground: oklch(0.94 0.01 95);
+  --popover: oklch(0.23 0.026 165);
+  --popover-foreground: oklch(0.94 0.01 95);
+  --primary: oklch(0.78 0.1 150);
+  --primary-foreground: oklch(0.21 0.03 165);
+  --secondary: oklch(0.28 0.03 163);
+  --secondary-foreground: oklch(0.93 0.012 120);
+  --muted: oklch(0.28 0.03 160);
+  --muted-foreground: oklch(0.7 0.025 130);
+  --accent: oklch(0.28 0.03 160);
+  --accent-foreground: oklch(0.93 0.012 120);
+  --destructive: oklch(0.65 0.17 25);
+  --border: oklch(0.33 0.03 163);
+  --input: oklch(0.33 0.03 163);
+  --ring: oklch(0.62 0.12 80);
+  --brass: oklch(0.76 0.115 82);
+  --brass-soft: oklch(0.31 0.045 90);
 }
 
 @layer base {
@@ -123,11 +124,15 @@
   }
   body {
     @apply bg-background text-foreground;
+    /* v.4 — explicit chain: font vars live on <body> (next/font), so resolve here */
+    font-family: var(--font-nunito), var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
     font-feature-settings: "liga" 1, "kern" 1;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
   }
 }
 
-/* subtle parchment weave — restrained, print-like */
+/* subtle parchment weave — restrained, print-like (legacy surfaces) */
 .parchment-texture {
   background-image:
     radial-gradient(oklch(0.9 0.015 100 / 0.55) 1px, transparent 1px),
@@ -147,14 +152,91 @@
 .nice-scroll::-webkit-scrollbar { width: 8px; height: 8px; }
 .nice-scroll::-webkit-scrollbar-track { background: transparent; }
 .nice-scroll::-webkit-scrollbar-thumb {
-  background: oklch(0.8 0.02 100 / 0.9);
+  background: oklch(0.82 0.03 115 / 0.9);
   border-radius: 8px;
 }
-.nice-scroll::-webkit-scrollbar-thumb:hover { background: oklch(0.7 0.03 110); }
+.nice-scroll::-webkit-scrollbar-thumb:hover { background: oklch(0.7 0.05 110); }
 
 /* small-caps institutional label */
 .label-caps {
   font-variant-caps: all-small-caps;
   letter-spacing: 0.14em;
   font-weight: 600;
+}
+
+/* ============================================================
+   165 v.4 — "Emerald Radiance" smooth layer
+   Soft mesh gradients, glow shadows, gentle motion.
+   ============================================================ */
+
+/* smooth tri-color mesh wash (hero / principle panels) */
+.v4-mesh {
+  background-image:
+    radial-gradient(46rem 26rem at 10% -10%, oklch(0.87 0.075 152 / 0.55), transparent 62%),
+    radial-gradient(40rem 24rem at 94% -4%, oklch(0.94 0.07 88 / 0.65), transparent 64%),
+    radial-gradient(34rem 22rem at 50% 122%, oklch(0.88 0.06 172 / 0.5), transparent 62%),
+    radial-gradient(20rem 14rem at 78% 78%, oklch(0.92 0.045 60 / 0.35), transparent 70%);
+}
+.dark .v4-mesh {
+  background-image:
+    radial-gradient(46rem 26rem at 10% -10%, oklch(0.42 0.06 160 / 0.4), transparent 62%),
+    radial-gradient(40rem 24rem at 94% -4%, oklch(0.45 0.06 88 / 0.32), transparent 64%),
+    radial-gradient(34rem 22rem at 50% 122%, oklch(0.4 0.05 170 / 0.35), transparent 62%),
+    radial-gradient(20rem 14rem at 78% 78%, oklch(0.42 0.04 60 / 0.22), transparent 70%);
+}
+
+/* emerald → gold gradient headline text */
+.v4-gradient-text {
+  background-image: linear-gradient(105deg, oklch(0.42 0.11 163) 10%, oklch(0.52 0.105 152) 45%, oklch(0.66 0.13 76) 90%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+.dark .v4-gradient-text {
+  background-image: linear-gradient(105deg, oklch(0.82 0.09 155) 10%, oklch(0.84 0.09 120) 45%, oklch(0.82 0.12 82) 90%);
+}
+
+/* soft elevated card + gentle hover lift (GPU-only transforms) */
+.v4-card {
+  border-radius: calc(var(--radius) + 4px);
+  box-shadow:
+    0 1px 2px oklch(0.3 0.03 160 / 0.05),
+    0 10px 30px -14px oklch(0.32 0.06 160 / 0.14);
+}
+.v4-lift {
+  transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.35s cubic-bezier(0.22, 1, 0.36, 1), border-color 0.35s;
+  will-change: transform;
+}
+.v4-lift:hover {
+  transform: translateY(-4px);
+  box-shadow:
+    0 2px 4px oklch(0.3 0.03 160 / 0.05),
+    0 22px 44px -16px oklch(0.36 0.08 160 / 0.26);
+}
+
+/* emerald glow for primary buttons */
+.v4-glow {
+  box-shadow: 0 8px 22px -8px oklch(0.46 0.11 163 / 0.5);
+}
+.v4-glow:hover {
+  box-shadow: 0 12px 30px -8px oklch(0.46 0.11 163 / 0.6);
+}
+.v4-glow-gold {
+  box-shadow: 0 8px 22px -8px oklch(0.64 0.125 78 / 0.45);
+}
+
+/* gentle floating motion for ornaments (reduced-motion safe via motion-reduce:animate-none) */
+@keyframes v4-float {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  50% { transform: translateY(-9px) rotate(2deg); }
+}
+@keyframes v4-breathe {
+  0%, 100% { opacity: 0.55; transform: scale(1); }
+  50% { opacity: 0.9; transform: scale(1.06); }
+}
+.v4-float { animation: v4-float 6s ease-in-out infinite; }
+.v4-breathe { animation: v4-breathe 8s ease-in-out infinite; }
+@media (prefers-reduced-motion: reduce) {
+  .v4-float, .v4-breathe { animation: none; }
+  .v4-lift, .v4-lift:hover { transform: none; }
 }

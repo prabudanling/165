@@ -267,7 +267,7 @@ export function DocumentsSection({ onNavigate }: { onNavigate?: (section: string
     return (
       <div>
         {/* reader header (sticky under site header) */}
-        <div className="border-border/80 bg-background/95 sticky top-16 z-30 -mx-4 border-b px-4 py-3 backdrop-blur sm:-mx-6 sm:px-6">
+        <div className="border-border/80 bg-background/95 sticky top-[4.75rem] z-30 -mx-4 border-b px-4 py-3 backdrop-blur sm:-mx-6 sm:px-6">
           <div className="flex flex-wrap items-center gap-x-3 gap-y-1.5">
             <button
               onClick={backToShelf}
@@ -294,7 +294,7 @@ export function DocumentsSection({ onNavigate }: { onNavigate?: (section: string
         <div className="mt-7 flex gap-10">
           {/* TOC sidebar (desktop) */}
           <aside className="hidden w-64 shrink-0 xl:block" aria-label={t('docs.toc')}>
-            <div className="border-border/70 bg-card/40 sticky top-[9.5rem] max-h-[calc(100vh-11rem)] overflow-y-auto rounded-md border p-3 nice-scroll">
+            <div className="border-border/70 bg-card/40 sticky top-[10.5rem] max-h-[calc(100vh-12rem)] overflow-y-auto rounded-2xl border p-3 nice-scroll">
               <p className="label-caps px-1 pb-2 text-[11px] text-muted-foreground">{t('docs.toc')} · {t('docs.tocCount', { n: toc.length })}</p>
               <TocList toc={toc} active={activeAnchor} onJump={jump} />
             </div>

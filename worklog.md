@@ -193,3 +193,24 @@ Stage Summary:
 - 165 kini bilingual-institutional: BAHASA INDONESIA sebagai bawaan SSR+client, 6 bahasa kurasi penuh, ~87 bahasa kamus AI (pipeline latar berjalan, registry update otomatis/HMR), total 178 bahasa dapat dipilih dengan presentasi jujur; 11 bahasa RTL didukung penuh.
 - Status pipeline saat arsip: 6/87 selesai (id-en-ms-jv-su-ar + zh/ja/fr/de), sisanya terus masuk; bahasa tanpa kamus menampilkan antarmuka Indonesia (bukan kosong, bukan angka 0 — doctrine yang sama).
 - Konten dokumen & catatan warisan sengaja tidak diterjemahkan (verbatim doctrine) — antarmuka multi-bahasa, isi sumber tetap asli.
+
+---
+Task ID: 25
+Agent: Chief Digital Architect (main)
+Task: 165 v.4 — "Emerald Radiance": permintaan founder (header dirapikan ala website anak-anak modern, visual lebih smooth, warna lebih keren) → upgrade identitas visual menyeluruh: palet zamrud-emas baru, radius pil besar, font bulat Nunito, header kaca melayang dengan nav pengukur-diri, hero gradien mesh + ornamen melayang.
+
+Work Log:
+- PALET (globals.css ditulis ulang): primary zamrud lebih hidup oklch(0.46 0.105 163), brass → emas bercahaya oklch(0.64 0.125 78), latar krem lebih terang, radius global 0.375rem → 1rem (semua komponen shadcn otomatis membulat); dark mode diselaraskan.
+- LAPISAN v.4: utilitas .v4-mesh (gradien mesh zamrud-emas-teal multi-radial, versi dark), .v4-gradient-text (headline zamrud→emas), .v4-card/.v4-lift (kartu lembut + hover lift transform-only), .v4-glow/.v4-glow-gold; keyframes v4-float & v4-breathe + guard prefers-reduced-motion (CSS & motion-reduce:animate-none).
+- FONT: Nunito (bulat, ramah) via next/font/google self-hosted (--font-nunito) + rantai eksplisit font-family di body. TEMUAN PENTING: terungkap var(--font-sans) lama tak pernah benar-benar aktif (preflight TW4 tidak menautkan --default-font-family; var font hidup di <body>) → kini dirantai eksplisit; perlu restart + rm -rf .next karena Turbopack menyajikan CSS basi.
+- HEADER v.4 (institution-app.tsx): header pil kaca MELAYANG (rounded-full, backdrop-blur, shadow, sticky), wordmark squircle gradien zamrud→emas (hover playfulness), nav pill dengan pill aktif berwarna + glow, CTA Kontribusi gradien, menu mobile kartu kaca rounded-3xl + item pill; footer: crest rounded-t-[2.5rem] + bar gradien zamrud-emas-teal + badge gradien.
+- NAV PENGUKUR-DIRI: audit 42 kamus i18n menemukan label terpanjang (fr 114 char vs id 80) → nav pasti luap untuk banyak bahasa. Solusi: baris ghost tak terlihat mengukur lebar tiap pill → item yang tak muat mengalir ke menu pil "···" (dropdown kaca); re-measure tiap render + ResizeObserver + document.fonts.ready; ghost dibungkus klip 40px agar tak melebarkan dokumen mobile. Terverifikasi: id 1440 = 11 pil muat; fr = 9 + "···"; 1280 = 8 + "···"; <1280 hamburger.
+- LABEL NAV diringkas (catalog.ts + 4 kamus kurasi): Perpustakaan→Pustaka, Kepercayaan & Metode→Kepercayaan, Tentang 165→Tentang, Berpartisipasi→Kontribusi; kunci baru nav.more (id/en/ms/jv/su/ar).
+- PRIMITIF (ui.tsx, entity-card.tsx): Kicker → pil emas dengan titik; Evidence/Status/TypeBadge → rounded-full; EmptyState rounded-3xl border dashed + chip ikon; HonestNote & Skeleton rounded-2xl; EntityCard v4-card + v4-lift.
+- HOME v.4 (home.tsx): hero rounded-[2.5rem] v4-mesh + 3 orb glow bernapas + 4 ornamen melayang (Buku/Sparkles/Gulungan/Bulan, chip putih rounded-2xl) + "165" gradient-text + tombol pil gradien (hover lift, active scale); kartu statistik 4 warna (chip ikon rounded-2xl + garis gradien); grid identitas 10 kartu dengan chip ikon 6 hue berputar + hover rotate; panel prinsip v4-mesh + sparkles; banner dokumen gradien emas→zamrud + chip ikon gradien emas; offsets sticky dokumen disesuaikan (toolbar 76px, TOC 168px).
+- VERIFIKASI (agent-browser): lint ✓ tsc ✓ (0 error); desktop 1440/1280: tanpa luap, ··· & dropdown fr berfungsi, klik item navigasi ✓; mobile iPhone 14: overflowX false (390=390), kartu menu 13 item, pembaca dokumen sticky 76px presisi; Nunito computed aktif + font loaded; konsol & pageerrors bersih; dev.log hanya 200. Screenshot: v4-home-hero, v4-home-mid, v4-home-featured, v4-home-footer, v4-final-desktop, v4-final-mobile, v4-more-menu-fr, v4-header-french.
+
+Stage Summary:
+- 165 resmi v.4 "Emerald Radiance": hangat & playful ala website anak modern (pil, gradien mulus, ornamen melayang, font bulat) namun martabat institusional terjaga (serif display, rule ganda, disiplin sumber utuh — tak ada konten/data yang berubah).
+- Nav tahan 178 bahasa: sistem pengukur-diri memastikan tak pernah luap pada bahasa mana pun; hamburger di <1280px.
+- Bonus perbaikan struktural: rantai font UI kini benar-benar aktif (sebelumnya diam-diam fallback sistem).

@@ -1,8 +1,8 @@
 'use client'
 
 // 165 — Institution App Shell (single-route SPA per sandbox constraint)
-// Header nav · section router · entity profile overlay · sticky footer
-import { useCallback, useEffect, useState } from 'react'
+// Header nav v.4 (floating glass pill + self-measuring overflow nav) · section router · entity profile overlay · sticky footer
+import { useCallback, useEffect, useRef, useState } from 'react'
 import { Menu, ShieldCheck, X } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { initLanguage, useI18n } from '@/lib/i18n'
@@ -46,6 +46,13 @@ export function InstitutionApp() {
   const [section, setSection] = useState<SectionKey>('home')
   const [entitySlug, setEntitySlug] = useState<string | null>(null)
   const [menuOpen, setMenuOpen] = useState(false)
+  const [moreOpen, setMoreOpen] = useState(false)
+  // v.4 self-measuring nav: items that do not fit flow into the "···" pill
+  const [navLimit, setNavLimit] = useState<number>(NAV.length)
+  const pillRef = useRef<HTMLDivElement>(null)
+  const ghostRef = useRef<HTMLDivElement>(null)
+  const fixedRef = useRef<HTMLDivElement>(null)
+  const moreWrapRef = useRef<HTMLDivElement>(null)
   const { t } = useI18n()
 
   // muat bahasa tersimpan (setelah hydration — bebas mismatch)
@@ -57,6 +64,7 @@ export function InstitutionApp() {
     setSection(s as SectionKey)
     setEntitySlug(null)
     setMenuOpen(false)
+    setMoreOpen(false)
     try { history.replaceState(null, '', s === 'home' ? '#' : `#${s}`) } catch { /* noop */ }
   }, [])
 
@@ -69,6 +77,54 @@ export function InstitutionApp() {
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'smooth' })
   }, [section, entitySlug])
+
+  // v.4 — measure how many nav pills fit; the rest collapse into "···"
+  useEffect(() => {
+    const measure = () => {
+      const pill = pillRef.current
+      const ghost = ghostRef.current
+      const fixed = fixedRef.current
+      if (!pill || !ghost || !fixed) return
+      const moreReserve = 92 // "···" pill + safety
+      const avail =
+        pill.clientWidth - 12 /* pl */ - 8 /* pr */ - 40 /* logo */ - 8 /* gap */ - fixed.offsetWidth - moreReserve
+      let acc = 0
+      let limit: number = NAV.length
+      for (let i = 0; i < NAV.length; i++) {
+        const w = (ghost.children[i] as HTMLElement | undefined)?.offsetWidth ?? 0
+        if (acc + w > avail) {
+          limit = i
+          break
+        }
+        acc += w + 2 // nav gap-0.5
+      }
+      setNavLimit(Math.max(limit, 2))
+    }
+    measure()
+    // label widths change when the webfont finishes loading — re-measure
+    document.fonts?.ready.then(measure).catch(() => {})
+    const ro = new ResizeObserver(measure)
+    if (pillRef.current) ro.observe(pillRef.current)
+    return () => ro.disconnect()
+    // no deps: re-measure after EVERY render (language switches, viewport, fonts)
+  })
+
+  // tutup menu "···" saat klik di luar / Escape
+  useEffect(() => {
+    if (!moreOpen) return
+    const onDown = (e: MouseEvent) => {
+      if (moreWrapRef.current && !moreWrapRef.current.contains(e.target as Node)) setMoreOpen(false)
+    }
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') setMoreOpen(false)
+    }
+    document.addEventListener('mousedown', onDown)
+    document.addEventListener('keydown', onKey)
+    return () => {
+      document.removeEventListener('mousedown', onDown)
+      document.removeEventListener('keydown', onKey)
+    }
+  }, [moreOpen])
 
   // deep-link support: /#admin opens the admin room (deferred setState keeps hooks rules happy)
   useEffect(() => {
@@ -94,50 +150,97 @@ export function InstitutionApp() {
         {t('header.skip')}
       </a>
 
-      {/* ---------------- header ---------------- */}
-      <header className="border-border/80 bg-background/95 supports-[backdrop-filter]:bg-background/85 sticky top-0 z-50 border-b backdrop-blur">
-        <div className="mx-auto flex h-16 max-w-6xl items-center gap-4 px-4 sm:px-6">
-          {/* wordmark */}
-          <button type="button" onClick={() => navigate('home')} className="group flex items-center gap-2.5 text-left focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none" aria-label="165 — home">
-            <span className="border-[var(--brass)]/50 bg-secondary flex size-9 items-center justify-center rounded-sm border font-display text-[15px] font-bold tracking-tight">
+      {/* ---------------- header v.4 — floating glass pill ---------------- */}
+      <header className="sticky top-0 z-50 px-3 pt-3 sm:px-4">
+        <div ref={pillRef} className="border-border/60 bg-card/85 supports-[backdrop-filter]:bg-card/70 shadow-emerald-950/5 relative mx-auto flex h-16 max-w-7xl items-center gap-2 rounded-full border pr-2 pl-2.5 shadow-lg backdrop-blur-xl sm:pl-3">
+          {/* ghost measurer — invisible twin row used to compute pill widths
+              (clipped to 40px so it never widens the document on mobile) */}
+          <div aria-hidden className="pointer-events-none invisible absolute top-0 left-0 size-10 overflow-hidden">
+            <div ref={ghostRef} className="flex w-max items-center gap-0.5">
+              {NAV.map((n) => (
+                <span key={n.key} className="whitespace-nowrap rounded-full px-2 py-1.5 text-[12.5px] font-semibold">
+                  {t(`nav.${n.key}` as CatalogKey)}
+                </span>
+              ))}
+            </div>
+          </div>
+
+          {/* wordmark — gradient squircle (icon-only, kid-modern) */}
+          <button type="button" onClick={() => navigate('home')} className="group flex shrink-0 items-center text-left focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none" aria-label="165 — home">
+            <span className="bg-gradient-to-br from-primary via-emerald-500 to-[var(--brass)] v4-glow flex size-10 items-center justify-center rounded-2xl font-display text-[15px] font-bold tracking-tight text-white transition-transform duration-300 group-hover:scale-105 group-hover:-rotate-3 group-active:scale-95">
               165
-            </span>
-            <span className="hidden min-w-0 sm:block">
-              <span className="label-caps block text-[11px] leading-tight text-[var(--brass)]">{t('header.tagline')}</span>
-              <span className="text-muted-foreground block text-[11px] leading-tight">{t('header.sub')}</span>
             </span>
           </button>
 
-          {/* desktop nav */}
-          <nav className="ml-auto hidden items-center gap-0.5 lg:flex" aria-label="Primary">
-            {NAV.map((n) => (
+          {/* desktop nav — colored active pill, overflow collapses into ··· */}
+          <nav className="ml-auto hidden min-w-0 items-center gap-0.5 xl:flex" aria-label="Primary">
+            {NAV.slice(0, navLimit).map((n) => (
               <button
                 key={n.key}
                 onClick={() => navigate(n.key)}
                 aria-current={section === n.key && !entitySlug ? 'page' : undefined}
                 className={cn(
-                  'rounded-sm px-2.5 py-2 text-[13px] font-medium transition-colors',
-                  section === n.key && !entitySlug ? 'text-primary' : 'text-muted-foreground hover:text-foreground',
+                  'whitespace-nowrap rounded-full px-2 py-1.5 text-[12.5px] font-semibold transition-all duration-200',
+                  section === n.key && !entitySlug
+                    ? 'bg-primary text-primary-foreground v4-glow scale-[1.03]'
+                    : 'text-muted-foreground hover:bg-secondary hover:text-foreground active:scale-95',
                 )}
               >
                 {t(`nav.${n.key}` as CatalogKey)}
               </button>
             ))}
-            <LanguagePicker />
-            <button
-              onClick={() => navigate('contribute')}
-              className={cn(
-                'ml-1 inline-flex h-8 items-center rounded-sm px-3.5 text-[13px] font-medium transition-colors',
-                section === 'contribute' && !entitySlug ? 'bg-primary text-primary-foreground' : 'bg-primary/90 text-primary-foreground hover:bg-primary',
-              )}
-            >
-              {t('nav.contribute')}
-            </button>
+            {navLimit < NAV.length && (
+              <div ref={moreWrapRef} className="relative shrink-0">
+                <button
+                  onClick={() => setMoreOpen((v) => !v)}
+                  aria-expanded={moreOpen}
+                  aria-haspopup="menu"
+                  aria-label={t('nav.more')}
+                  className={cn(
+                    'inline-flex h-8 items-center justify-center rounded-full px-2.5 text-[14px] font-bold tracking-widest transition-all duration-200 active:scale-90',
+                    moreOpen ? 'bg-secondary text-foreground' : 'text-muted-foreground hover:bg-secondary hover:text-foreground',
+                  )}
+                >
+                  ···
+                </button>
+                {moreOpen && (
+                  <div className="border-border/60 bg-card/95 animate-in fade-in-0 zoom-in-95 absolute right-0 top-full z-50 mt-2 flex w-52 flex-col gap-0.5 rounded-3xl border p-2 shadow-xl shadow-emerald-950/5 backdrop-blur-xl duration-150">
+                    {NAV.slice(navLimit).map((n) => (
+                      <button
+                        key={n.key}
+                        onClick={() => navigate(n.key)}
+                        aria-current={section === n.key && !entitySlug ? 'page' : undefined}
+                        className={cn(
+                          'rounded-2xl px-3 py-2 text-left text-[13px] font-semibold whitespace-nowrap transition-colors',
+                          section === n.key && !entitySlug ? 'bg-primary/10 text-primary' : 'text-foreground/80 hover:bg-secondary',
+                        )}
+                      >
+                        {t(`nav.${n.key}` as CatalogKey)}
+                      </button>
+                    ))}
+                  </div>
+                )}
+              </div>
+            )}
+            <div ref={fixedRef} className="ml-1 flex shrink-0 items-center gap-1">
+              <LanguagePicker />
+              <button
+                onClick={() => navigate('contribute')}
+                className={cn(
+                  'inline-flex h-9 items-center whitespace-nowrap rounded-full px-3.5 text-[13px] font-bold transition-all duration-200',
+                  section === 'contribute' && !entitySlug
+                    ? 'bg-primary text-primary-foreground v4-glow'
+                    : 'bg-gradient-to-r from-primary to-emerald-500 text-primary-foreground v4-glow hover:scale-[1.04] hover:shadow-xl active:scale-95',
+                )}
+              >
+                {t('nav.contribute')}
+              </button>
+            </div>
           </nav>
 
           {/* mobile menu button */}
           <button
-            className="border-border ml-auto inline-flex size-10 items-center justify-center rounded-sm border lg:hidden"
+            className="border-border bg-secondary/70 text-foreground hover:bg-secondary ml-auto inline-flex size-10 shrink-0 items-center justify-center rounded-full border transition-all duration-200 active:scale-90 xl:hidden"
             onClick={() => setMenuOpen((v) => !v)}
             aria-expanded={menuOpen}
             aria-label={menuOpen ? t('header.closeMenu') : t('header.openMenu')}
@@ -146,18 +249,20 @@ export function InstitutionApp() {
           </button>
         </div>
 
-        {/* mobile nav */}
+        {/* mobile nav — rounded glass card */}
         {menuOpen && (
-          <nav className="border-border/70 border-t lg:hidden" aria-label="Mobile">
-            <ul className="mx-auto max-w-6xl px-4 py-2 sm:px-6">
+          <nav className="mx-auto mt-2 max-w-6xl xl:hidden" aria-label="Mobile">
+            <ul className="border-border/60 bg-card/95 animate-in fade-in-0 zoom-in-95 flex flex-col gap-0.5 rounded-3xl border p-3 shadow-xl shadow-emerald-950/5 backdrop-blur-xl duration-200">
               {[...NAV, { key: 'contribute' as const, label: 'Contribute' }].map((n) => (
                 <li key={n.key}>
                   <button
                     onClick={() => navigate(n.key)}
                     aria-current={section === n.key && !entitySlug ? 'page' : undefined}
                     className={cn(
-                      'w-full rounded-sm px-2 py-2.5 text-left text-[14px] font-medium transition-colors',
-                      section === n.key && !entitySlug ? 'text-primary' : 'text-foreground/80',
+                      'w-full rounded-2xl px-3.5 py-2.5 text-left text-[14px] font-semibold transition-all duration-150 active:scale-[0.98]',
+                      section === n.key && !entitySlug
+                        ? 'bg-primary/10 text-primary'
+                        : 'text-foreground/80 hover:bg-secondary active:bg-secondary',
                     )}
                   >
                     {t(`nav.${n.key}` as CatalogKey)}
@@ -195,13 +300,17 @@ export function InstitutionApp() {
         )}
       </main>
 
-      {/* ---------------- footer (sticky bottom via mt-auto) ---------------- */}
-      <footer className="border-border/80 bg-secondary/50 border-t pb-[env(safe-area-inset-bottom)]">
+      {/* ---------------- footer (sticky bottom via mt-auto) — v.4 rounded crest ---------------- */}
+      <footer className="bg-secondary/60 border-border/70 mt-14 overflow-hidden rounded-t-[2.5rem] border-t pb-[env(safe-area-inset-bottom)]">
+        <div aria-hidden className="bg-gradient-to-r from-primary via-[var(--brass)] to-teal-600 h-1 w-full" />
         <div className="mx-auto max-w-6xl px-4 py-10 sm:px-6">
           <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-4">
             <div>
-              <p className="font-display text-lg font-semibold">165</p>
-              <p className="text-muted-foreground mt-1.5 text-[13px] leading-relaxed">
+              <div className="flex items-center gap-2.5">
+                <span className="bg-gradient-to-br from-primary via-emerald-500 to-[var(--brass)] flex size-9 items-center justify-center rounded-2xl font-display text-[13px] font-bold text-white">165</span>
+                <p className="font-display text-lg font-semibold">165</p>
+              </div>
+              <p className="text-muted-foreground mt-2.5 text-[13px] leading-relaxed">
                 {t('footer.desc')}
               </p>
               <p className="text-muted-foreground mt-3 inline-flex items-center gap-1.5 text-[12px]">

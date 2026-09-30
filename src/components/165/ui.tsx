@@ -45,7 +45,7 @@ export function EvidenceBadge({ level, className, withLabel }: { level: string; 
   return (
     <span
       title={def.desc}
-      className={cn('inline-flex items-center gap-1 rounded-sm border px-1.5 py-0.5 text-[11px] font-medium leading-none', tone.bg, tone.text, tone.border, className)}
+      className={cn('inline-flex items-center gap-1 rounded-full border px-2 py-0.5 text-[11px] font-bold leading-none', tone.bg, tone.text, tone.border, className)}
     >
       <span aria-hidden className="font-display">{level}</span>
       {withLabel && <span className="hidden sm:inline">{def.label.split('— ')[1]}</span>}
@@ -59,7 +59,7 @@ export function StatusBadge({ status, className, withLabel = true }: { status: s
   return (
     <span
       title={def.desc}
-      className={cn('inline-flex items-center gap-1.5 rounded-sm border px-1.5 py-0.5 text-[11px] font-medium leading-none', tone.bg, tone.text, tone.border, className)}
+      className={cn('inline-flex items-center gap-1.5 rounded-full border px-2 py-0.5 text-[11px] font-bold leading-none', tone.bg, tone.text, tone.border, className)}
     >
       <span aria-hidden className="inline-block size-1.5 rounded-full bg-current opacity-70" />
       {withLabel ? def.label : status}
@@ -72,7 +72,7 @@ export function TypeBadge({ type, className }: { type: string; className?: strin
   const hue = TYPE_HUE[type] ?? '#666'
   return (
     <span
-      className={cn('inline-flex items-center gap-1.5 rounded-sm border px-1.5 py-0.5 text-[11px] font-medium leading-none', className)}
+      className={cn('inline-flex items-center gap-1.5 rounded-full border px-2 py-0.5 text-[11px] font-bold leading-none', className)}
       style={{ backgroundColor: `${hue}14`, borderColor: `${hue}55`, color: hue }}
     >
       <span aria-hidden className="inline-block size-1.5 rounded-full" style={{ backgroundColor: hue }} />
@@ -82,8 +82,19 @@ export function TypeBadge({ type, className }: { type: string; className?: strin
 }
 
 // ---------- layout primitives ----------
+// v.4 — Kicker as a golden pill chip: playful, friendly, still institutional
 export function Kicker({ children, className }: { children: React.ReactNode; className?: string }) {
-  return <p className={cn('label-caps text-[13px] text-muted-foreground', className)}>{children}</p>
+  return (
+    <p
+      className={cn(
+        'border-[var(--brass)]/35 bg-[var(--brass-soft)]/60 text-[var(--brass)] inline-flex items-center gap-2 rounded-full border px-3.5 py-1.5 text-[11px] font-bold tracking-[0.12em] uppercase',
+        className,
+      )}
+    >
+      <span aria-hidden className="bg-[var(--brass)] inline-block size-1.5 rounded-full" />
+      {children}
+    </p>
+  )
 }
 
 export function SectionHeading({ kicker, title, lede, className }: { kicker: string; title: string; lede?: string; className?: string }) {
@@ -99,10 +110,10 @@ export function SectionHeading({ kicker, title, lede, className }: { kicker: str
 
 export function EmptyState({ icon: Icon, title, children, className }: { icon?: React.ComponentType<{ className?: string }>; title: string; children?: React.ReactNode; className?: string }) {
   return (
-    <div className={cn('rounded-md border border-dashed border-border bg-card/60 px-6 py-10 text-center', className)}>
+    <div className={cn('border-border bg-card/60 rounded-3xl border-2 border-dashed px-6 py-10 text-center', className)}>
       {Icon && (
-        <div className="mx-auto flex size-10 items-center justify-center rounded-full border border-border bg-secondary">
-          <Icon className="size-4.5 text-muted-foreground" aria-hidden />
+        <div className="bg-secondary mx-auto flex size-12 items-center justify-center rounded-2xl border border-border shadow-inner">
+          <Icon className="text-muted-foreground size-5" aria-hidden />
         </div>
       )}
       <h3 className="font-display mt-3 text-base font-semibold">{title}</h3>
@@ -114,7 +125,7 @@ export function EmptyState({ icon: Icon, title, children, className }: { icon?: 
 export function HonestNote({ children, tone = 'amber', className }: { children: React.ReactNode; tone?: 'amber' | 'green' | 'rose'; className?: string }) {
   const t = TONE[tone] ?? TONE.amber
   return (
-    <div className={cn('rounded-md border px-4 py-3 text-sm leading-relaxed', t.bg, t.text, t.border, className)}>
+    <div className={cn('rounded-2xl border px-4 py-3 text-sm leading-relaxed', t.bg, t.text, t.border, className)}>
       {children}
     </div>
   )
@@ -142,11 +153,11 @@ export function useApi<T>(url: string | null) {
 
 export function SkeletonCard() {
   return (
-    <div className="animate-pulse rounded-md border border-border bg-card p-5">
-      <div className="h-3 w-24 rounded bg-muted" />
-      <div className="mt-3 h-4 w-3/4 rounded bg-muted" />
-      <div className="mt-2 h-3 w-full rounded bg-muted" />
-      <div className="mt-1.5 h-3 w-5/6 rounded bg-muted" />
+    <div className="animate-pulse rounded-2xl border border-border bg-card p-5">
+      <div className="h-3 w-24 rounded-full bg-muted" />
+      <div className="mt-3 h-4 w-3/4 rounded-full bg-muted" />
+      <div className="mt-2 h-3 w-full rounded-full bg-muted" />
+      <div className="mt-1.5 h-3 w-5/6 rounded-full bg-muted" />
     </div>
   )
 }
