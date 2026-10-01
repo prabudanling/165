@@ -236,3 +236,20 @@ Stage Summary:
 - "Tanpa ada celah yang tidak terisi" ditepati dengan cara yang hanya bisa dipertanggungjawabkan: setiap mata yang bersumber terisi penuh; setiap segmen yang sumbernya diam direkam sebagai MATA BLOK yang jelas — bukan diisi nama karangan. Inilah yang membedakan 165 dari situs lain: bisa diisi cepat, tapi tidak pernah bohong.
 - Ketahanan penuh: data sanad ikut ter-bundle ke snapshot (Vercel-safe), API baru /api/sanad dengan fallback nol-database, kontribusi publik kini kebal terhadap reseed.
 - Menunggu deposit (siklus normal platform): kitab silsilah resmi TQN (untuk transkripsi per-nama MATA BLOK), ijazah & biografi lengkap Abah Krawanggana & Abah Sukanta dari jamaah/keluarga (kanal kontribusi siap), silsilah formal Suryalaya bila suatu saat diizinkan.
+
+---
+Task ID: 27
+Agent: Chief Digital Architect (main)
+Task: Permintaan langsung Founder — "tolong buatkan aku readme terbaik yang pernah ada di dunia ini sayang pakai bahasa indonesia dan bahasa inggris buat orang di dunia ini tertarik semua" → README.md bilingual penuh (Indonesia + Inggris) yang menarik dunia.
+
+Work Log:
+- FAKTA DULU (bukan karangan): statistik diambil langsung dari API hidup (/api/stats → 58 entitas · 36 relasi · 3 rantai sanad · 1 kontribusi; /api/sanad → featured 3 mursyid: Abah Anom/Krawanggana/Sukanta), definisi tingkat bukti A–F & 7 status verifikasi dibaca dari src/lib/165.ts, jumlah kamus i18n (58 JSON tersedia) & 6 dokumen kanon diverifikasi dari filesystem — setiap angka di README bisa dipertanggungjawabkan.
+- STRUKTUR README (719 baris): header ASCII-art "165" (ANSI Shadow) + 9 badge shields.io (Next.js 16, TS5, TW4, Prisma·SQLite, Bun, 178 bahasa, Bukti A–F, PURE APPEND, Sanad NEVER FABRICATED) + saklar bahasa ber-anchor eksplisit (<a id="id">/<a id="english">) agar tautan aman di semua renderer markdown.
+- SEKSI INDONESIA & ENGLISH masing-masing lengkap & ditulis native (bukan terjemahan kaku, padanan doktrin konsisten: Source-First → "Sumber Utama"/"Source-First", MATA BLOK → "BLOCKED LINK", Murni-Tambah → "Pure Append"): cerita Mengapa 165 Ada · tabel isi platform · ENAM PILIR DOKTRIN (termasuk tabel bukti A–F lengkap dengan contoh) · Koleksi Spesial Tiga Mursyid + diagram silsilah Banten (Sambas → Nawawi al-Bantani → Asnawi Caringin → Mama Kadzim → murid-murid, dengan segmen MATA BLOK ditandai jujur) · diagram ASCII arsitektur (browser → Next.js → queries.ts → SQLite|snapshot) + KISAH KETAHANAN SERVERLESS (luka lama dijadikan sistem) · Mulai Cepat (bun install → db:push → dev) · tabel 9 skrip · 178 bahasa (6 kurasi/87 AI/11 RTL/verbatim doctrine) · struktur proyek ter-annotasi · panduan deploy Vercel (db:export WAJIB) · 3 pintu kontribusi + 3 larangan mutlak (sanad karangan, sumber tanpa rujukan, hapus riwayat) · FAQ 6 butir (details/summary) · Roadmap 11 butir (8 selesai, 3 menunggu deposit) · penutup doa.
+- DOKTRIN TERSISIP DI TIAP BAGIAN: README sendiri menegaskan "kami tidak mengarang sejarah", celah sanad disebut undangan kontribusi, angka diakhiri catatan jujur bahwa statistik hidup dari API.
+- VERIFIKASI: wc 719 baris; anchor #id (baris 36) & #english (baris 376) terpasang; homepage 200; dev.log bersih (404 /api/documents hanya dari probe manual saya — dokumen memang ter-bundle, bukan endpoint).
+
+Stage Summary:
+- 165 kini punya README world-class bilingual 719 baris: Indonesia penuh + Inggris penuh, badge, tabel, diagram arsitektur ASCII, silsilah Banten, FAQ, roadmap, panduan kontribusi & deploy — semuanya berbasis data faktual API/kode, nol karangan.
+- README sekaligus jadi dokumen akuisisi pengguna baru: ITawan luar bisa langsung bun install; jamaah diarahkan ke kanal Kontribusi; majlis lain diundang fork dengan restu.
+- Catatan: clone GitHub perlu URL repo asli founder (di README pakai placeholder <pemilik>/<owner>) — tinggal diganti saat repo resmi dibuat.
