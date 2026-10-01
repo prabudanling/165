@@ -220,7 +220,7 @@ Buka **http://localhost:3000** — insyaAllah Anda akan disambut hero zamrud-ema
 
 - **Bahasa Indonesia** adalah bawaan resmi — sejak detik pertama server merender (SSR), bukan kedip-kedip setelah halaman terbuka
 - **6 bahasa kurasi tangan penuh**: Indonesia, Inggris, Melayu, Jawa, Sunda, Arab — ditulis menghormati register lokal masing-masing
-- **~87 bahasa kurasi AI** lewat pipeline terjemahan institusional: placeholder terkunci, brand terkunci, register hormat, skrip asli
+- **Target seluruh 172 bahasa kurasi AI** (semua bahasa non-kurasi di registry — amanat "seluruh bahasa, tak satu pun terlewat") lewat pipeline terjemahan institusional: placeholder terkunci, brand terkunci, register hormat, skrip asli; kamus masuk progresif (resume-safe), bahasa yang kamusnya belum siap menampilkan Bahasa Indonesia
 - **11 bahasa penuh RTL**: Arab, Farsy, Urdu, Ibrani, Pashto, Sindhi, Uighur, Kurdi, Yiddish, Divehi, Sorani — `dir="rtl"` benar-benar menyala
 - **Pemilih bahasa yang jujur**: titik hijau = kurasi, titik kuning = AI, dan bahasa yang kamusnya belum siap **menampilkan Indonesia — bukan kosong, bukan angka aneh**
 - **Konten warisan tetap verbatim**: antarmuka berbahasa apa pun, isi dokumen dan sanad tetap dalam bahasa sumbernya — *karena menerjemahkan naskah adalah tugas ulama, bukan mesin*
@@ -560,7 +560,7 @@ Open **http://localhost:3000** — you will be greeted by an emerald-gold hero w
 
 - **Indonesian** is the official default — from the first server render (SSR), not a flicker after page load
 - **6 fully hand-curated languages**: Indonesian, English, Malay, Javanese, Sundanese, Arabic — each honoring its own local register
-- **~87 AI-curated languages** via an institutional translation pipeline: locked placeholders, locked brand terms, honorific register, native scripts
+- **Target all 172 AI-curated languages** (every non-curated language in the registry — "all languages, none left behind") via an institutional translation pipeline: locked placeholders, locked brand terms, honorific register, native scripts; dictionaries arrive progressively (resume-safe), and a language whose dictionary is not ready yet displays Indonesian
 - **11 fully RTL languages**: Arabic, Persian, Urdu, Hebrew, Pashto, Sindhi, Uyghur, Kurdish, Yiddish, Divehi, Sorani — `dir="rtl"` genuinely engages
 - **An honest language picker**: green dot = curated, yellow dot = AI, and a language whose dictionary is not ready yet **displays Indonesian — never empty, never broken glyphs**
 - **Heritage content stays verbatim**: whatever the interface language, documents and sanad remain in their source language — *because translating scripture is the task of scholars, not machines*

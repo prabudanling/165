@@ -93,8 +93,8 @@ export const CATALOG = {
   'home.askTitle': ['Tanya 165', 'Ask 165'],
   'home.docsKicker': ['Kini terbuka · Ruang Dokumen', 'Now open · Document Room'],
   'home.docsTitle': [
-    'Enam dokumen kendali 165 — Master Control, Tata Kelola, Konstitusi Editorial, Kebijakan Sumber — kini dapat dibaca utuh.',
-    'Six governing documents of 165 — Master Control, Governance, Editorial Constitution, Source Policy — are now readable in full.',
+    'Dokumen kanonik 165 — Master Control, Tata Kelola, Konstitusi Editorial, Kebijakan Sumber, dan koleksi Ajaran & Dalil — kini dapat dibaca utuh.',
+    'The canonical documents of 165 — Master Control, Governance, Editorial Constitution, Source Policy, and the Secret Foundations teachings — are now readable in full.',
   ],
   'home.docsSub': [
     'Salinan verbatim · v1.0 · pencarian lintas dokumen · daftar isi hidup',
@@ -103,8 +103,8 @@ export const CATALOG = {
   'home.docsCta': ['Buka Ruang Dokumen', 'Open the Document Room'],
   'home.depositTitle': ['Transparansi deposit — diperbarui:', 'Transparency of deposit — updated:'],
   'home.depositBody': [
-    'Enam dokumen kendali kanonik (Master Control 000, Tata Kelola 007, Konstitusi Editorial 008, Kebijakan Sumber & Sitasi 009, Master Blueprint, Arsitektur Sistem) kini terdeposit dan dapat dibaca utuh di ruang Dokumen. Piagam Pendiri dan dokumen yang masih dideklarasikan lainnya kami nantikan — catatan ini tetap tampil sampai set dokumen lengkap.',
-    'Six canonical control documents (Master Control 000, Governance 007, Editorial Constitution 008, Source & Citation Policy 009, Master Blueprint, Master System Architecture) are now deposited and readable in full in the Documents room. The Founder’s Charter and the remaining declared documents are still awaited — this notice stands until the declared set is complete.',
+    'Dokumen kendali kanonik (Master Control 000, Tata Kelola 007, Konstitusi Editorial 008, Kebijakan Sumber & Sitasi 009, Master Blueprint, Arsitektur Sistem) kini terdeposit dan dapat dibaca utuh di ruang Dokumen. Piagam Pendiri dan dokumen yang masih dideklarasikan lainnya kami nantikan — catatan ini tetap tampil sampai set dokumen lengkap.',
+    'The canonical control documents (Master Control 000, Governance 007, Editorial Constitution 008, Source & Citation Policy 009, Master Blueprint, Master System Architecture) are now deposited and readable in full in the Documents room. The Founder’s Charter and the remaining declared documents are still awaited — this notice stands until the declared set is complete.',
   ],
 
   // ---------- registri sanad (Task 26 — permintaan Founder) ----------
@@ -189,8 +189,8 @@ export const CATALOG = {
   'sec.documents.kicker': ['Dokumen Kanonik · Sumber Pertama', 'Canonical Documents · Primary Sources'],
   'sec.documents.title': ['Ruang Dokumen Sistem 165', 'The 165 System Document Room'],
   'sec.documents.lede': [
-    'Enam dokumen kendali yang menjadi fondasi seluruh sistem 165.web.id — Master Control, Master Blueprint, Arsitektur Sistem, Tata Kelola, Konstitusi Editorial, dan Kebijakan Sumber & Sitasi — kini terbuka untuk dibaca utuh oleh siapa pun.',
-    'The six governing documents that found the entire 165.web.id system — Master Control, Master Blueprint, System Architecture, Governance, Editorial Constitution, and Source & Citation Policy — are now open for anyone to read in full.',
+    'Dokumen-dokumen kanonik yang menjadi fondasi seluruh sistem 165.web.id — Master Control, Master Blueprint, Arsitektur Sistem, Tata Kelola, Konstitusi Editorial, Kebijakan Sumber & Sitasi, dan koleksi Ajaran & Dalil (Rahasia-Rahasia TQN dalam Al-Quran & Hadits) — kini terbuka untuk dibaca utuh oleh siapa pun.',
+    'The canonical documents that found the entire 165.web.id system — Master Control, Master Blueprint, System Architecture, Governance, Editorial Constitution, Source & Citation Policy, and the Secret Foundations teachings collection — are now open for anyone to read in full.',
   ],
   'sec.seo.kicker': ['Arsitektur Mesin Pencari · Peta Halaman Publik', 'Search Engine Architecture · Public Page Map'],
   'sec.seo.title': ['Halaman yang dicintai mesin pencari', 'Pages search engines love'],
@@ -209,7 +209,7 @@ export const CATALOG = {
   'docs.back': ['Rak Dokumen', 'Document Shelf'],
   'docs.toc': ['Daftar Isi', 'Table of Contents'],
   'docs.tocCount': ['{n} bagian', '{n} sections'],
-  'docs.searchPlaceholder': ['Cari di dalam keenam dokumen… mis. sanad, founder, Tier A', 'Search inside all six documents… e.g. sanad, founder, Tier A'],
+  'docs.searchPlaceholder': ['Cari di dalam seluruh dokumen… mis. sanad, founder, Tier A', 'Search inside all documents… e.g. sanad, founder, Tier A'],
   'docs.resultsFound': ['{n} potongan ditemukan', '{n} passages found'],
   'docs.noResults': [
     'Tidak ada bagian dokumen yang cocok dengan "{q}". Coba kata kunci lain — mis. "sanad", "evidence", "founder".',

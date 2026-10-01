@@ -13,7 +13,7 @@ export interface DocMeta {
   docId: string
   title: string
   subtitle: string
-  kind: 'Dokumen Kendali' | 'Tata Kelola' | 'Konstitusi' | 'Kebijakan' | 'Cetak Biru' | 'Arsitektur'
+  kind: 'Dokumen Kendali' | 'Tata Kelola' | 'Konstitusi' | 'Kebijakan' | 'Cetak Biru' | 'Arsitektur' | 'Ajaran & Dalil'
   status: string
   version: string
   /** Indonesian description (2–3 sentences) */
@@ -102,6 +102,19 @@ const REGISTRY: Array<DocMeta & { file: string }> = [
     version: 'v1.0',
     role: 'Anatomi sumber 165: Source ID kanonik, jenis & kelas sumber, objek klaim, model sumber→klaim, status bukti, penilaian sumber, kebijakan sumber primer/oral/arsip keluarga, sitasi publik & researcher mode, source graph & reverse lookup, kebijakan sitasi AI, sampai model database registry sumber.',
     layer: 'Layer 09 — Research & Scholarship',
+  },
+  {
+    key: '010',
+    file: '010_165_SECRET_FOUNDATIONS_QURAN_HADITH_v1_0.md',
+    code: '010',
+    docId: '165-010',
+    title: '165 Secret Foundations — Rahasia-Rahasia TQN dalam Al-Quran & Hadits',
+    subtitle: 'Dua puluh bab sirr: dari abjad tauhid 165, dzikir sirr, khalwah, muraqabah, rabithah, sampai sanad',
+    kind: 'Ajaran & Dalil',
+    status: 'MASTER DRAFT — SECRET FOUNDATIONS BASELINE',
+    version: 'v1.0',
+    role: 'Membuka rahasia-rahasia TQN Qodiriyah wa Naqsyabandiyah yang dikunci penuh pada dalil: setiap bab memuat dalil Al-Quran & hadits sahih (dengan kitab induk dan nomor, derajat Tingkat A), lalu sirr & hikmah batin ditandai jujur sebagai tutur tradisi Tingkat D. Termasuk rahasia angka 165 = abjad لا إله إلا الله yang dapat diverifikasi siapa pun, dan peta cekat cepat 19 bab.',
+    layer: 'Lapis Ajaran — landasan dalil thariqat',
   },
 ]
 
