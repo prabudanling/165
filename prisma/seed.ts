@@ -12,6 +12,9 @@
  *  - Tradition is never presented as fact.
  */
 import { PrismaClient } from '@prisma/client'
+import {
+  SANAD_GLOBAL_ENTITIES, SANAD_GLOBAL_RELATIONSHIPS, SANAD_LINKS, SANAD_GLOBAL_COLLECTION_ITEMS,
+} from './data-sanad-global'
 
 const prisma = new PrismaClient()
 
@@ -267,6 +270,9 @@ const entities: EntitySeed[] = [
     summary: 'A curated collection of the founding instruments of 165: the Master Build Directive, the Discovery Report, the founder record and the founding events.',
     evidenceLevel: 'B', verificationStatus: 'DOCUMENTED',
   },
+
+  // ---------- SANAD GLOBAL (Task 26 — permintaan langsung Founder) ----------
+  ...SANAD_GLOBAL_ENTITIES,
 ]
 
 // ---------- RELATIONSHIPS (each one explicit; none inferred) ----------
@@ -287,6 +293,7 @@ const relationships = [
   { from: '165-CLM-000002', to: '165-PERSON-000001', predicate: 'ASSOCIATED_WITH', level: 'B', status: 'DOCUMENTED', source: SRC_DIRECTIVE, context: 'Claim subject.' },
   { from: '165-CLM-000003', to: '165-PLACE-000003', predicate: 'ASSOCIATED_WITH', level: 'F', status: 'UNVERIFIED', context: 'Claim subject — NOT ASSERTED by 165.' },
   { from: '165-COLL-000001', to: '165-INST-000001', predicate: 'PART_OF', level: 'B', status: 'DOCUMENTED', context: 'Collection definition.' },
+  ...SANAD_GLOBAL_RELATIONSHIPS,
 ]
 
 // ---------- CLAIM ↔ SOURCE STANCES ----------
@@ -303,12 +310,15 @@ const collectionItems = [
   { collection: '165-COLL-000001', item: '165-PERSON-000001', order: 3 },
   { collection: '165-COLL-000001', item: '165-EVT-000001', order: 4 },
   { collection: '165-COLL-000001', item: '165-EVT-000002', order: 5 },
+  ...SANAD_GLOBAL_COLLECTION_ITEMS,
 ]
 
 async function main() {
   console.log('Seeding 165 — Minimum Viable Institution data layer…')
 
   // idempotent reset of knowledge data
+  // DOCTRINE (Task 26): seed NEVER deletes public contributions — submissions
+  // are the community's record, not the knowledge model's.
   await prisma.claimSource.deleteMany()
   await prisma.collectionItem.deleteMany()
   await prisma.sanadLink.deleteMany()
@@ -317,7 +327,6 @@ async function main() {
   await prisma.versionSnapshot.deleteMany()
   await prisma.auditLog.deleteMany()
   await prisma.entity.deleteMany()
-  await prisma.contribution.deleteMany()
 
   const idByGlobal: Record<string, string> = {}
 
@@ -370,11 +379,27 @@ async function main() {
     })
   }
 
-  // NOTE: sanad intentionally left EMPTY — Sanad Safety by design.
+  // ---------- SANAD LINKS (Task 26) ----------
+  // Setiap mata membawa sumber + statusnya sendiri. Mata "MATA BLOK" menandai
+  // segmen yang transkripsi per-namanya menunggu deposit kitab silsilah —
+  // tidak ada nama yang dikarang untuk mengisinya.
+  for (const l of SANAD_LINKS) {
+    await prisma.sanadLink.create({
+      data: {
+        sanadEntityId: idByGlobal[l.chain], order: l.order,
+        fromName: l.fromName, toName: l.toName,
+        personEntityId: l.person ? idByGlobal[l.person] ?? null : null,
+        eraNote: l.eraNote ?? null,
+        evidenceLevel: l.evidenceLevel, verificationStatus: l.verificationStatus,
+        sourceRef: l.sourceRef ?? null, context: l.context ?? null,
+      },
+    })
+  }
 
   const counts = await prisma.entity.groupBy({ by: ['type'], _count: { type: true } })
+  const linkCount = await prisma.sanadLink.count()
   console.log('Seed complete:', counts.map((c) => `${c.type}=${c._count.type}`).join(' '))
-  console.log('Sanad registry: EMPTY by design.')
+  console.log(`Sanad registry: ${linkCount} mata rantai tercatat — setiap mata bersumber; segmen tanpa nama = MATA BLOK yang jujur.`)
 }
 
 main().finally(() => prisma.$disconnect())

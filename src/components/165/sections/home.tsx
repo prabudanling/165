@@ -110,7 +110,7 @@ export function HomeSection({ onOpenEntity, onNavigate }: {
         {[
           { label: t('home.statRecords'), value: data?.stats.total ?? counts.entities, icon: Layers, hue: HUES[0] },
           { label: t('home.statRelations'), value: data?.stats.relations ?? counts.relations, icon: Link2, hue: HUES[1] },
-          { label: t('home.statSanad'), value: data?.stats.sanadChains ?? counts.sanadChains, icon: ScrollText, hue: HUES[2], note: t('home.statSanadNote') },
+          { label: t('home.statSanad'), value: data?.stats.sanadChains ?? counts.sanadChains, icon: ScrollText, hue: HUES[2], note: t('home.statSanadNoteRecorded') },
           { label: t('home.statEvidence'), value: 6, icon: Scale, hue: HUES[3], note: 'A – F' },
         ].map((s) => (
           <div key={s.label} className="v4-card v4-lift rounded-2xl border border-border bg-card p-4 sm:p-5">

@@ -12,7 +12,7 @@ import { ENTITY_TYPES, parseDetails, type EntitySummaryDTO, type EntityProfileDT
 export const SNAPSHOT = raw as unknown as Snapshot
 
 export type SnapshotMeta = {
-  entities: number; relations: number; sanadChains: number; contributions: number
+  entities: number; relations: number; sanadChains: number; sanadLinks: number; contributions: number
   byType: Record<string, number>; exportedAt: string
 }
 
@@ -30,6 +30,11 @@ type SnapshotName = { id: string; entityId: string; name: string; language: stri
 type SnapshotRel = { id: string; fromEntityId: string; toEntityId: string; predicate: string; evidenceLevel: string; verificationStatus: string; context: string | null; sourceRef: string | null }
 type SnapshotClaim = { id: string; claimEntityId: string; sourceEntityId: string; stance: string; note: string | null }
 type SnapshotColl = { id: string; collectionId: string; itemEntityId: string; order: number; note: string | null }
+type SnapshotSanadLink = {
+  id: string; sanadEntityId: string; order: number; fromName: string; toName: string
+  personEntityId: string | null; eraNote: string | null; evidenceLevel: string
+  verificationStatus: string; sourceRef: string | null; context: string | null
+}
 type SnapshotVersion = { id: string; entityId: string; version: number; snapshot: string; changedBy: string; reason: string | null; createdAt: string }
 
 export type Snapshot = {
@@ -39,6 +44,7 @@ export type Snapshot = {
   relationships: SnapshotRel[]
   claimSources: SnapshotClaim[]
   collectionItems: SnapshotColl[]
+  sanadLinks?: SnapshotSanadLink[]
   versions: SnapshotVersion[]
   contributions: { reference: string; kind: string; title: string; status: string; createdAt: string }[]
 }
@@ -133,6 +139,11 @@ export function snapshotProfile(slug: string): EntityProfileDTO | null {
 export function snapshotStats(): { total: number; byType: Record<string, number>; relations: number; sanadChains: number; contributions: number } {
   const m = SNAPSHOT.meta
   return { total: m.entities, byType: { ...m.byType }, relations: m.relations, sanadChains: m.sanadChains, contributions: m.contributions }
+}
+
+// ---------- sanad registry (display-only, sourced) ----------
+export function snapshotSanadLinks(): SnapshotSanadLink[] {
+  return SNAPSHOT.sanadLinks ?? []
 }
 
 // ---------- shape-matching helpers (mirror live API response shapes) ----------

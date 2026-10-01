@@ -290,7 +290,7 @@ export function InstitutionApp() {
             {section === 'research' && <ResearchSection onOpenEntity={openEntity} onNavigate={navigate} />}
             {section === 'academy' && <AcademySection onOpenEntity={openEntity} />}
             {section === 'media' && <MediaSection onOpenEntity={openEntity} onNavigate={navigate} />}
-            {section === 'trust' && <TrustSection />}
+            {section === 'trust' && <TrustSection onOpenEntity={openEntity} />}
             {section === 'about' && <AboutSection onOpenEntity={openEntity} onNavigate={navigate} />}
             {section === 'documents' && <DocumentsSection onNavigate={navigate} />}
             {section === 'seo' && <SeoSection onNavigate={navigate} />}

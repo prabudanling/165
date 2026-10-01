@@ -72,7 +72,7 @@ export const CATALOG = {
   'home.statRecords': ['Catatan', 'Records'],
   'home.statRelations': ['Relasi bertipe', 'Typed relationships'],
   'home.statSanad': ['Rantai sanad', 'Sanad chains'],
-  'home.statSanadNote': ['kosong secara disiplin', 'empty by design'],
+  'home.statSanadNoteRecorded': ['tercatat — tiap mata bersumber', 'recorded — every link sourced'],
   'home.statEvidence': ['Tingkat bukti', 'Evidence levels'],
   'home.identityKicker': ['Institusinya', 'The institution'],
   'home.identityTitle': ['Sepuluh hal sekaligus — satu infrastruktur', 'Ten things at once — one infrastructure'],
@@ -106,6 +106,36 @@ export const CATALOG = {
     'Enam dokumen kendali kanonik (Master Control 000, Tata Kelola 007, Konstitusi Editorial 008, Kebijakan Sumber & Sitasi 009, Master Blueprint, Arsitektur Sistem) kini terdeposit dan dapat dibaca utuh di ruang Dokumen. Piagam Pendiri dan dokumen yang masih dideklarasikan lainnya kami nantikan — catatan ini tetap tampil sampai set dokumen lengkap.',
     'Six canonical control documents (Master Control 000, Governance 007, Editorial Constitution 008, Source & Citation Policy 009, Master Blueprint, Master System Architecture) are now deposited and readable in full in the Documents room. The Founder’s Charter and the remaining declared documents are still awaited — this notice stands until the declared set is complete.',
   ],
+
+  // ---------- registri sanad (Task 26 — permintaan Founder) ----------
+  'sanad.kicker': ['Sanad Global · Murshid & Majlis', 'Global Sanad · Murshids & Majlis'],
+  'sanad.title': [
+    'Sanad TQN se-dunia — direkam, bukan dikarang',
+    'The world\'s TQN sanad — recorded, never invented',
+  ],
+  'sanad.lede': [
+    'Atas permintaan Founder, registri sanad TQN Qodiriah Naqsabandiyah kini terisi: silsilah klasik dua jalur, jalur Banten hingga majlis TQN 165 Cikangkung, dan tokoh mursyid se-dunia — Abah Anom (Suryalaya), Abah Krawanggana, dan Abah Sukanta sebagai koleksi spesial. Setiap mata rantai membawa sumber dan statusnya sendiri; segmen yang belum ditranskripsi dari kitab silsilah tampil sebagai MATA BLOK yang jujur.',
+    'At the Founder\'s request, the sanad registry of TQN Qodiriah Naqsabandiyah is now filled: the classical chains of both lineages, the Banten route down to the TQN 165 Cikangkung majlis, and murshid figures worldwide — with Abah Anom (Suryalaya), Abah Krawanggana and Abah Sukanta as a special collection. Every link carries its own source and status; segments not yet transcribed from the silsilah books appear as honest BLOCK LINKS.',
+  ],
+  'sanad.displayOnly': [
+    'Sanad hanya ditampilkan — sistem tidak pernah membuat, menggabung, memprediksi, atau melegitimasi sanad. Rantai masuk hanya dengan Sumber → Relasi → Bukti → Konteks → Status Verifikasi.',
+    'Sanad is display-only — the system never creates, merges, predicts, or legitimizes sanad. A chain enters only via Source → Relationship → Evidence → Context → Verification Status.',
+  ],
+  'sanad.featured': ['Koleksi Spesial — Murshid TQN se-Dunia', 'Special Collection — TQN Murshids Worldwide'],
+  'sanad.featuredLede': ['Disusun khusus atas permintaan langsung Founder 165.', 'Composed specially at the direct request of the Founder of 165.'],
+  'sanad.chains': ['Rantai sanad tercatat', 'Recorded sanad chains'],
+  'sanad.linksCount': ['{n} mata rantai', '{n} links'],
+  'sanad.blockNote': [
+    'MATA BLOK — menunggu transkripsi kitab silsilah; 165 tidak mengarang nama.',
+    'BLOCK LINK — awaiting transcription from the silsilah book; 165 invents no names.',
+  ],
+  'sanad.network': ['Jaringan majlis & tempat', 'Network of majlis & places'],
+  'sanad.sources': ['Sumber catatan sanad', 'Sanad record sources'],
+  'sanad.referenceNote': [
+    'Catatan jujur: sanad Suryalaya (Abah Anom) tidak dipegang 165 — beliau dicatat sebagai figur referensi mursyid TQN se-dunia, bukan sebagai simpul sanad majlis 165.',
+    'Honest note: the Suryalaya sanad (Abah Anom) is not held by 165 — he is recorded as a reference figure of TQN murshids worldwide, not as a node of the 165 majlis sanad.',
+  ],
+  'sanad.openProfile': ['Buka profil', 'Open profile'],
 
   // ---------- judul section ----------
   'sec.explore.kicker': ['Jelajah', 'Explore'],

@@ -134,5 +134,19 @@
   "lang.defaultBadge": "Vaikimisi",
   "lang.activeBadge": "Aktiivne",
   "lang.hint": "165 vaikimisi keel on Indoneesia. {curated} keeled on täielikult kureeritud, {ai} keeled on masintõlgitud AI poolt ja kõik teised keeled jäävad valitavaks — nende kasutajaliides järgib siis Indoneesia keelt. Päranddokumentide sisu jääb oma algkeelesse."
- }
+ },
+ "sanad.kicker": "Sanad Global · Murshid & Majlis",
+ "sanad.title": "Sanad TQN se-dunia — direkam, bukan dikarang",
+ "sanad.lede": "Atas permintaan Founder, registri sanad TQN Qodiriah Naqsabandiyah kini terisi: silsilah klasik dua jalur, jalur Banten hingga majlis TQN 165 Cikangkung, dan tokoh mursyid se-dunia — Abah Anom (Suryalaya), Abah Krawanggana, dan Abah Sukanta sebagai koleksi spesial. Setiap mata rantai membawa sumber dan statusnya sendiri; segmen yang belum ditranskripsi dari kitab silsilah tampil sebagai MATA BLOK yang jujur.",
+ "sanad.displayOnly": "Sanad hanya ditampilkan — sistem tidak pernah membuat, menggabung, memprediksi, atau melegitimasi sanad. Rantai masuk hanya dengan Sumber → Relasi → Bukti → Konteks → Status Verifikasi.",
+ "sanad.featured": "Koleksi Spesial — Murshid TQN se-Dunia",
+ "sanad.featuredLede": "Disusun khusus atas permintaan langsung Founder 165.",
+ "sanad.chains": "Rantai sanad tercatat",
+ "sanad.linksCount": "{n} mata rantai",
+ "sanad.blockNote": "MATA BLOK — menunggu transkripsi kitab silsilah; 165 tidak mengarang nama.",
+ "sanad.network": "Jaringan majlis & tempat",
+ "sanad.sources": "Sumber catatan sanad",
+ "sanad.referenceNote": "Catatan jujur: sanad Suryalaya (Abah Anom) tidak dipegang 165 — beliau dicatat sebagai figur referensi mursyid TQN se-dunia, bukan sebagai simpul sanad majlis 165.",
+ "sanad.openProfile": "Buka profil",
+ "home.statSanadNoteRecorded": "tercatat — tiap mata bersumber"
 }

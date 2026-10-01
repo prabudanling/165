@@ -1,20 +1,22 @@
 {
- "entities": 30,
- "relations": 16,
- "sanadChains": 0,
+ "entities": 58,
+ "relations": 36,
+ "sanadChains": 3,
+ "sanadLinks": 11,
  "contributions": 1,
  "byType": {
   "CLAIM": 3,
-  "COLLECTION": 1,
+  "COLLECTION": 2,
   "DOCUMENT": 1,
   "EVENT": 2,
-  "INSTITUTION": 1,
-  "PERSON": 3,
-  "PLACE": 3,
+  "INSTITUTION": 2,
+  "PERSON": 11,
+  "PLACE": 10,
   "RESEARCH": 1,
-  "SOURCE": 2,
+  "SANAD": 3,
+  "SOURCE": 10,
   "TERM": 10,
   "TRADITION": 3
  },
- "exportedAt": "2026-09-30T17:40:32.121Z"
+ "exportedAt": "2026-10-01T02:05:46.234Z"
 }

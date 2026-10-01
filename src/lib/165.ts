@@ -71,6 +71,8 @@ export const PREDICATES = {
   INCLUDES: { label: 'includes', reverse: 'PART_OF' },
   FOUNDED: { label: 'founded', reverse: 'FOUNDED_BY' },
   FOUNDED_BY: { label: 'founded by', reverse: 'FOUNDED' },
+  PARENT_OF: { label: 'parent of', reverse: 'CHILD_OF' },
+  CHILD_OF: { label: 'child of', reverse: 'PARENT_OF' },
 } as const
 
 export type PredicateKey = keyof typeof PREDICATES

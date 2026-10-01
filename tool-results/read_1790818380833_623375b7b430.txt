@@ -1,0 +1,381 @@
+     1→     1→/**
+     2→     2→ * 165 — SEED LAYER
+     3→     3→ *
+     4→     4→ * Epistemic policy (NON-NEGOTIABLE, per Master Build Directive):
+     5→     5→ *  - The ONLY accessible primary source is the "165 Website Master Build
+     6→     6→ *    Directive" → seeded as 165-SRC-000001 (Level B, DOCUMENTED).
+     7→     7→ *  - Everything else is seeded as TRADITIONAL_ACCOUNT / UNVERIFIED with an
+     8→     8→ *    explicit note that scholarly citations are pending source review.
+     9→     9→ *  - NO sanad chains are created. NO teacher-student links are inferred.
+    10→    10→ *  - NO books, manuscripts or media are fabricated. Those registries ship
+    11→    11→ *    empty by design, awaiting the Founder's archive.
+    12→    12→ *  - Tradition is never presented as fact.
+    13→    13→ */
+    14→    14→import { PrismaClient } from '@prisma/client'
+    15→    15→
+    16→    16→const prisma = new PrismaClient()
+    17→    17→
+    18→    18→// vocabulary
+    19→    19→const E = {
+    20→    20→  PERSON: 'PERSON', INSTITUTION: 'INSTITUTION', ORGANIZATION: 'ORGANIZATION',
+    21→    21→  PLACE: 'PLACE', BOOK: 'BOOK', MANUSCRIPT: 'MANUSCRIPT', DOCUMENT: 'DOCUMENT',
+    22→    22→  MEDIA: 'MEDIA', EVENT: 'EVENT', SANAD: 'SANAD', RESEARCH: 'RESEARCH',
+    23→    23→  SOURCE: 'SOURCE', CLAIM: 'CLAIM', TRADITION: 'TRADITION',
+    24→    24→  COLLECTION: 'COLLECTION', TERM: 'TERM',
+    25→    25→} as const
+    26→    26→
+    27→    27→type EntitySeed = {
+    28→    28→  globalId: string; slug: string; type: string; primaryName: string;
+    29→    29→  subtitle?: string; summary?: string; summaryId?: string;
+    30→    30→  evidenceLevel: string; verificationStatus: string;
+    31→    31→  startDate?: string; startDatePrecision?: string; endDate?: string; endDatePrecision?: string;
+    32→    32→  latitude?: number; longitude?: number; region?: string;
+    33→    33→  details?: Record<string, unknown>;
+    34→    34→  names?: { name: string; language: string; kind: string; note?: string }[]
+    35→    35→}
+    36→    36→
+    37→    37→const SRC_DIRECTIVE = '165-SRC-000001'
+    38→    38→const SRC_COMMUNITY = '165-SRC-000002'
+    39→    39→
+    40→    40→const entities: EntitySeed[] = [
+    41→    41→  // ---------- SOURCES (the "source of source") ----------
+    42→    42→  {
+    43→    43→    globalId: SRC_DIRECTIVE, slug: 'master-build-directive', type: E.SOURCE,
+    44→    44→    primaryName: '165 Website Master Build Directive',
+    45→    45→    subtitle: 'Founder communication — primary institutional instrument',
+    46→    46→    summary: 'The founding technical and institutional instruction for 165.web.id, issued by the Founder. Defines the mission, entity model, trust architecture, evidence system, sanad safety, governance workflow and build order of the platform.',
+    47→    47→    summaryId: 'Instrumen teknis dan kelembagaan pendiri 165.web.id, diterbitkan oleh Founder. Mendefinisikan misi, model entitas, arsitektur kepercayaan, sistem bukti, keselamatan sanad, alur tata kelola, dan urutan pembangunan platform.',
+    48→    48→    evidenceLevel: 'B', verificationStatus: 'DOCUMENTED',
+    49→    49→    startDate: '2025', startDatePrecision: 'YEAR',
+    50→    50→    details: { sourceType: 'INSTITUTIONAL', citation: 'Founder of 165, "165 Website Master Build Directive", institutional communication, 2025.', url: 'https://165.web.id' },
+    51→    51→  },
+    52→    52→  {
+    53→    53→    globalId: SRC_COMMUNITY, slug: 'community-traditional-accounts', type: E.SOURCE,
+    54→    54→    primaryName: 'Community & traditional accounts (aggregate placeholder)',
+    55→    55→    subtitle: 'Aggregate oral/community record — citations pending',
+    56→    56→    summary: 'A placeholder aggregate for general community and traditional accounts. 165 explicitly marks this source as weak: no specific scholarly citations are attached yet. Attachments occur only during formal source review.',
+    57→    57→    summaryId: 'Wadah agregat untuk catatan komunitas dan tradisi umum. 165 secara eksplisit menandai sumber ini sebagai lemah: belum ada sitasi ilmiah spesifik yang melekat. Pelekatn hanya dilakukan dalam tinjauan sumber formal.',
+    58→    58→    evidenceLevel: 'E', verificationStatus: 'TRADITIONAL_ACCOUNT',
+    59→    59→    details: { sourceType: 'COMMUNITY', citation: 'Aggregate community record — pending formal citation review.', note: 'WEAK SOURCE — treat all downstream claims as traditional account, not fact.' },
+    60→    60→  },
+    61→    61→
+    62→    62→  // ---------- INSTITUTION ----------
+    63→    63→  {
+    64→    64→    globalId: '165-INST-000001', slug: '165', type: E.INSTITUTION,
+    65→    65→    primaryName: '165',
+    66→    66→    subtitle: 'TQN Qodiriah Naqsabandiyah — Global Knowledge, Heritage & Digital Preservation',
+    67→    67→    summary: '165 is a digital institution for the knowledge, heritage, research and preservation of TQN Qodiriah Naqsabandiyah. It is not a website but an institutional infrastructure: a knowledge platform, archive, research base, global directory, knowledge graph and citation system — built so that every statement can be traced to evidence.',
+    68→    68→    summaryId: '165 adalah institusi digital untuk pengetahuan, warisan, riset, dan preservasi TQN Qodiriah Naqsabandiyah. Ia bukan sekadar website, melainkan infrastruktur kelembagaan: platform pengetahuan, arsip, basis riset, direktori global, graf pengetahuan, dan sistem sitasi — dibangun agar setiap pernyataan dapat dilacak ke buktinya.',
+    69→    69→    evidenceLevel: 'B', verificationStatus: 'DOCUMENTED',
+    70→    70→    details: { domain: '165.web.id', foundedBy: '165-PERSON-000001', purpose: 'Knowledge preservation & research infrastructure', masterPrinciple: 'One Source, Many Experiences', epistemicRule: 'Do not make 165 look more authoritative than its evidence allows.' },
+    71→    71→  },
+    72→    72→
+    73→    73→  // ---------- PEOPLE ----------
+    74→    74→  {
+    75→    75→    globalId: '165-PERSON-000001', slug: 'gugun-gunara-muhammad-lutfi-azmi', type: E.PERSON,
+    76→    76→    primaryName: 'Tuan Haji Gugun Gunara — Muhammad Lutfi Azmi',
+    77→    77→    subtitle: 'Founder & Founding Steward of 165 · Custodian of the Founding Vision',
+    78→    78→    summary: 'Founder and Founding Steward of 165, recognized by the institution as Custodian of the Founding Vision. Per the Master Build Directive, the institution he establishes — not the person — is the long-term preserver of knowledge: the system is deliberately structured against personality cult and permanent personal ownership of TQN knowledge.',
+    79→    79→    summaryId: 'Pendiri dan Founding Steward 165, diakui institusi sebagai Custodian of the Founding Vision. Sesuai Master Build Directive, institusi yang beliau dirikan — bukan pribadinya — yang menjadi pelestari pengetahuan jangka panjang: sistem sengaja dirancang anti kultus figur dan kepemilikan permanen atas pengetahuan TQN.',
+    80→    80→    evidenceLevel: 'B', verificationStatus: 'DOCUMENTED',
+    81→    81→    details: { position: 'Founder & Founding Steward of 165', custody: 'Custodian of the Founding Vision', note: 'Dual-name representation follows the directive text; split into two entities if the Founder determines they are distinct individuals. [FLAG / REQUIRES FOUNDER DECISION]' },
+    82→    82→    names: [
+    83→    83→      { name: 'Gugun Gunara', language: 'ln', kind: 'ALIAS' },
+    84→    84→      { name: 'Muhammad Lutfi Azmi', language: 'ln', kind: 'ALIAS' },
+    85→    85→      { name: 'Tuan Haji Gugun Gunara', language: 'id', kind: 'TITLE', note: 'honorific form' },
+    86→    86→    ],
+    87→    87→  },
+    88→    88→  {
+    89→    89→    globalId: '165-PERSON-000002', slug: 'abdul-qadir-al-jilani', type: E.PERSON,
+    90→    90→    primaryName: 'Shaykh Abdul Qadir al-Jilani',
+    91→    91→    subtitle: 'Historical eponym of the Qadiriyya lineage',
+    92→    92→    summary: 'A widely documented Hanbali scholar and Sufi figure (commonly given as 1077–1166 CE) after whom the Qadiriyya lineage is named. 165 records him as a historical reference figure of the lineage — NOT as a verified node in any specific sanad chain. Dates follow commonly cited accounts; scholarly citations are pending source review.',
+    93→    93→    summaryId: 'Ulama Hanbali dan tokoh tasawuf yang luas didokumentasikan (umumnya disebut 1077–1166 M) yang menjadi nama bagi silsilah Qadiriyya. 165 mencatatnya sebagai figur rujukan historis silsilah — BUKAN sebagai simpul terverifikasi dalam sanad tertentu.',
+    94→    94→    evidenceLevel: 'D', verificationStatus: 'TRADITIONAL_ACCOUNT',
+    95→    95→    startDate: '1077', startDatePrecision: 'YEAR', endDate: '1166', endDatePrecision: 'YEAR',
+    96→    96→    details: { role: 'Historical eponym — Qadiriyya lineage', note: 'Dates per commonly cited historical accounts; citations pending scholarly source review. No teacher–student relationships are asserted.' },
+    97→    97→    names: [
+    98→    98→      { name: 'عبد القادر الجيلاني', language: 'ar', kind: 'TRANSLITERATION' },
+    99→    99→      { name: 'Abd al-Qadir al-Jilani', language: 'en', kind: 'VARIANT' },
+   100→   100→    ],
+   101→   101→  },
+   102→   102→  {
+   103→   103→    globalId: '165-PERSON-000003', slug: 'bahauddin-naqshband', type: E.PERSON,
+   104→   104→    primaryName: 'Shaykh Baha\'uddin Naqshband',
+   105→   105→    subtitle: 'Historical eponym of the Naqshbandiyya lineage',
+   106→   106→    summary: 'A Sufi figure of Transoxiana (commonly given as 1318–1389 CE) after whom the Naqshbandiyya lineage is named. 165 records him as a historical reference figure of the lineage — NOT as a verified node in any specific sanad chain. Dates follow commonly cited accounts; scholarly citations are pending source review.',
+   107→   107→    summaryId: 'Tokoh tasawuf dari Transoxiana (umumnya disebut 1318–1389 M) yang menjadi nama bagi silsilah Naqshbandiyya. 165 mencatatnya sebagai figur rujukan historis silsilah — BUKAN sebagai simpul terverifikasi dalam sanad tertentu.',
+   108→   108→    evidenceLevel: 'D', verificationStatus: 'TRADITIONAL_ACCOUNT',
+   109→   109→    startDate: '1318', startDatePrecision: 'YEAR', endDate: '1389', endDatePrecision: 'YEAR',
+   110→   110→    details: { role: 'Historical eponym — Naqshbandiyya lineage', note: 'Dates per commonly cited historical accounts; citations pending scholarly source review. No teacher–student relationships are asserted.' },
+   111→   111→    names: [
+   112→   112→      { name: 'بهاء الدين النقشبند', language: 'ar', kind: 'TRANSLITERATION' },
+   113→   113→      { name: 'Baha\' al-Din Naqshband', language: 'en', kind: 'VARIANT' },
+   114→   114→    ],
+   115→   115→  },
+   116→   116→
+   117→   117→  // ---------- TRADITIONS ----------
+   118→   118→  {
+   119→   119→    globalId: '165-TRAD-000001', slug: 'tqn-qodiriah-naqsabandiyah', type: E.TRADITION,
+   120→   120→    primaryName: 'TQN Qodiriah Naqsabandiyah',
+   121→   121→    subtitle: 'Combined tarekat tradition preserved by 165',
+   122→   122→    summary: 'Tarekat Qodiriah Naqsabandiyah — a combined Sufi order tradition drawing on the Qadiriyya and Naqshbandiyya lineages, practiced widely in Indonesia. This is a general description from community and traditional accounts: it is NOT asserted as verified history, and the historical circumstances of the combined order are not recorded in 165\'s current sources.',
+   123→   123→    summaryId: 'Tarekat Qodiriah Naqsabandiyah — tradisi tarekat gabungan yang bersumber pada silsilah Qadiriyya dan Naqshbandiyya, diamalkan secara luas di Indonesia. Ini deskripsi umum dari catatan komunitas dan tradisi: TIDAK diklaim sebagai sejarah terverifikasi.',
+   124→   124→    evidenceLevel: 'D', verificationStatus: 'TRADITIONAL_ACCOUNT',
+   125→   125→    details: { note: 'General description; scholarly citations to be attached during formal source review.' },
+   126→   126→    names: [
+   127→   127→      { name: 'طريقة القادرية النقشبندية', language: 'ar', kind: 'TRANSLITERATION' },
+   128→   128→      { name: 'Tarekat Qodiriah Naqsabandiyah', language: 'id', kind: 'VARIANT' },
+   129→   129→    ],
+   130→   130→  },
+   131→   131→  {
+   132→   132→    globalId: '165-TRAD-000002', slug: 'tariqa-qadiriyya', type: E.TRADITION,
+   133→   133→    primaryName: 'Tariqa Qadiriyya',
+   134→   134→    subtitle: 'Lineage tradition',
+   135→   135→    summary: 'One of the two lineage traditions on which TQN draws, named after Shaykh Abdul Qadir al-Jilani. General reference description; scholarly citations pending.',
+   136→   136→    summaryId: 'Salah satu dari dua tradisi silsilah yang menjadi rujukan TQN, dinamai menurut Shaykh Abdul Qadir al-Jilani. Deskripsi rujukan umum; sitasi ilmiah menunggu tinjauan.',
+   137→   137→    evidenceLevel: 'D', verificationStatus: 'TRADITIONAL_ACCOUNT',
+   138→   138→  },
+   139→   139→  {
+   140→   140→    globalId: '165-TRAD-000003', slug: 'tariqa-naqshbandiyya', type: E.TRADITION,
+   141→   141→    primaryName: 'Tariqa Naqshbandiyya',
+   142→   142→    subtitle: 'Lineage tradition',
+   143→   143→    summary: 'One of the two lineage traditions on which TQN draws, named after Shaykh Baha\'uddin Naqshband. General reference description; scholarly citations pending.',
+   144→   144→    summaryId: 'Salah satu dari dua tradisi silsilah yang menjadi rujukan TQN, dinamai menurut Shaykh Baha\'uddin Naqshband. Deskripsi rujukan umum; sitasi ilmiah menunggu tinjauan.',
+   145→   145→    evidenceLevel: 'D', verificationStatus: 'TRADITIONAL_ACCOUNT',
+   146→   146→  },
+   147→   147→
+   148→   148→  // ---------- PLACES ----------
+   149→   149→  {
+   150→   150→    globalId: '165-PLACE-000001', slug: 'indonesia', type: E.PLACE,
+   151→   151→    primaryName: 'Indonesia',
+   152→   152→    subtitle: 'Archipelagic nation-state of Southeast Asia',
+   153→   153→    summary: 'The archipelagic nation in Southeast Asia where TQN Qodiriah Naqsabandiyah is widely practiced. General geographic record.',
+   154→   154→    evidenceLevel: 'C', verificationStatus: 'DOCUMENTED',
+   155→   155→    latitude: -2.5, longitude: 118, region: 'Southeast Asia',
+   156→   156→  },
+   157→   157→  {
+   158→   158→    globalId: '165-PLACE-000002', slug: 'west-java', type: E.PLACE,
+   159→   159→    primaryName: 'West Java',
+   160→   160→    subtitle: 'Province of Indonesia (Jawa Barat)',
+   161→   161→    summary: 'Province of Indonesia. Community records broadly associate Sundanese West Java with tarekat activity generally; 165 asserts no specific institutional history here yet.',
+   162→   162→    evidenceLevel: 'C', verificationStatus: 'DOCUMENTED',
+   163→   163→    latitude: -6.9, longitude: 107.6, region: 'Southeast Asia',
+   164→   164→    names: [{ name: 'Jawa Barat', language: 'id', kind: 'VARIANT' }],
+   165→   165→  },
+   166→   166→  {
+   167→   167→    globalId: '165-PLACE-000003', slug: 'cianjur', type: E.PLACE,
+   168→   168→    primaryName: 'Cianjur',
+   169→   169→    subtitle: 'Town and regency, West Java',
+   170→   170→    summary: 'A town and regency in West Java widely associated in community accounts with TQN activity. Association only — 165 does not assert origins, dates or institutional histories for this place in its current records.',
+   171→   171→    summaryId: 'Kota dan kabupaten di Jawa Barat yang secara luas diasosiasikan dalam catatan komunitas dengan aktivitas TQN. Asosiasi saja — 165 tidak mengklaim asal-usul, tanggal, atau sejarah kelembagaan tempat ini.',
+   172→   172→    evidenceLevel: 'E', verificationStatus: 'TRADITIONAL_ACCOUNT',
+   173→   173→    latitude: -6.82, longitude: 107.14, region: 'Southeast Asia',
+   174→   174→  },
+   175→   175→
+   176→   176→  // ---------- EVENTS ----------
+   177→   177→  {
+   178→   178→    globalId: '165-EVT-000001', slug: 'master-build-directive-issued', type: E.EVENT,
+   179→   179→    primaryName: 'Master Build Directive issued for 165.web.id',
+   180→   180→    summary: 'The Founder issued the Master Build Directive, activating the institutional build of 165.web.id — the knowledge, heritage and digital preservation platform for TQN Qodiriah Naqsabandiyah.',
+   181→   181→    summaryId: 'Founder menerbitkan Master Build Directive, mengaktifkan pembangunan kelembagaan 165.web.id.',
+   182→   182→    evidenceLevel: 'B', verificationStatus: 'DOCUMENTED',
+   183→   183→    startDate: '2025', startDatePrecision: 'YEAR',
+   184→   184→  },
+   185→   185→  {
+   186→   186→    globalId: '165-EVT-000002', slug: 'founding-of-165', type: E.EVENT,
+   187→   187→    primaryName: 'Founding of 165',
+   188→   188→    summary: 'The founding of 165 as a digital knowledge institution by its Founder. The founding date is NOT recorded in any accessible source, so 165 deliberately records this event without a date rather than inventing one. [Uncertainty is preserved, not hidden.]',
+   189→   189→    summaryId: 'Pendirian 165 sebagai institusi pengetahuan digital oleh Founder. Tanggal pendirian TIDAK tercatat dalam sumber yang dapat diakses, sehingga 165 sengaja mencatat peristiwa ini tanpa tanggal.',
+   190→   190→    evidenceLevel: 'B', verificationStatus: 'DOCUMENTED',
+   191→   191→    startDatePrecision: 'UNKNOWN',
+   192→   192→  },
+   193→   193→
+   194→   194→  // ---------- DOCUMENTS ----------
+   195→   195→  {
+   196→   196→    globalId: '165-DOC-000001', slug: 'master-discovery-report', type: E.DOCUMENT,
+   197→   197→    primaryName: '165 Website Master Discovery Report',
+   198→   198→    subtitle: 'Phase 0 deliverable — produced before any code',
+   199→   199→    summary: 'The Phase 0 discovery deliverable: inventory of sources (including the seven files that were declared but could not be located), executive understanding, institutional principles, functional requirements, entity and relationship models, and cross-reference flags requiring Founder decisions.',
+   200→   200→    evidenceLevel: 'B', verificationStatus: 'DOCUMENTED',
+   201→   201→    details: { documentType: 'DISCOVERY_REPORT', location: 'docs/DISCOVERY-REPORT.md' },
+   202→   202→  },
+   203→   203→
+   204→   204→  // ---------- RESEARCH ----------
+   205→   205→  {
+   206→   206→    globalId: '165-RES-000001', slug: 'reference-architecture-165', type: E.RESEARCH,
+   207→   207→    primaryName: 'Reference Architecture of the 165 Knowledge Platform',
+   208→   208→    subtitle: 'Internal technical research — draft',
+   209→   209→    summary: 'The internal architectural study describing 165\'s six-layer model (data, knowledge, content, application, presentation, intelligence), its entity and relationship model, trust architecture and preservation strategy.',
+   210→   210→    evidenceLevel: 'B', verificationStatus: 'DOCUMENTED',
+   211→   211→    details: { status: 'DRAFT', venue: 'Internal — 165 Technology Council (planned)' },
+   212→   212→  },
+   213→   213→
+   214→   214→  // ---------- CLAIMS (demonstrating the evidence system honestly) ----------
+   215→   215→  {
+   216→   216→    globalId: '165-CLM-000001', slug: 'claim-tqn-combines-two-lineages', type: E.CLAIM,
+   217→   217→    primaryName: 'Claim: TQN combines the Qadiriyya and Naqshbandiyya lineages',
+   218→   218→    summary: 'Statement under review: "TQN Qodiriah Naqsabandiyah combines the Qadiriyya and Naqshbandiyya lineages." Currently supported only by aggregate community accounts (Level E) — presented as traditional account, NOT as verified history.',
+   219→   219→    evidenceLevel: 'E', verificationStatus: 'TRADITIONAL_ACCOUNT',
+   220→   220→    details: { subjectRef: '165-TRAD-000001' },
+   221→   221→  },
+   222→   222→  {
+   223→   223→    globalId: '165-CLM-000002', slug: 'claim-founder-of-165', type: E.CLAIM,
+   224→   224→    primaryName: 'Claim: 165 was founded by Tuan Haji Gugun Gunara — Muhammad Lutfi Azmi',
+   225→   225→    summary: 'Statement: "165 was founded by Tuan Haji Gugun Gunara — Muhammad Lutfi Azmi, as Founder & Founding Steward." Supported by the Master Build Directive itself (Level B, DOCUMENTED).',
+   226→   226→    evidenceLevel: 'B', verificationStatus: 'DOCUMENTED',
+   227→   227→    details: { subjectRef: '165-PERSON-000001' },
+   228→   228→  },
+   229→   229→  {
+   230→   230→    globalId: '165-CLM-000003', slug: 'claim-tqn-origin-cianjur', type: E.CLAIM,
+   231→   231→    primaryName: 'Claim: TQN originated in Cianjur (NOT ASSERTED)',
+   232→   232→    summary: 'Statement under examination: "TQN originated in Cianjur." 165\'s records neither support nor dispute this claim: no accessible source establishes it. The claim therefore stands UNVERIFIED and 165 makes no assertion. This record demonstrates the Critical Historical Rule — uncertainty is displayed, never silently resolved.',
+   233→   233→    summaryId: 'Pernyataan yang sedang diperiksa: "TQN berasal dari Cianjur." Catatan 165 tidak mendukung dan tidak membantah: tidak ada sumber yang dapat diakses. Klaim berstatus UNVERIFIED dan 165 tidak mengambil sikap.',
+   234→   234→    evidenceLevel: 'F', verificationStatus: 'UNVERIFIED',
+   235→   235→    details: { subjectRef: '165-PLACE-000003', note: 'Demonstrates: no silent resolution of competing narratives.' },
+   236→   236→  },
+   237→   237→
+   238→   238→  // ---------- TERMS (glossary — cautious generic definitions) ----------
+   239→   239→  ...[
+   240→   240→    ['tqn', 'TQN', 'Tarekat Qodiriah Naqsabandiyah', 'Abbreviation for Tarekat Qodiriah Naqsabandiyah, the combined order tradition whose knowledge and heritage 165 preserves.', 'Singkatan dari Tarekat Qodiriah Naqsabandiyah, tradisi tarekat gabungan yang pengetahuan dan warisannya dilestarikan 165.'],
+   241→   241→    ['tariqa', 'Tariqa', 'طريقة', 'An Arabic term meaning "path" or "way": a Sufi order or method of spiritual discipline under the guidance of a teacher. Definitions vary between traditions; 165 records usage-context, not doctrine.', 'Istilah Arab yang berarti "jalan": sebuah tarekat atau metode disiplin spiritual di bawah bimbingan seorang guru. Definisi bervariasi antar tradisi.'],
+   242→   242→    ['sanad', 'Sanad', 'سند', 'A chain of transmission connecting a person to a teacher or authority through successive links. In 165, sanad records are display-only: they are never created, merged, predicted, or granted legitimacy by the system.', 'Rantai periwayatan yang menghubungkan seseorang dengan guru atau otoritas melalui mata rantai berturut-turut. Dalam 165, sanad hanya untuk ditampilkan: tidak pernah dibuat, digabung, diprediksi, atau dilegitimasi oleh sistem.'],
+   243→   243→    ['mursyid', 'Mursyid', 'مرشد', 'A spiritual guide or teacher within a tarekat — the one who guides disciples along the path. Usage and prerequisites differ across traditions; 165 does not adjudicate them.', 'Pembimbing spiritual dalam tarekat — yang membimbing murid-menurid di sepanjang jalan. Prasyarat dan penggunaannya berbeda antar tradisi.'],
+   244→   244→    ['khalifah', 'Khalifah (tarekat context)', 'خليفة', 'Within tarekat usage: a deputy authorized by a teacher. Authorization is a matter between traditions and their teachers; 165 records such claims only with sources, never conferring them.', 'Dalam penggunaan tarekat: wakil yang diberi kewenangan oleh seorang guru. Kewenangan adalah urusan antara tradisi dan gurunya; 165 hanya mencatat klaim beserta sumbernya.'],
+   245→   245→    ['ijazah', 'Ijazah', 'إجازة', 'A document or oral grant of permission/authorization to transmit knowledge or practice. In 165, claimed ijazah are treated as claims requiring source, evidence and context — never as automatic fact.', 'Dokumen atau pemberian izin lisan untuk meriwayatkan pengetahuan atau amalan. Dalam 165, ijazah diperlakukan sebagai klaim yang membutuhkan sumber, bukti, dan konteks.'],
+   246→   246→    ['baiat', 'Bai\'at', 'بيعة', 'A pledge or oath of allegiance, in tarekat context typically made by a disciple to a guide. 165 records the existence of such commitments only where sourced; participation is private by design.', 'Ikrar atau janji setia, dalam konteks tarekat biasanya diucapkan murid kepada pembimbing. 165 hanya mencatat keberadaannya bila bersumber; partisipasi bersifat privat.'],
+   247→   247→    ['dzikir', 'Dzikir', 'ذكر', 'Remembrance — devotional recitation practice central to Sufi disciplines. Forms, counts and sequences vary by order and teacher; 165 catalogs variant practices without ranking them.', 'Mengingat — amalan pembacaan devosional yang menjadi inti disiplin tasawuf. Bentuk dan urutannya bervariasi antar tarekat dan guru.'],
+   248→   248→    ['wirid', 'Wirid', 'ورد', 'A assigned litany of recitations. In TQN communities, specific wirid forms belong to their own teaching contexts; 165 does not reproduce practice instructions without authorization and source.', 'Litani pembacaan yang diberikan. Bentuk wirid tertentu milik konteks pengajarannya masing-masing; 165 tidak mereproduksi instruksi amalan tanpa izin dan sumber.'],
+   249→   249→    ['suluk', 'Suluk', 'سلوك', 'Structured spiritual retreat or journey practice in some Sufi traditions. Details are tradition-specific and are recorded by 165 only as described in sources.', 'Praktik murakabah/perjalanan spiritual terstruktur dalam sebagian tradisi tasawuf. Rinciannya spesifik pada tiap tradisi.'],
+   250→   250→  ].map(([slug, en, ar, defEn, defId], i) => ({
+   251→   251→    globalId: `165-TERM-${String(i + 1).padStart(6, '0')}`,
+   252→   252→    slug, type: E.TERM,
+   253→   253→    primaryName: en as string,
+   254→   254→    subtitle: 'Glossary term — traditional account',
+   255→   255→    summary: defEn as string,
+   256→   256→    summaryId: defId as string,
+   257→   257→    evidenceLevel: 'D', verificationStatus: 'TRADITIONAL_ACCOUNT',
+   258→   258→    names: [{ name: ar as string, language: 'ar', kind: 'VARIANT' }],
+   259→   259→    details: { definitionLangNote: 'Definitions are generic and cautious; doctrine is not adjudicated by 165.' },
+   260→   260→  })),
+   261→   261→
+   262→   262→  // ---------- COLLECTION ----------
+   263→   263→  {
+   264→   264→    globalId: '165-COLL-000001', slug: 'founding-records', type: E.COLLECTION,
+   265→   265→    primaryName: 'Founding Records',
+   266→   266→    subtitle: 'The documentary core of 165\'s institutional origin',
+   267→   267→    summary: 'A curated collection of the founding instruments of 165: the Master Build Directive, the Discovery Report, the founder record and the founding events.',
+   268→   268→    evidenceLevel: 'B', verificationStatus: 'DOCUMENTED',
+   269→   269→  },
+   270→   270→]
+   271→   271→
+   272→   272→// ---------- RELATIONSHIPS (each one explicit; none inferred) ----------
+   273→   273→const relationships = [
+   274→   274→  { from: '165-PERSON-000001', to: '165-INST-000001', predicate: 'FOUNDED', level: 'B', status: 'DOCUMENTED', source: SRC_DIRECTIVE, context: 'Founder & Founding Steward of 165.' },
+   275→   275→  { from: '165-INST-000001', to: '165-TRAD-000001', predicate: 'ASSOCIATED_WITH', level: 'B', status: 'DOCUMENTED', source: SRC_DIRECTIVE, context: '165 exists to preserve the knowledge and heritage of this tradition.' },
+   276→   276→  { from: '165-TRAD-000002', to: '165-TRAD-000001', predicate: 'LINEAGE_OF', level: 'E', status: 'TRADITIONAL_ACCOUNT', source: SRC_COMMUNITY, context: 'One of two lineage traditions drawn upon. Historical merge point not recorded in current sources.' },
+   277→   277→  { from: '165-TRAD-000003', to: '165-TRAD-000001', predicate: 'LINEAGE_OF', level: 'E', status: 'TRADITIONAL_ACCOUNT', source: SRC_COMMUNITY, context: 'One of two lineage traditions drawn upon. Historical merge point not recorded in current sources.' },
+   278→   278→  { from: '165-PERSON-000002', to: '165-TRAD-000002', predicate: 'LINEAGE_FOUNDER_OF', level: 'D', status: 'TRADITIONAL_ACCOUNT', source: SRC_COMMUNITY, context: 'Historical eponym. NOT a verified sanad node.' },
+   279→   279→  { from: '165-PERSON-000003', to: '165-TRAD-000003', predicate: 'LINEAGE_FOUNDER_OF', level: 'D', status: 'TRADITIONAL_ACCOUNT', source: SRC_COMMUNITY, context: 'Historical eponym. NOT a verified sanad node.' },
+   280→   280→  { from: '165-PLACE-000002', to: '165-PLACE-000001', predicate: 'LOCATED_IN', level: 'C', status: 'DOCUMENTED', context: 'Province of Indonesia.' },
+   281→   281→  { from: '165-PLACE-000003', to: '165-PLACE-000002', predicate: 'LOCATED_IN', level: 'C', status: 'DOCUMENTED', context: 'Town and regency of West Java.' },
+   282→   282→  { from: '165-EVT-000001', to: '165-INST-000001', predicate: 'ASSOCIATED_WITH', level: 'B', status: 'DOCUMENTED', source: SRC_DIRECTIVE, context: 'Directive issued for the build of 165.' },
+   283→   283→  { from: '165-EVT-000001', to: '165-PERSON-000001', predicate: 'ASSOCIATED_WITH', level: 'B', status: 'DOCUMENTED', source: SRC_DIRECTIVE, context: 'Issued by the Founder.' },
+   284→   284→  { from: '165-DOC-000001', to: '165-INST-000001', predicate: 'ASSOCIATED_WITH', level: 'B', status: 'DOCUMENTED', context: 'Phase 0 deliverable about the institution.' },
+   285→   285→  { from: '165-RES-000001', to: '165-INST-000001', predicate: 'STUDIES', level: 'B', status: 'DOCUMENTED', context: 'Studies the platform\'s own architecture.' },
+   286→   286→  { from: '165-RES-000001', to: SRC_DIRECTIVE, predicate: 'REFERENCES', level: 'B', status: 'DOCUMENTED', context: 'Primary source of the architecture.' },
+   287→   287→  { from: '165-CLM-000002', to: '165-PERSON-000001', predicate: 'ASSOCIATED_WITH', level: 'B', status: 'DOCUMENTED', source: SRC_DIRECTIVE, context: 'Claim subject.' },
+   288→   288→  { from: '165-CLM-000003', to: '165-PLACE-000003', predicate: 'ASSOCIATED_WITH', level: 'F', status: 'UNVERIFIED', context: 'Claim subject — NOT ASSERTED by 165.' },
+   289→   289→  { from: '165-COLL-000001', to: '165-INST-000001', predicate: 'PART_OF', level: 'B', status: 'DOCUMENTED', context: 'Collection definition.' },
+   290→   290→]
+   291→   291→
+   292→   292→// ---------- CLAIM ↔ SOURCE STANCES ----------
+   293→   293→const claimStances = [
+   294→   294→  { claim: '165-CLM-000001', source: SRC_COMMUNITY, stance: 'SUPPORTED_BY', note: 'Supported only by weak aggregate community accounts — Level E. Pending scholarly review.' },
+   295→   295→  { claim: '165-CLM-000002', source: SRC_DIRECTIVE, stance: 'SUPPORTED_BY', note: 'Stated directly by the Master Build Directive.' },
+   296→   296→  // CLM-000003 deliberately has NO stance: neither supported nor disputed — unverified.
+   297→   297→]
+   298→   298→
+   299→   299→// ---------- COLLECTION ITEMS ----------
+   300→   300→const collectionItems = [
+   301→   301→  { collection: '165-COLL-000001', item: SRC_DIRECTIVE, order: 1 },
+   302→   302→  { collection: '165-COLL-000001', item: '165-DOC-000001', order: 2 },
+   303→   303→  { collection: '165-COLL-000001', item: '165-PERSON-000001', order: 3 },
+   304→   304→  { collection: '165-COLL-000001', item: '165-EVT-000001', order: 4 },
+   305→   305→  { collection: '165-COLL-000001', item: '165-EVT-000002', order: 5 },
+   306→   306→]
+   307→   307→
+   308→   308→async function main() {
+   309→   309→  console.log('Seeding 165 — Minimum Viable Institution data layer…')
+   310→   310→
+   311→   311→  // idempotent reset of knowledge data
+   312→   312→  await prisma.claimSource.deleteMany()
+   313→   313→  await prisma.collectionItem.deleteMany()
+   314→   314→  await prisma.sanadLink.deleteMany()
+   315→   315→  await prisma.relationship.deleteMany()
+   316→   316→  await prisma.nameVariant.deleteMany()
+   317→   317→  await prisma.versionSnapshot.deleteMany()
+   318→   318→  await prisma.auditLog.deleteMany()
+   319→   319→  await prisma.entity.deleteMany()
+   320→   320→  await prisma.contribution.deleteMany()
+   321→   321→
+   322→   322→  const idByGlobal: Record<string, string> = {}
+   323→   323→
+   324→   324→  for (const e of entities) {
+   325→   325→    const row = await prisma.entity.create({
+   326→   326→      data: {
+   327→   327→        globalId: e.globalId, slug: e.slug, type: e.type, primaryName: e.primaryName,
+   328→   328→        subtitle: e.subtitle, summary: e.summary, summaryId: e.summaryId,
+   329→   329→        evidenceLevel: e.evidenceLevel, verificationStatus: e.verificationStatus,
+   330→   330→        startDate: e.startDate, startDatePrecision: e.startDatePrecision,
+   331→   331→        endDate: e.endDate, endDatePrecision: e.endDatePrecision,
+   332→   332→        latitude: e.latitude, longitude: e.longitude, region: e.region,
+   333→   333→        details: e.details ? JSON.stringify(e.details) : null,
+   334→   334→        nameVariants: { create: e.names ?? [] },
+   335→   335→      },
+   336→   336→    })
+   337→   337→    idByGlobal[e.globalId] = row.id
+   338→   338→
+   339→   339→    // preservation: initial version snapshot for every entity
+   340→   340→    await prisma.versionSnapshot.create({
+   341→   341→      data: {
+   342→   342→        entityId: row.id, version: 1,
+   343→   343→        snapshot: JSON.stringify({ globalId: e.globalId, primaryName: e.primaryName, verificationStatus: e.verificationStatus, evidenceLevel: e.evidenceLevel }),
+   344→   344→        changedBy: 'seed', reason: 'Initial institutional record (Phase 1 seed).',
+   345→   345→      },
+   346→   346→    })
+   347→   347→    await prisma.auditLog.create({
+   348→   348→      data: { actor: 'seed', action: 'CREATE', target: e.globalId, detail: `Entity ${e.type} created during Phase 1 seed.` },
+   349→   349→    })
+   350→   350→  }
+   351→   351→
+   352→   352→  for (const r of relationships) {
+   353→   353→    await prisma.relationship.create({
+   354→   354→      data: {
+   355→   355→        fromEntityId: idByGlobal[r.from], toEntityId: idByGlobal[r.to], predicate: r.predicate,
+   356→   356→        evidenceLevel: r.level, verificationStatus: r.status, context: r.context, sourceRef: r.source ?? null,
+   357→   357→      },
+   358→   358→    })
+   359→   359→  }
+   360→   360→
+   361→   361→  for (const c of claimStances) {
+   362→   362→    await prisma.claimSource.create({
+   363→   363→      data: { claimEntityId: idByGlobal[c.claim], sourceEntityId: idByGlobal[c.source], stance: c.stance, note: c.note },
+   364→   364→    })
+   365→   365→  }
+   366→   366→
+   367→   367→  for (const ci of collectionItems) {
+   368→   368→    await prisma.collectionItem.create({
+   369→   369→      data: { collectionId: idByGlobal[ci.collection], itemEntityId: idByGlobal[ci.item], order: ci.order },
+   370→   370→    })
+   371→   371→  }
+   372→   372→
+   373→   373→  // NOTE: sanad intentionally left EMPTY — Sanad Safety by design.
+   374→   374→
+   375→   375→  const counts = await prisma.entity.groupBy({ by: ['type'], _count: { type: true } })
+   376→   376→  console.log('Seed complete:', counts.map((c) => `${c.type}=${c._count.type}`).join(' '))
+   377→   377→  console.log('Sanad registry: EMPTY by design.')
+   378→   378→}
+   379→   379→
+   380→   380→main().finally(() => prisma.$disconnect())
+   381→   381→

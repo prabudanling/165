@@ -134,5 +134,19 @@
   "lang.defaultBadge": "Default",
   "lang.activeBadge": "Aiki",
   "lang.hint": "Harshe na 165 shine Bahasa Indonesia. {curated} harshe an zaɓa shi cikakke, {ai} harshe an fassara shi ta AI, kuma sauran harshe za su zaɓa - matsayinsa zai bi Bahasa Indonesia. Abun da ke cikin takardun gado yana a cikin harshen asali."
- }
+ },
+ "sanad.kicker": "Sanad Duniya · Murshid da Majlis",
+ "sanad.title": "Sanad TQN a duniya — an rubuta, ba a ƙiraba",
+ "sanad.lede": "A buƙatin wanda ya kafa, rajistar sanad TQN Qodiriah Naqsabandiyah yanzu cikakke: layukan gargajiya biyu, hanya ta Banten har zuwa majlis TQN 165 Cikangkung, da kuma shugabannin mursyid a duniya — Abah Anom (Suryalaya), Abah Krawanggana, da Abah Sukanta a matsayin tarin musamman. Kowane shafin da ke haɗa ya ɗauke da asali da matsayinsa; sassan da ba a rubuta ba daga littattafan silsilah ana nuna su a matsayin MATA BLOK masu gaskiya.",
+ "sanad.displayOnly": "Sanad ana nuna ne kawai — tsarin baya ƙirƙira, haɗa, tsammani, ko tabbatar da sanad. Layukan sun shiga ta hanyar Sili → Alaƙa → Shaida → Tsari → Matsayin Tabbatarwa.",
+ "sanad.featured": "Tarin Musamman — Murshid TQN a Duniya",
+ "sanad.featuredLede": "An tsara shi musamman bisa buƙatar kai na wanda ya kafa 165.",
+ "sanad.chains": "Raka'o'in sanad da aka rubuta",
+ "sanad.linksCount": "{n} maɓalli",
+ "sanad.blockNote": "MATA BLOK — suna jiran rubutawa daga littafin silsilah; 165 baya ƙirƙa sunaye.",
+ "sanad.network": "Hanyar majlis da wurare",
+ "sanad.sources": "Tushen rikodin sanad",
+ "sanad.referenceNote": "Lamarin da ya dace: sanad Suryalaya (Abah Anom) baya ƙarƙashin 165 — an rubuta shi a matsayin ɗan takarar mursyid TQN a duniya, ba a matsayin maɓallin sanad na majlis 165 ba.",
+ "sanad.openProfile": "Bude bayani",
+ "home.statSanadNoteRecorded": "an rubuta — kowane maɓalli yana da tushe"
 }

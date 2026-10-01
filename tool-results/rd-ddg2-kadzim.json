@@ -1,0 +1,67 @@
+{
+  "code": 200,
+  "data": {
+    "description": "DuckDuckGo private search for people who keep JavaScript off in their browser. It doesn't spy on your searches.",
+    "external": {
+      "apple-touch-icon": {
+        "https://duckduckgo.com/assets/icons/meta/DDG-iOS-icon_120x120.png?v=2": {
+          "id": "icon120",
+          "sizes": "120x120"
+        },
+        "https://duckduckgo.com/assets/icons/meta/DDG-iOS-icon_152x152.png?v=2": {
+          "id": "icon152",
+          "sizes": "152x152"
+        },
+        "https://duckduckgo.com/assets/icons/meta/DDG-iOS-icon_60x60.png?v=2": {
+          "id": "icon60"
+        },
+        "https://duckduckgo.com/assets/icons/meta/DDG-iOS-icon_76x76.png?v=2": {
+          "id": "icon76",
+          "sizes": "76x76"
+        }
+      },
+      "canonical": {
+        "https://duckduckgo.com/": {}
+      },
+      "icon": {
+        "https://duckduckgo.com/favicon.ico": {
+          "type": "image/x-icon"
+        }
+      },
+      "image_src": {
+        "https://duckduckgo.com/assets/icons/meta/DDG-icon_256x256.png": {}
+      },
+      "search": {
+        "https://duckduckgo.com/opensearch_html_v2.xml": {
+          "title": "DuckDuckGo (HTML)",
+          "type": "application/opensearchdescription+xml"
+        }
+      }
+    },
+    "html": "<html xmlns=\"http://www.w3.org/1999/xhtml\"><!--<![endif]--><head>\n  <link rel=\"canonical\" href=\"https://duckduckgo.com/\">\n  <meta http-equiv=\"content-type\" content=\"text/html; charset=UTF-8\">\n  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0, maximum-scale=3.0, user-scalable=1\">\n  <meta name=\"referrer\" content=\"origin\">\n  <title>DuckDuckGo HTML: Private Search Without JavaScript</title>\n  <meta name=\"description\" content=\"DuckDuckGo private search for people who keep JavaScript off in their browser. It doesn't spy on your searches.\">\n  <link title=\"DuckDuckGo (HTML)\" type=\"application/opensearchdescription+xml\" rel=\"search\" href=\"//duckduckgo.com/opensearch_html_v2.xml\">\n  <link rel=\"icon\" href=\"//duckduckgo.com/favicon.ico\" type=\"image/x-icon\">\n  <link id=\"icon60\" rel=\"apple-touch-icon\" href=\"//duckduckgo.com/assets/icons/meta/DDG-iOS-icon_60x60.png?v=2\">\n  <link id=\"icon76\" rel=\"apple-touch-icon\" sizes=\"76x76\" href=\"//duckduckgo.com/assets/icons/meta/DDG-iOS-icon_76x76.png?v=2\">\n  <link id=\"icon120\" rel=\"apple-touch-icon\" sizes=\"120x120\" href=\"//duckduckgo.com/assets/icons/meta/DDG-iOS-icon_120x120.png?v=2\">\n  <link id=\"icon152\" rel=\"apple-touch-icon\" sizes=\"152x152\" href=\"//duckduckgo.com/assets/icons/meta/DDG-iOS-icon_152x152.png?v=2\">\n  <link rel=\"image_src\" href=\"//duckduckgo.com/assets/icons/meta/DDG-icon_256x256.png\">\n  <link rel=\"stylesheet\" media=\"handheld, all\" href=\"//duckduckgo.com/dist/h.12e359033b8c1146e5f7.css\" type=\"text/css\">\n</head>\n\n<body class=\"body--home body--html\">\n  <div class=\"header-wrap--home\"></div>\n  <div id=\"content_wrapper_homepage\" class=\"content-wrap--home\">\n  <div id=\"content_homepage\" class=\"content--home\">\n    <div class=\"logo-wrap--home\">\n    <a title=\"About DuckDuckGo\" class=\"logo_homepage\" href=\"//duckduckgo.com/about.html\">About DuckDuckGo</a>\n    </div>\n    <div class=\"search-wrap--home\">\n        <form name=\"x\" id=\"search_form_homepage\" class=\"search\" action=\"/html/\" method=\"post\">\n\n          <input name=\"q\" autocomplete=\"off\" id=\"search_form_input_homepage\" class=\"search__input\" type=\"text\" autofocus=\"\">\n\n          <input name=\"b\" id=\"search_button_homepage\" class=\"search__button search__button--html\" value=\"\" title=\"Search\" alt=\"Search\" type=\"submit\">\n\n\n\n\n\n\n        </form>\n    </div>\n\n    <!--[if IE 6]>\n        <p class=\"text-center\">This browser is not supported. Please visit <a href=\"/lite\">/lite</a>.</p>\n    <![endif]-->\n\n\t<div id=\"html-only-notice\">\n<!--          This is the HTML version. Get the JS version <a href=\"https://duckduckgo.com/\">here</a>. //-->\n\t</div>\n\n  </div> <!-- id=\"content_homepage\" -->\n  </div> <!-- id=\"content_wrapper_homepage\" -->\n\n\n</body></html>",
+    "httpStatus": 200,
+    "httpStatusText": "OK",
+    "metadata": {
+      "description": "DuckDuckGo private search for people who keep JavaScript off in their browser. It doesn't spy on your searches.",
+      "referrer": "origin",
+      "viewport": "width=device-width, initial-scale=1.0, maximum-scale=3.0, user-scalable=1"
+    },
+    "title": "DuckDuckGo HTML: Private Search Without JavaScript",
+    "url": "https://html.duckduckgo.com/html/",
+    "usage": {
+      "measuredTokens": 25,
+      "outputTokens": 25,
+      "scaledTokens": 808,
+      "tokens": 808
+    }
+  },
+  "meta": {
+    "usage": {
+      "measuredTokens": 25,
+      "outputTokens": 25,
+      "scaledTokens": 808,
+      "tokens": 808
+    }
+  },
+  "status": 20000
+}

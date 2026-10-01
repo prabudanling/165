@@ -1,0 +1,67 @@
+{
+  "code": 200,
+  "data": {
+    "description": "The lightest weight version of DuckDuckGo private search. Loads fast on slow connections and compatible with text-based browsers.",
+    "external": {
+      "apple-touch-icon": {
+        "https://duckduckgo.com/assets/icons/meta/DDG-iOS-icon_120x120.png?v=2": {
+          "id": "icon120",
+          "sizes": "120x120"
+        },
+        "https://duckduckgo.com/assets/icons/meta/DDG-iOS-icon_152x152.png?v=2": {
+          "id": "icon152",
+          "sizes": "152x152"
+        },
+        "https://duckduckgo.com/assets/icons/meta/DDG-iOS-icon_60x60.png?v=2": {
+          "id": "icon60"
+        },
+        "https://duckduckgo.com/assets/icons/meta/DDG-iOS-icon_76x76.png?v=2": {
+          "id": "icon76",
+          "sizes": "76x76"
+        }
+      },
+      "canonical": {
+        "https://duckduckgo.com/": {}
+      },
+      "icon": {
+        "https://duckduckgo.com/favicon.ico": {
+          "type": "image/x-icon"
+        }
+      },
+      "image_src": {
+        "https://duckduckgo.com/assets/icons/meta/DDG-icon_256x256.png": {}
+      },
+      "search": {
+        "https://duckduckgo.com/opensearch_lite_v2.xml": {
+          "title": "DuckDuckGo (Lite)",
+          "type": "application/opensearchdescription+xml"
+        }
+      }
+    },
+    "html": "<html><head>\n  <link rel=\"canonical\" href=\"https://duckduckgo.com/\">\n  <meta http-equiv=\"content-type\" content=\"text/html; charset=UTF-8\">\n  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0, maximum-scale=3.0, user-scalable=1;\">\n  <meta name=\"referrer\" content=\"origin\">\n  <title>DuckDuckGo Lite: Fast, Lightweight Private Search</title>\n  <meta name=\"description\" content=\"The lightest weight version of DuckDuckGo private search. Loads fast on slow connections and compatible with text-based browsers.\">\n  <link title=\"DuckDuckGo (Lite)\" type=\"application/opensearchdescription+xml\" rel=\"search\" href=\"//duckduckgo.com/opensearch_lite_v2.xml\">\n  <link rel=\"icon\" href=\"//duckduckgo.com/favicon.ico\" type=\"image/x-icon\">\n  <link id=\"icon60\" rel=\"apple-touch-icon\" href=\"//duckduckgo.com/assets/icons/meta/DDG-iOS-icon_60x60.png?v=2\">\n  <link id=\"icon76\" rel=\"apple-touch-icon\" sizes=\"76x76\" href=\"//duckduckgo.com/assets/icons/meta/DDG-iOS-icon_76x76.png?v=2\">\n  <link id=\"icon120\" rel=\"apple-touch-icon\" sizes=\"120x120\" href=\"//duckduckgo.com/assets/icons/meta/DDG-iOS-icon_120x120.png?v=2\">\n  <link id=\"icon152\" rel=\"apple-touch-icon\" sizes=\"152x152\" href=\"//duckduckgo.com/assets/icons/meta/DDG-iOS-icon_152x152.png?v=2\">\n  <link rel=\"image_src\" href=\"//duckduckgo.com/assets/icons/meta/DDG-icon_256x256.png\">\n  <link rel=\"stylesheet\" media=\"handheld, all\" href=\"//duckduckgo.com/dist/l.304bf63bbd053ee46b28.css\" type=\"text/css\">\n</head>\n\n<body>\n<a name=\"top\"></a>\n<center id=\"lite_wrapper\">\n  <br>\n  <span class=\"header\">DuckDuckGo</span>\n  <br><br>\n\n  <form action=\"/lite/\" method=\"post\">\n    <input class=\"query\" type=\"text\" size=\"40\" name=\"q\" autocomplete=\"off\" value=\"\" autofocus=\"\">\n    <input class=\"submit\" type=\"submit\" value=\"Search\">\n\n\n\n\n\n\n  </form>\n\n  <br>\n  <p class=\"html-only\">\n<!--    This is the Lite version. Get the full-JS version <a href=\"https://duckduckgo.com/\">here</a>. //-->\n  </p>\n</center>\n\n\n\n</body></html>",
+    "httpStatus": 200,
+    "httpStatusText": "OK",
+    "metadata": {
+      "description": "The lightest weight version of DuckDuckGo private search. Loads fast on slow connections and compatible with text-based browsers.",
+      "referrer": "origin",
+      "viewport": "width=device-width, initial-scale=1.0, maximum-scale=3.0, user-scalable=1;"
+    },
+    "title": "DuckDuckGo Lite: Fast, Lightweight Private Search",
+    "url": "https://lite.duckduckgo.com/lite/",
+    "usage": {
+      "measuredTokens": 25,
+      "outputTokens": 25,
+      "scaledTokens": 611,
+      "tokens": 611
+    }
+  },
+  "meta": {
+    "usage": {
+      "measuredTokens": 25,
+      "outputTokens": 25,
+      "scaledTokens": 611,
+      "tokens": 611
+    }
+  },
+  "status": 20000
+}

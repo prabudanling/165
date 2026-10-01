@@ -7,8 +7,9 @@
 import { db } from '@/lib/db'
 import { ENTITY_TYPES, parseDetails, type EntityProfileDTO, type EntitySummaryDTO, type RelationshipDTO } from '@/lib/165'
 import {
-  snapshotSearch, snapshotProfile, snapshotStats,
+  snapshotSearch, snapshotProfile, snapshotStats, SNAPSHOT,
   snapshotGraphData, snapshotTimelineEvents, snapshotGlossaryTerms, snapshotAskIndex,
+  snapshotSanadLinks,
 } from '@/lib/snapshot'
 
 function logFallback(where: string, err: unknown) {
@@ -204,4 +205,135 @@ export async function getAskIndex() {
     logFallback('ask', err)
     return snapshotAskIndex()
   }
+}
+
+// ------------------------------------------------------------
+// SANAD REGISTRY (Task 26) — display-only, fully sourced.
+// Returns the featured murshid collection, the recorded chains
+// with every link's own source + status, and the marked network
+// (places/institutions) + figures + sources of the sanad dataset.
+// ------------------------------------------------------------
+export type SanadLinkDTO = {
+  id: string; order: number; fromName: string; toName: string
+  personSlug?: string | null; personName?: string | null
+  eraNote?: string | null; evidenceLevel: string; verificationStatus: string
+  sourceRef?: string | null; context?: string | null
+}
+
+export type SanadChainDTO = { entity: EntitySummaryDTO; links: SanadLinkDTO[] }
+
+export type SanadRegistryDTO = {
+  featured: EntitySummaryDTO[]
+  chains: SanadChainDTO[]
+  figures: EntitySummaryDTO[]
+  network: EntitySummaryDTO[]
+  sources: EntitySummaryDTO[]
+}
+
+const SANAD_MARK = 'sanadGlobal=TQN-QN-WORLD'
+
+function hasSanadMark(details: string | null): boolean {
+  return !!details && details.includes(SANAD_MARK)
+}
+
+function bucketMarked(rows: { id: string; globalId: string; slug: string; type: string; primaryName: string; subtitle: string | null; details: string | null; evidenceLevel: string; verificationStatus: string; startDate: string | null; startDatePrecision: string | null; endDate: string | null; endDatePrecision: string | null; region: string | null }[]) {
+  const marked = rows.filter((r) => hasSanadMark(r.details))
+  return {
+    figures: marked.filter((r) => r.type === 'PERSON').map(toSummary),
+    network: marked.filter((r) => r.type === 'PLACE' || r.type === 'INSTITUTION').map(toSummary),
+    sources: marked.filter((r) => r.type === 'SOURCE').map(toSummary),
+  }
+}
+
+export async function getSanadRegistry(): Promise<SanadRegistryDTO> {
+  try {
+    const rows = await db.entity.findMany({
+      where: { details: { contains: SANAD_MARK } },
+      orderBy: [{ type: 'asc' }, { primaryName: 'asc' }],
+    })
+    const { figures, network, sources } = bucketMarked(rows as Parameters<typeof bucketMarked>[0])
+
+    // featured — koleksi spesial atas permintaan Founder
+    const coll = await db.entity.findUnique({ where: { globalId: '165-COLL-000002' } })
+    let featured: EntitySummaryDTO[] = []
+    if (coll) {
+      const items = await db.collectionItem.findMany({
+        where: { collectionId: coll.id },
+        orderBy: { order: 'asc' },
+        include: { item: true },
+      })
+      featured = items.map((ci) => toSummary(ci.item))
+    }
+
+    // chains + links
+    const chainRows = rows.filter((r) => r.type === 'SANAD')
+    const chainIds = chainRows.map((c) => c.id)
+    const linkRows = chainIds.length
+      ? await db.sanadLink.findMany({
+          where: { sanadEntityId: { in: chainIds } },
+          orderBy: [{ sanadEntityId: 'asc' }, { order: 'asc' }],
+        })
+      : []
+    const personIds = [...new Set(linkRows.map((l) => l.personEntityId).filter((x): x is string => !!x))]
+    const persons = personIds.length
+      ? await db.entity.findMany({ where: { id: { in: personIds } }, select: { id: true, slug: true, primaryName: true } })
+      : []
+    const personById = new Map(persons.map((p) => [p.id, p]))
+
+    const chains: SanadChainDTO[] = chainRows.map((c) => ({
+      entity: toSummary(c),
+      links: linkRows
+        .filter((l) => l.sanadEntityId === c.id)
+        .map((l) => ({
+          id: l.id, order: l.order, fromName: l.fromName, toName: l.toName,
+          personSlug: l.personEntityId ? personById.get(l.personEntityId)?.slug ?? null : null,
+          personName: l.personEntityId ? personById.get(l.personEntityId)?.primaryName ?? null : null,
+          eraNote: l.eraNote, evidenceLevel: l.evidenceLevel, verificationStatus: l.verificationStatus,
+          sourceRef: l.sourceRef, context: l.context,
+        })),
+    }))
+
+    return { featured, chains, figures, network, sources }
+  } catch (err) {
+    logFallback('sanad', err)
+    return snapshotSanadRegistry()
+  }
+}
+
+// snapshot fallback — zero-database mirror of the above
+export function snapshotSanadRegistry(): SanadRegistryDTO {
+  const marked = SNAPSHOT.entities.filter((e) => hasSanadMark(e.details))
+  const figures = marked.filter((e) => e.type === 'PERSON').map(toSummary)
+  const network = marked.filter((e) => e.type === 'PLACE' || e.type === 'INSTITUTION').map(toSummary)
+  const sources = marked.filter((e) => e.type === 'SOURCE').map(toSummary)
+
+  const coll = SNAPSHOT.entities.find((e) => e.globalId === '165-COLL-000002')
+  const featured = coll
+    ? SNAPSHOT.collectionItems
+        .filter((c) => c.collectionId === coll.id)
+        .sort((a, b) => a.order - b.order)
+        .map((c) => SNAPSHOT.entities.find((e) => e.id === c.itemEntityId))
+        .filter((e): e is NonNullable<typeof e> => !!e)
+        .map(toSummary)
+    : []
+
+  const chainRows = marked.filter((e) => e.type === 'SANAD')
+  const links = snapshotSanadLinks()
+  const entityById = new Map(SNAPSHOT.entities.map((e) => [e.id, e]))
+  const chains: SanadChainDTO[] = chainRows.map((c) => ({
+    entity: toSummary(c),
+    links: links
+      .filter((l) => l.sanadEntityId === c.id)
+      .map((l) => {
+        const p = l.personEntityId ? entityById.get(l.personEntityId) : undefined
+        return {
+          id: l.id, order: l.order, fromName: l.fromName, toName: l.toName,
+          personSlug: p?.slug ?? null, personName: p?.primaryName ?? null,
+          eraNote: l.eraNote, evidenceLevel: l.evidenceLevel, verificationStatus: l.verificationStatus,
+          sourceRef: l.sourceRef, context: l.context,
+        }
+      }),
+  }))
+
+  return { featured, chains, figures, network, sources }
 }
