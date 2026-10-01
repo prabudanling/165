@@ -3,7 +3,7 @@
 // 165 — TRUST & METHOD: the epistemic spine of the institution
 // How 165 knows · Evidence levels · Verification statuses · Sanad safety ·
 // Versioning · Corrections · Dispute · Contributor identity · Editorial review · AI policy
-import { Eye, FileWarning, History, Link2, Scale, ShieldCheck, Sparkles, Users } from 'lucide-react'
+import { Accessibility, AppWindow, Braces, Eye, FileWarning, History, Languages, Link2, Lock, Scale, ShieldCheck, Sparkles, Users } from 'lucide-react'
 import { EVIDENCE_LEVELS, VERIFICATION_STATUSES } from '@/lib/165'
 import { useI18n } from '@/lib/i18n'
 import { EvidenceBadge, HonestNote, Kicker, SectionHeading, StatusBadge } from '../ui'
@@ -123,6 +123,54 @@ export function TrustSection({ onOpenEntity }: { onOpenEntity?: (slug: string) =
             Living persons, students and contributors receive privacy protection by default.
           </p>
         </div>
+      </section>
+
+      {/* standar internasional — komitmen kualitas dunia, bahasa Indonesia dulu */}
+      <section aria-labelledby="std-h">
+        <Kicker>Standar internasional · International standards</Kicker>
+        <h2 id="std-h" className="font-display mt-1.5 text-xl font-semibold tracking-tight sm:text-2xl">
+          Dibangun di atas standar dunia · Built on world standards
+        </h2>
+        <ul className="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          {[
+            {
+              icon: Accessibility,
+              t: 'WCAG 2.1 AA',
+              d: 'Skip-link, kontras, fokus terlihat, prefers-reduced-motion, dan RTL penuh untuk 11 bahasa.',
+            },
+            {
+              icon: Languages,
+              t: 'ISO 639 · 178 bahasa',
+              d: 'Registry bahasa dunia dengan label jujur: kurasi tangan, kurasi AI, fallback Bahasa Indonesia.',
+            },
+            {
+              icon: Braces,
+              t: 'Schema.org JSON-LD',
+              d: 'Organization, WebSite & SearchAction terbaca mesin pencari dan asisten AI tanpa menebak.',
+            },
+            {
+              icon: AppWindow,
+              t: 'PWA · Open Graph',
+              d: 'Manifest, ikon crest, theme-color, dan kartu OG — siap dipasang & dibagikan lintas platform.',
+            },
+            {
+              icon: Lock,
+              t: 'Privasi by design',
+              d: 'Tanpa pelacak, tanpa cookie pihak ketiga; preferensi bahasa tersimpan lokal di perangkat Anda.',
+            },
+            {
+              icon: History,
+              t: 'Integritas data',
+              d: 'Pure-append, audit trail, versi snapshot, dan ekspor statis — riwayat tidak pernah terhapus senyap.',
+            },
+          ].map((c) => (
+            <li key={c.t} className="rounded-md border border-border bg-card p-5">
+              <c.icon className="size-4.5 text-[var(--brass)]" aria-hidden />
+              <h3 className="font-display mt-2.5 text-[15px] font-semibold">{c.t}</h3>
+              <p className="text-muted-foreground mt-1 text-[13px] leading-relaxed">{c.d}</p>
+            </li>
+          ))}
+        </ul>
       </section>
     </div>
   )

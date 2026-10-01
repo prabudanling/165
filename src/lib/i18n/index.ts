@@ -90,15 +90,45 @@ export function setLanguage(code: string) {
   })
 }
 
-/** dipanggil sekali dari app shell setelah hydration */
+/** dipanggil sekali dari app shell setelah hydration.
+ * Prioritas bahasa: ?lang= di URL (tautan dapat dibagikan & hreflang sah)
+ * → localStorage → bawaan (Bahasa Indonesia). */
 export function initLanguage() {
   applyDocumentMeta(current)
+  let wanted: string | null = null
   try {
-    const stored = localStorage.getItem(STORAGE_KEY)
-    if (stored && isSupported(stored)) setLanguage(stored)
+    const param = new URLSearchParams(window.location.search).get('lang')
+    if (param && isSupported(param)) wanted = param
   } catch {
     /* noop */
   }
+  if (!wanted) {
+    try {
+      const stored = localStorage.getItem(STORAGE_KEY)
+      if (stored && isSupported(stored)) wanted = stored
+    } catch {
+      /* noop */
+    }
+  }
+  if (wanted) setLanguage(wanted)
+}
+
+/** apakah kamus antarmuka untuk bahasa ini tersedia (kurasi / file AI tergenerate)? */
+export function hasDictionary(code: string): boolean {
+  const meta = getLanguage(code)
+  if (meta?.tier === 'curated') return true
+  return Object.prototype.hasOwnProperty.call(AI_DICT_LOADERS, code)
+}
+
+export type EffectiveTier = 'curated' | 'ai' | 'core'
+
+/** tier efektif yang JUJUR: bahasa 'core' yang kamusnya sudah tergenerate
+ * otomatis tampil sebagai 'ai' — label pemilih bahasa tidak pernah bohong. */
+export function effectiveTier(code: string): EffectiveTier {
+  const meta = getLanguage(code)
+  if (!meta) return 'core'
+  if (meta.tier === 'curated') return 'curated'
+  return hasDictionary(code) ? 'ai' : 'core'
 }
 
 export function getActiveLanguage(): string {

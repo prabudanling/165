@@ -55,9 +55,33 @@ export function InstitutionApp() {
   const moreWrapRef = useRef<HTMLDivElement>(null)
   const { t } = useI18n()
 
-  // muat bahasa tersimpan (setelah hydration — bebas mismatch)
+  // muat bahasa tersimpan (setelah hydration — bebas mismatch) + deep-link
+  // standar internasional: #section (mis. /#documents) dan ?q= (SearchAction)
   useEffect(() => {
     initLanguage()
+    // ditangguhkan satu tick: hindari setState sinkron di dalam efek (cascading render)
+    const t = setTimeout(() => {
+      try {
+        const hash = window.location.hash.replace('#', '')
+        const params = new URLSearchParams(window.location.search)
+        const q = (params.get('q') ?? '').trim()
+        if (hash && VALID_SECTIONS.includes(hash)) {
+          setSection(hash as SectionKey)
+        }
+        if (q.length >= 2) {
+          setSection('documents')
+          try { history.replaceState(null, '', '#documents') } catch { /* noop */ }
+          // DocumentsSection belum terpasang saat event ini ditulis — kirim
+          // setelah mount agar listener-nya siap menerima query pencarian.
+          setTimeout(() => {
+            window.dispatchEvent(new CustomEvent('165:docs-search', { detail: q }))
+          }, 400)
+        }
+      } catch {
+        /* noop */
+      }
+    }, 0)
+    return () => clearTimeout(t)
   }, [])
 
   const navigate = useCallback((s: string) => {

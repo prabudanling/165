@@ -5,10 +5,10 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { Check, ChevronDown, Globe, Search, X } from 'lucide-react'
 import { cn } from '@/lib/utils'
-import { setLanguage, useI18n } from '@/lib/i18n'
-import { LANGUAGES, REGION_ORDER, tierCounts, type LanguageDef } from '@/lib/i18n/languages'
+import { effectiveTier, setLanguage, useI18n, type EffectiveTier } from '@/lib/i18n'
+import { LANGUAGES, REGION_ORDER, type LanguageDef } from '@/lib/i18n/languages'
 
-const TIER_DOT: Record<LanguageDef['tier'], string> = {
+const TIER_DOT: Record<EffectiveTier, string> = {
   curated: 'bg-emerald-600',
   ai: 'bg-amber-500',
   core: 'bg-stone-400',
@@ -19,7 +19,20 @@ export function LanguagePicker({ compact = false }: { compact?: boolean }) {
   const [open, setOpen] = useState(false)
   const [query, setQuery] = useState('')
   const wrapRef = useRef<HTMLDivElement>(null)
-  const counts = useMemo(() => tierCounts(), [])
+  // tier efektif yang jujur: hitung ulang tiap dialog dibuka — bila kamus AI
+  // baru tergenerate di latar, dot & angka legenda ikut naik tanpa rebuild.
+  const counts = useMemo(() => {
+    let curated = 0
+    let ai = 0
+    let core = 0
+    for (const l of LANGUAGES) {
+      const tier = effectiveTier(l.code)
+      if (tier === 'curated') curated++
+      else if (tier === 'ai') ai++
+      else core++
+    }
+    return { total: LANGUAGES.length, curated, ai, core }
+  }, [open])
 
   // tutup saat klik di luar / tekan Escape
   useEffect(() => {
@@ -133,7 +146,7 @@ export function LanguagePicker({ compact = false }: { compact?: boolean }) {
                             active ? 'bg-secondary' : 'hover:bg-secondary/60',
                           )}
                         >
-                          <span aria-hidden className={cn('size-1.5 shrink-0 rounded-full', TIER_DOT[l.tier])} />
+                          <span aria-hidden className={cn('size-1.5 shrink-0 rounded-full', TIER_DOT[effectiveTier(l.code)])} />
                           <span className="min-w-0 flex-1">
                             <span className={cn('block truncate text-[13.5px]', active ? 'text-primary font-semibold' : 'font-medium')} dir={l.dir}>
                               {l.native}

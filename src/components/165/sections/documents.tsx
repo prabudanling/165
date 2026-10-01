@@ -192,6 +192,17 @@ export function DocumentsSection({ onNavigate }: { onNavigate?: (section: string
   const [pendingAnchor, setPendingAnchor] = useState<string | null>(null)
   const { t } = useI18n()
 
+  // deep-link ?q= (standar internasional / SearchAction): institution-app
+  // membuka section ini lalu menyalakan pencarian lewat event global.
+  useEffect(() => {
+    const onDocsSearch = (e: Event) => {
+      const q = (e as CustomEvent<string>).detail
+      if (typeof q === 'string' && q.trim().length >= 2) setQuery(q.trim())
+    }
+    window.addEventListener('165:docs-search', onDocsSearch)
+    return () => window.removeEventListener('165:docs-search', onDocsSearch)
+  }, [])
+
   const doc = selectedKey ? getDocument(selectedKey) : undefined
   const stats = useMemo(() => corpusStats(), [])
   const toc = useMemo(() => (doc ? docToc(doc.content) : []), [doc])

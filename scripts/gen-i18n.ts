@@ -1,10 +1,13 @@
 // 165 — Pipeline terjemahan antarmuka via LLM (backend only)
-// Menerjemahkan katalog UI (src/lib/i18n/catalog.ts) ke ~88 bahasa utama dunia.
+// Menerjemahkan katalog UI (src/lib/i18n/catalog.ts) ke SELURUH bahasa registry
+// (src/lib/i18n/languages.ts) kecuali 6 bahasa kurasi tangan — amanat founder:
+// "seluruh bahasa, default Bahasa Indonesia, jangan sampai ada yang terlewat".
 // Output: src/data/i18n/{code}.json — dimuat dinamis oleh mesin i18n.
 // Resume-safe: bahasa yang sudah punya file dilewati. Jalankan ulang: bun scripts/gen-i18n.ts
 import ZAI from 'z-ai-web-dev-sdk'
 import { writeFileSync, existsSync, mkdirSync, readdirSync } from 'node:fs'
 import { CATALOG, CATALOG_KEYS } from '../src/lib/i18n/catalog'
+import { LANGUAGES } from '../src/lib/i18n/languages'
 
 const OUT_DIR = 'src/data/i18n'
 mkdirSync(OUT_DIR, { recursive: true })
@@ -30,98 +33,24 @@ ${entries}
   return codes.length
 }
 
-// [code, native name, english name]
-const TARGETS: Array<[string, string, string]> = [
-  ['zh', '中文', 'Chinese (Mandarin)'],
-  ['ja', '日本語', 'Japanese'],
-  ['ko', '한국어', 'Korean'],
-  ['mn', 'Монгол', 'Mongolian'],
-  ['fr', 'Français', 'French'],
-  ['es', 'Español', 'Spanish'],
-  ['de', 'Deutsch', 'German'],
-  ['pt', 'Português', 'Portuguese'],
-  ['it', 'Italiano', 'Italian'],
-  ['ru', 'Русский', 'Russian'],
-  ['uk', 'Українська', 'Ukrainian'],
-  ['pl', 'Polski', 'Polish'],
-  ['nl', 'Nederlands', 'Dutch'],
-  ['el', 'Ελληνικά', 'Greek'],
-  ['ro', 'Română', 'Romanian'],
-  ['hu', 'Magyar', 'Hungarian'],
-  ['cs', 'Čeština', 'Czech'],
-  ['sk', 'Slovenčina', 'Slovak'],
-  ['bg', 'Български', 'Bulgarian'],
-  ['sr', 'Српски', 'Serbian'],
-  ['hr', 'Hrvatski', 'Croatian'],
-  ['bs', 'Bosanski', 'Bosnian'],
-  ['sl', 'Slovenščina', 'Slovenian'],
-  ['mk', 'Македонски', 'Macedonian'],
-  ['sq', 'Shqip', 'Albanian'],
-  ['lt', 'Lietuvių', 'Lithuanian'],
-  ['lv', 'Latviešu', 'Latvian'],
-  ['et', 'Eesti', 'Estonian'],
-  ['is', 'Íslenska', 'Icelandic'],
-  ['fi', 'Suomi', 'Finnish'],
-  ['sv', 'Svenska', 'Swedish'],
-  ['no', 'Norsk', 'Norwegian'],
-  ['da', 'Dansk', 'Danish'],
-  ['ga', 'Gaeilge', 'Irish'],
-  ['cy', 'Cymraeg', 'Welsh'],
-  ['mt', 'Malti', 'Maltese'],
-  ['ca', 'Català', 'Catalan'],
-  ['gl', 'Galego', 'Galician'],
-  ['eu', 'Euskara', 'Basque'],
-  ['he', 'עברית', 'Hebrew'],
-  ['fa', 'فارسی', 'Persian'],
-  ['tr', 'Türkçe', 'Turkish'],
-  ['ku', 'کوردی', 'Kurdish (Kurmanji)'],
-  ['ps', 'پښتو', 'Pashto'],
-  ['ug', 'ئۇيغۇرچە', 'Uyghur'],
-  ['az', 'Azərbaycan', 'Azerbaijani'],
-  ['kk', 'Қазақша', 'Kazakh'],
-  ['ky', 'Кыргызча', 'Kyrgyz'],
-  ['uz', 'Oʻzbekcha', 'Uzbek'],
-  ['tk', 'Türkmençe', 'Turkmen'],
-  ['tg', 'Тоҷикӣ', 'Tajik'],
-  ['hy', 'Հայերեն', 'Armenian'],
-  ['ka', 'ქართული', 'Georgian'],
-  ['hi', 'हिन्दी', 'Hindi'],
-  ['ur', 'اردو', 'Urdu'],
-  ['bn', 'বাংলা', 'Bengali'],
-  ['pa', 'ਪੰਜਾਬੀ', 'Punjabi'],
-  ['gu', 'ગુજરાતી', 'Gujarati'],
-  ['mr', 'मराठी', 'Marathi'],
-  ['ta', 'தமிழ்', 'Tamil'],
-  ['te', 'తెలుగు', 'Telugu'],
-  ['kn', 'ಕನ್ನಡ', 'Kannada'],
-  ['ml', 'മലയാളം', 'Malayalam'],
-  ['si', 'සිංහල', 'Sinhala'],
-  ['ne', 'नेपाली', 'Nepali'],
-  ['sd', 'سنڌي', 'Sindhi'],
-  ['th', 'ไทย', 'Thai'],
-  ['vi', 'Tiếng Việt', 'Vietnamese'],
-  ['km', 'ខ្មែរ', 'Khmer'],
-  ['lo', 'ລາວ', 'Lao'],
-  ['my', 'မြန်မာ', 'Burmese'],
-  ['tl', 'Tagalog', 'Filipino'],
-  ['sw', 'Kiswahili', 'Swahili'],
-  ['am', 'አማርኛ', 'Amharic'],
-  ['ha', 'Hausa', 'Hausa'],
-  ['yo', 'Yorùbá', 'Yoruba'],
-  ['ig', 'Igbo', 'Igbo'],
-  ['zu', 'isiZulu', 'Zulu'],
-  ['xh', 'isiXhosa', 'Xhosa'],
-  ['af', 'Afrikaans', 'Afrikaans'],
-  ['sn', 'chiShona', 'Shona'],
-  ['so', 'Soomaali', 'Somali'],
-  ['mg', 'Malagasy', 'Malagasy'],
-  ['ff', 'Fulfulde', 'Fula'],
-  ['rw', 'Kinyarwanda', 'Kinyarwanda'],
-  ['eo', 'Esperanto', 'Esperanto'],
-  ['ht', 'Kreyòl ayisyen', 'Haitian Creole'],
-]
+// [code, native name, human name] — DITURUNKAN dari registry bahasa 165
+// (seluruh bahasa non-kurasi: 75 tier 'ai' yang sudah ada + seluruh tier 'core'),
+// sehingga registry dan pipeline TIDAK PERNAH melenceng satu bahasa pun.
+const TARGETS: Array<[string, string, string]> = LANGUAGES
+  .filter((l) => l.tier !== 'curated')
+  .map((l) => [l.code, l.native, l.name])
 
 const payload = CATALOG_KEYS.map((k) => `${k}\n  id: ${CATALOG[k][0]}\n  en: ${CATALOG[k][1]}`).join('\n')
+
+// circuit-breaker 429 global: saat kuota ketat, SEMUA worker berhenti bersama
+// cukup lama (45 dtk), bukan retry cepat yang membuat limit makin panas.
+let cooldownUntil = 0
+async function waitCooldown() {
+  const now = Date.now()
+  if (now < cooldownUntil) {
+    await new Promise((r) => setTimeout(r, cooldownUntil - now))
+  }
+}
 
 function systemPrompt(lang: string, native: string, english: string) {
   return [
@@ -168,8 +97,9 @@ async function translateOne(zai: Awaited<ReturnType<typeof ZAI.create>>, code: s
   const outPath = `${OUT_DIR}/${code}.json`
   if (existsSync(outPath)) return { ok: true, missing: 0 }
 
-  for (let attempt = 1; attempt <= 4; attempt++) {
+  for (let attempt = 1; attempt <= 8; attempt++) {
     try {
+      await waitCooldown()
       const completion = await withTimeout(
         zai.chat.completions.create({
           messages: [
@@ -204,8 +134,14 @@ async function translateOne(zai: Awaited<ReturnType<typeof ZAI.create>>, code: s
     } catch (err) {
       const msg = err instanceof Error ? err.message : String(err)
       console.warn(`[${code}] attempt ${attempt} failed: ${msg.slice(0, 120)}`)
-      if (attempt < 4) await new Promise((r) => setTimeout(r, 8000 * attempt))
-      else return { ok: false, missing: 0, err: msg }
+      if (attempt >= 8) return { ok: false, missing: 0, err: msg }
+      if (/429|Too many/i.test(msg)) {
+        // kuota ketat: panaskan breaker global, tunggu serempak, lama
+        cooldownUntil = Math.max(cooldownUntil, Date.now() + 45_000)
+        console.warn(`[429] cooldown global 45s · sampai ${new Date(cooldownUntil).toISOString()}`)
+      } else {
+        await new Promise((r) => setTimeout(r, 8000 * attempt))
+      }
     }
   }
   return { ok: false, missing: 0, err: 'unreachable' }
@@ -224,6 +160,7 @@ async function main() {
     // stagger worker starts to avoid burst rate-limiting
     await new Promise((r) => setTimeout(r, id * 4000))
     while (idx < queue.length) {
+      await waitCooldown()
       const my = idx++
       const [code, native, english] = queue[my]
       const res = await translateOne(zai, code, native, english)

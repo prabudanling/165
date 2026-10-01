@@ -1,0 +1,25 @@
+{
+  "name": "165 — TQN Qodiriah Naqsabandiyah · Warisan Digital",
+  "short_name": "165",
+  "description": "Platform pengetahuan, warisan & pelestarian digital TQN Qodiriah Naqsabandiyah — setiap pernyataan bersumber, 178 bahasa, Bahasa Indonesia sebagai bawaan.",
+  "id": "/",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#f9f6ec",
+  "theme_color": "#006a47",
+  "lang": "id",
+  "dir": "ltr",
+  "categories": ["education", "books", "reference"],
+  "icons": [
+    { "src": "/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ],
+  "shortcuts": [
+    { "name": "Ruang Dokumen Sistem", "short_name": "Dokumen", "url": "/#documents" },
+    { "name": "Registri Sanad", "short_name": "Sanad", "url": "/#trust" },
+    { "name": "Berpartisipasi", "short_name": "Kontribusi", "url": "/#contribute" }
+  ]
+}
